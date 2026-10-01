@@ -5,24 +5,27 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>문화의 속성 - 삼성중학교 소정샘</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poor+Story&display=swap" rel="stylesheet">
 <style>
+@font-face{font-family:'GangwonEdu';font-weight:400;font-display:swap;
+  src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEdu_OTFLightA.woff') format('woff')}
+@font-face{font-family:'GangwonEdu';font-weight:700;font-display:swap;
+  src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEdu_OTFBoldA.woff') format('woff')}
 :root{
   --bg:#fff3f8; --card:#fff; --ink:#1f2937; --sub:#6b7280; --line:#fbd5e5;
   --main:#d6336c; --main2:#f783ac; --ok:#16a34a; --bad:#dc2626;
   --c1:#ef4444; --c2:#f59e0b; --c3:#10b981; --c4:#3b82f6; --c5:#8b5cf6;
 }
 *{box-sizing:border-box}
-body{margin:0;font-family:'Noto Sans KR','Malgun Gothic',sans-serif;background:var(--bg);color:var(--ink);
+body{margin:0;font-family:'GangwonEdu','Noto Sans KR','Malgun Gothic',sans-serif;font-weight:400;background:var(--bg);color:var(--ink);
   padding:76px 84px 84px 12px}
-button{font-family:inherit;cursor:pointer}
+button,input,textarea{font-family:inherit}
+button{cursor:pointer}
+h1,h2,h3,.card b,.meaning b{font-weight:700}
 header{position:fixed;top:0;left:0;right:0;z-index:50;background:linear-gradient(90deg,#ffd6e7,#ffc2da);
   color:#7a1f45;padding:10px 16px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;
   box-shadow:0 2px 8px rgba(0,0,0,.2)}
-header h1{margin:0;font-size:clamp(15px,2.4vw,22px)}
-header span{font-family:'Poor Story','Malgun Gothic',cursive;font-size:clamp(16px,2.4vw,22px)}
+header h1{margin:0;font-size:clamp(18px,3vw,28px);font-weight:700}
+header span{font-size:clamp(16px,2.4vw,22px)}
 nav{display:flex;gap:8px;max-width:900px;margin:0 auto 14px;flex-wrap:wrap}
 nav button{flex:1;min-width:120px;padding:12px;border:2px solid var(--main);background:#fff;color:var(--main);
   border-radius:12px;font-weight:700;font-size:15px}
@@ -30,7 +33,7 @@ nav button.on{background:var(--main);color:#fff}
 main{max-width:900px;margin:0 auto}
 .screen{display:none}.screen.on{display:block}
 .panel{background:var(--card);border-radius:16px;padding:20px;box-shadow:0 2px 10px rgba(0,0,0,.06)}
-h2{margin:0 0 14px;font-size:20px}
+h2{margin:0 0 14px;font-size:26px}
 .icons{display:flex;gap:16px;flex-wrap:wrap;justify-content:center}
 .icon{flex:1;min-width:130px;max-width:210px;text-align:center;text-decoration:none;color:var(--ink);
   background:#fff;border:2px solid var(--line);border-radius:16px;padding:18px 8px;transition:.15s;display:block}
@@ -54,6 +57,7 @@ input[type=text],input[type=number],textarea{width:100%;padding:12px;border:2px 
 .center{text-align:center}
 .card{border:3px solid var(--main);border-radius:20px;padding:18px;text-align:center;background:#fff;margin:12px 0}
 .card .pic{font-size:72px;line-height:1.2}
+.card b{font-size:22px}
 .card p{font-size:18px;line-height:1.6;margin:8px 0 0}
 .prog{height:10px;background:var(--line);border-radius:6px;overflow:hidden}
 .prog i{display:block;height:100%;background:var(--main);width:0;transition:.3s}
@@ -76,7 +80,7 @@ footer a:hover{background:#ffe3ef}
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:100;display:none;align-items:center;justify-content:center;padding:16px}
 .modal.on{display:flex}
 .box{background:#fff;border-radius:20px;padding:22px;width:100%;max-width:440px;text-align:center;max-height:90vh;overflow:auto}
-.box h3{margin:0 0 12px}
+.box h3{margin:0 0 12px;font-size:24px}
 .row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:12px}
 .sm{padding:10px 18px;border:0;border-radius:10px;background:var(--main);color:#fff;font-weight:700;font-size:15px}
 .sm.gray{background:#9ca3af}
