@@ -55,7 +55,7 @@ h2{margin:0 0 14px;font-size:26px}
 .meaning{border-left:6px solid var(--col,var(--main));background:#f9fafb;border-radius:8px;padding:14px 16px;font-size:22px;line-height:1.7}
 .ex-btn{margin-top:14px;display:block;margin-inline:auto;padding:12px 28px;border:0;border-radius:40px;
   background:var(--col,var(--main));color:#fff;font-weight:700;font-size:20px}
-.example{margin-top:12px;background:#fff0f6;border:2px dashed #f783ac;border-radius:12px;padding:14px 16px;line-height:1.7;display:none}
+.example{margin-top:12px;background:color-mix(in srgb,var(--col,#f783ac) 8%,#fff);border:2px dashed var(--col,#f783ac);border-radius:12px;padding:14px 16px;line-height:1.7;display:none}
 .example.on{display:block}
 .hint{color:var(--sub);text-align:center;padding:20px}
 .big-btn{padding:14px 30px;border:0;border-radius:40px;background:var(--main);color:#fff;font-size:22px;font-weight:700}
@@ -246,13 +246,13 @@ var WORKSHEET_URL = '';
 var ATTRS = [
   {k:'공유성', e:'🤝', c:'#e64980', m:'한 사회의 구성원들이 공통으로 가지고 있어 서로의 행동을 예측하고 상호작용할 수 있게 해주는 속성',
    x:"10대 신조어 및 줄임말 사용: '중꺾마', '알빠노', '억까', '폼 미쳤다' 등의 유행어를 통해 또래끼리 긴밀한 유대감을 형성하고 의사소통합니다."},
-  {k:'학습성', e:'📖', c:'#f06595', m:'문화는 태어날 때부터 타고나는 것이 아니라 후천적인 노력이나 사회화 과정을 통해 배워나가는 속성',
+  {k:'학습성', e:'📖', c:'#e8590c', m:'문화는 태어날 때부터 타고나는 것이 아니라 후천적인 노력이나 사회화 과정을 통해 배워나가는 속성',
    x:'AI 툴(ChatGPT 등) 프롬프트 작성법 습득: 수행평가나 과제를 할 때 생성형 AI에게 어떤 질문을 해야 원하는 답변을 얻는지 사용법을 익힙니다.'},
-  {k:'변동성', e:'🔄', c:'#d6336c', m:'문화는 시간에 따라 모습이나 형태, 의미가 끊임없이 변화하고 새롭게 형성되는 속성',
+  {k:'변동성', e:'🔄', c:'#2f9e44', m:'문화는 시간에 따라 모습이나 형태, 의미가 끊임없이 변화하고 새롭게 형성되는 속성',
    x:'지면 교과서에서 디지털 교과서 및 패드 학습으로의 변화: 종이책과 공책 중심의 수업 방식에서 태블릿 PC와 전자펜슬을 활용한 스마트 교육으로 변화하고 있습니다.'},
-  {k:'축적성', e:'📚', c:'#e599f7', m:'문화는 기존의 문화 요소에 새로운 지식과 경험이 계속해서 더해져 더욱 풍부해지고 발전하는 속성',
+  {k:'축적성', e:'📚', c:'#1c7ed6', m:'문화는 기존의 문화 요소에 새로운 지식과 경험이 계속해서 더해져 더욱 풍부해지고 발전하는 속성',
    x:'K-POP 시스템의 진화: 1세대 아이돌(음원/방송 위주)부터 시작된 노하우가 축적되어 세계관 구축, 자체 예능, 팬덤 소통 앱(버블, 위버스)으로 발전했습니다.'},
-  {k:'전체성', e:'🧩', c:'#ff8787', m:'문화의 각 구성 요소들은 서로 독립되어 있는 것이 아니라 밀접한 연관을 맺으며 하나의 체계를 이루는 속성',
+  {k:'전체성', e:'🧩', c:'#7048e8', m:'문화의 각 구성 요소들은 서로 독립되어 있는 것이 아니라 밀접한 연관을 맺으며 하나의 체계를 이루는 속성',
    x:'수시/정시 입시 제도 변화에 따른 일상의 변화: 대입 제도가 바뀌면 학교 수업 방식, 학원 커리큘럼, 주말 봉사활동, 학생의 수면 시간 및 스트레스 관리 방식까지 전체가 연동되어 변합니다.'}
 ];
 
@@ -334,7 +334,7 @@ else{$('#lnkSheet').onclick=function(e){e.preventDefault();alert('수업 학습�
       $$('.attr-btn').forEach(function(x){x.classList.remove('on')});b.classList.add('on');
       $('#attrBody').innerHTML='<div class="meaning" style="--col:'+a.c+'"><b>'+a.e+' '+a.k+'</b><br>'+esc(a.m)+'</div>'
         +'<button class="ex-btn" style="--col:'+a.c+'">💡 대표적인 예</button>'
-        +'<div class="example">'+esc(a.x)+'</div>';
+        +'<div class="example" style="--col:'+a.c+'">'+esc(a.x)+'</div>';
       var eb=$('.ex-btn');eb.onclick=function(){$('.example').classList.toggle('on')};
     };
     row.appendChild(b);
