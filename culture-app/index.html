@@ -327,7 +327,8 @@ else{$('#lnkSheet').onclick=function(e){e.preventDefault();alert('수업 학습�
 })();
 
 /* ===== 화면 3: 게임 ===== */
-/* 힌트 단어 가리기 (정답 확인 후에는 원문 공개) */
+/* 힌트 단어 가리기: true 로 바꾸면 속성이 드러나는 단어가 ○○ 로 가려짐 (정답 확인 후에는 원문 공개) */
+var HIDE_HINT=false;
 var HINT=/공유|공통|공동|후천적|학습|습득|체득|익히|익힙|익혀|배워|배웁|축적|누적|쌓|더해|연쇄|연동|전체|전반|변화|변했|변하|변합|바뀌|바뀝|바꿉|전환|진화|발전|확장/g;
 function mask(t){return String(t).replace(HINT,'○○')}
 function cardHtml(q,m){var f=m?mask:function(x){return x};return '<b>'+esc(f(q.h))+'</b><br>'+esc(f(q.t))}
@@ -352,7 +353,7 @@ function render(){
   var q=G.qs[G.i];
   $('#qNo').textContent='문제 '+(G.i+1)+' / '+G.qs.length;
   $('#bar').style.width=(G.i/G.qs.length*100)+'%';
-  $('#cPic').textContent=q.p;$('#cTxt').innerHTML=cardHtml(q,true);
+  $('#cPic').textContent=q.p;$('#cTxt').innerHTML=cardHtml(q,HIDE_HINT);
   var a=$('#ans');a.value='';a.disabled=false;a.focus();
   $('#fb').textContent='';$('#fb').className='fb';
   $('#btnSubmit').style.display='';$('#btnNext').style.display='none';
