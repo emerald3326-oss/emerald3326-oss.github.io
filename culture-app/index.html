@@ -7,16 +7,16 @@
 <title>문화의 속성 - 삼성중학교 소정샘</title>
 <style>
 :root{
-  --bg:#f4f7fb; --card:#fff; --ink:#1f2937; --sub:#6b7280; --line:#e5e7eb;
-  --main:#4f46e5; --main2:#7c3aed; --ok:#16a34a; --bad:#dc2626;
+  --bg:#fff3f8; --card:#fff; --ink:#1f2937; --sub:#6b7280; --line:#fbd5e5;
+  --main:#d6336c; --main2:#f783ac; --ok:#16a34a; --bad:#dc2626;
   --c1:#ef4444; --c2:#f59e0b; --c3:#10b981; --c4:#3b82f6; --c5:#8b5cf6;
 }
 *{box-sizing:border-box}
 body{margin:0;font-family:'Noto Sans KR','Malgun Gothic',sans-serif;background:var(--bg);color:var(--ink);
   padding:76px 84px 84px 12px}
 button{font-family:inherit;cursor:pointer}
-header{position:fixed;top:0;left:0;right:0;z-index:50;background:linear-gradient(90deg,var(--main),var(--main2));
-  color:#fff;padding:10px 16px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;
+header{position:fixed;top:0;left:0;right:0;z-index:50;background:linear-gradient(90deg,#ffd6e7,#ffc2da);
+  color:#7a1f45;padding:10px 16px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;
   box-shadow:0 2px 8px rgba(0,0,0,.2)}
 header h1{margin:0;font-size:clamp(15px,2.4vw,22px)}
 header span{font-size:clamp(12px,1.8vw,15px);opacity:.95}
@@ -42,7 +42,7 @@ h2{margin:0 0 14px;font-size:20px}
 .meaning{border-left:6px solid var(--col,var(--main));background:#f9fafb;border-radius:8px;padding:14px 16px;font-size:17px;line-height:1.7}
 .ex-btn{margin-top:14px;display:block;margin-inline:auto;padding:12px 28px;border:0;border-radius:40px;
   background:var(--col,var(--main));color:#fff;font-weight:700;font-size:16px}
-.example{margin-top:12px;background:#fffbeb;border:2px dashed #f59e0b;border-radius:12px;padding:14px 16px;line-height:1.7;display:none}
+.example{margin-top:12px;background:#fff0f6;border:2px dashed #f783ac;border-radius:12px;padding:14px 16px;line-height:1.7;display:none}
 .example.on{display:block}
 .hint{color:var(--sub);text-align:center;padding:20px}
 .big-btn{padding:14px 30px;border:0;border-radius:40px;background:var(--main);color:#fff;font-size:18px;font-weight:700}
@@ -65,7 +65,7 @@ footer{position:fixed;left:0;right:0;bottom:0;z-index:40;background:#fff;border-
   display:flex;justify-content:center;gap:12px;padding:8px 84px 8px 12px}
 footer a{display:flex;align-items:center;gap:6px;text-decoration:none;color:var(--ink);background:var(--bg);
   border:1px solid var(--line);border-radius:30px;padding:8px 14px;font-weight:700;font-size:14px}
-footer a:hover{background:#eef2ff}
+footer a:hover{background:#ffe3ef}
 #tools{position:fixed;right:8px;top:50%;transform:translateY(-50%);z-index:60;display:flex;flex-direction:column;gap:10px}
 #tools button{width:64px;height:64px;border-radius:50%;border:0;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.25);
   font-size:11px;font-weight:700;line-height:1.2}
@@ -92,11 +92,11 @@ footer a:hover{background:#eef2ff}
 .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(52px,1fr));gap:6px;margin:12px 0}
 .cards div{aspect-ratio:1;border-radius:10px;background:linear-gradient(135deg,var(--main),var(--main2));color:#fff;
   display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;transition:.3s}
-.cards div.hit{background:#f59e0b;transform:scale(1.15) rotate(-4deg);box-shadow:0 0 0 3px #fde68a}
-.cards div.used{background:#d1d5db;color:#9ca3af}
+.cards div.hit{background:#ff8fb8;transform:scale(1.15) rotate(-4deg);box-shadow:0 0 0 3px #ffd6e7}
+.cards div.used{background:#e8d5de;color:#b49aa6}
 .cards div.flash{background:#fff;color:var(--main);outline:3px solid var(--main)}
 .picked{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;min-height:10px}
-.picked span{background:#fef3c7;border:2px solid #f59e0b;border-radius:30px;padding:4px 14px;font-weight:800}
+.picked span{background:#ffe3ef;border:2px solid #f783ac;border-radius:30px;padding:4px 14px;font-weight:800}
 #hand b{font-size:clamp(24px,6vw,48px);color:var(--main)}
 @media(max-width:600px){body{padding-right:76px}footer{padding-right:76px}footer a{padding:7px 9px;font-size:12px}}
 </style>
@@ -229,15 +229,15 @@ footer a:hover{background:#eef2ff}
 var WORKSHEET_URL = '';
 
 var ATTRS = [
-  {k:'공유성', e:'🤝', c:'#ef4444', m:'한 사회의 구성원들이 공통으로 가지고 있어 서로의 행동을 예측하고 상호작용할 수 있게 해주는 속성',
+  {k:'공유성', e:'🤝', c:'#e64980', m:'한 사회의 구성원들이 공통으로 가지고 있어 서로의 행동을 예측하고 상호작용할 수 있게 해주는 속성',
    x:"10대 신조어 및 줄임말 사용: '중꺾마', '알빠노', '억까', '폼 미쳤다' 등의 유행어를 통해 또래끼리 긴밀한 유대감을 형성하고 의사소통합니다."},
-  {k:'학습성', e:'📖', c:'#f59e0b', m:'문화는 태어날 때부터 타고나는 것이 아니라 후천적인 노력이나 사회화 과정을 통해 배워나가는 속성',
+  {k:'학습성', e:'📖', c:'#f06595', m:'문화는 태어날 때부터 타고나는 것이 아니라 후천적인 노력이나 사회화 과정을 통해 배워나가는 속성',
    x:'AI 툴(ChatGPT 등) 프롬프트 작성법 습득: 수행평가나 과제를 할 때 생성형 AI에게 어떤 질문을 해야 원하는 답변을 얻는지 사용법을 익힙니다.'},
-  {k:'변동성', e:'🔄', c:'#10b981', m:'문화는 시간에 따라 모습이나 형태, 의미가 끊임없이 변화하고 새롭게 형성되는 속성',
+  {k:'변동성', e:'🔄', c:'#d6336c', m:'문화는 시간에 따라 모습이나 형태, 의미가 끊임없이 변화하고 새롭게 형성되는 속성',
    x:'지면 교과서에서 디지털 교과서 및 패드 학습으로의 변화: 종이책과 공책 중심의 수업 방식에서 태블릿 PC와 전자펜슬을 활용한 스마트 교육으로 변화하고 있습니다.'},
-  {k:'축적성', e:'📚', c:'#3b82f6', m:'문화는 기존의 문화 요소에 새로운 지식과 경험이 계속해서 더해져 더욱 풍부해지고 발전하는 속성',
+  {k:'축적성', e:'📚', c:'#e599f7', m:'문화는 기존의 문화 요소에 새로운 지식과 경험이 계속해서 더해져 더욱 풍부해지고 발전하는 속성',
    x:'K-POP 시스템의 진화: 1세대 아이돌(음원/방송 위주)부터 시작된 노하우가 축적되어 세계관 구축, 자체 예능, 팬덤 소통 앱(버블, 위버스)으로 발전했습니다.'},
-  {k:'전체성', e:'🧩', c:'#8b5cf6', m:'문화의 각 구성 요소들은 서로 독립되어 있는 것이 아니라 밀접한 연관을 맺으며 하나의 체계를 이루는 속성',
+  {k:'전체성', e:'🧩', c:'#ff8787', m:'문화의 각 구성 요소들은 서로 독립되어 있는 것이 아니라 밀접한 연관을 맺으며 하나의 체계를 이루는 속성',
    x:'수시/정시 입시 제도 변화에 따른 일상의 변화: 대입 제도가 바뀌면 학교 수업 방식, 학원 커리큘럼, 주말 봉사활동, 학생의 수면 시간 및 스트레스 관리 방식까지 전체가 연동되어 변합니다.'}
 ];
 
@@ -327,6 +327,11 @@ else{$('#lnkSheet').onclick=function(e){e.preventDefault();alert('수업 학습�
 })();
 
 /* ===== 화면 3: 게임 ===== */
+/* 힌트 단어 가리기 (정답 확인 후에는 원문 공개) */
+var HINT=/공유|공통|공동|후천적|학습|습득|체득|익히|익힙|익혀|배워|배웁|축적|누적|쌓|더해|연쇄|연동|전체|전반|변화|변했|변하|변합|바뀌|바뀝|바꿉|전환|진화|발전|확장/g;
+function mask(t){return String(t).replace(HINT,'○○')}
+function cardHtml(q,m){var f=m?mask:function(x){return x};return '<b>'+esc(f(q.h))+'</b><br>'+esc(f(q.t))}
+
 var G={name:'',qs:[],i:0,ok:0,log:[],t0:0,done:false};
 
 function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
@@ -347,7 +352,7 @@ function render(){
   var q=G.qs[G.i];
   $('#qNo').textContent='문제 '+(G.i+1)+' / '+G.qs.length;
   $('#bar').style.width=(G.i/G.qs.length*100)+'%';
-  $('#cPic').textContent=q.p;$('#cTxt').innerHTML='<b>'+esc(q.h)+'</b><br>'+esc(q.t);
+  $('#cPic').textContent=q.p;$('#cTxt').innerHTML=cardHtml(q,true);
   var a=$('#ans');a.value='';a.disabled=false;a.focus();
   $('#fb').textContent='';$('#fb').className='fb';
   $('#btnSubmit').style.display='';$('#btnNext').style.display='none';
@@ -359,7 +364,7 @@ function submit(){
   var right=norm(v)===norm(q.a);
   if(right)G.ok++;
   G.log.push({q:G.i+1,a:q.a,u:v,r:right});
-  $('#ans').disabled=true;
+  $('#ans').disabled=true;$('#cTxt').innerHTML=cardHtml(q,false);
   $('#fb').textContent=right?'⭕ 정답! '+q.a:'❌ 아쉬워요. 정답은 「'+q.a+'」';
   $('#fb').className='fb '+(right?'ok':'bad');
   $('#btnSubmit').style.display='none';
