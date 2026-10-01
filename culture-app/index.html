@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<base target="_top">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>문화의 속성 - 삼성중학교 소정샘</title>
+<style>
+:root{
+  --bg:#f4f7fb; --card:#fff; --ink:#1f2937; --sub:#6b7280; --line:#e5e7eb;
+  --main:#4f46e5; --main2:#7c3aed; --ok:#16a34a; --bad:#dc2626;
+  --c1:#ef4444; --c2:#f59e0b; --c3:#10b981; --c4:#3b82f6; --c5:#8b5cf6;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Noto Sans KR','Malgun Gothic',sans-serif;background:var(--bg);color:var(--ink);
+  padding:76px 84px 84px 12px}
+button{font-family:inherit;cursor:pointer}
+header{position:fixed;top:0;left:0;right:0;z-index:50;background:linear-gradient(90deg,var(--main),var(--main2));
+  color:#fff;padding:10px 16px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;
+  box-shadow:0 2px 8px rgba(0,0,0,.2)}
+header h1{margin:0;font-size:clamp(15px,2.4vw,22px)}
+header span{font-size:clamp(12px,1.8vw,15px);opacity:.95}
+nav{display:flex;gap:8px;max-width:900px;margin:0 auto 14px;flex-wrap:wrap}
+nav button{flex:1;min-width:120px;padding:12px;border:2px solid var(--main);background:#fff;color:var(--main);
+  border-radius:12px;font-weight:700;font-size:15px}
+nav button.on{background:var(--main);color:#fff}
+main{max-width:900px;margin:0 auto}
+.screen{display:none}.screen.on{display:block}
+.panel{background:var(--card);border-radius:16px;padding:20px;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+h2{margin:0 0 14px;font-size:20px}
+.icons{display:flex;gap:16px;flex-wrap:wrap;justify-content:center}
+.icon{flex:1;min-width:130px;max-width:210px;text-align:center;text-decoration:none;color:var(--ink);
+  background:#fff;border:2px solid var(--line);border-radius:16px;padding:18px 8px;transition:.15s;display:block}
+.icon:hover{transform:translateY(-3px);border-color:var(--main)}
+.icon .e{font-size:48px;display:block}
+.icon b{display:block;margin-top:6px}
+.attr-row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}
+.attr-btn{width:120px;padding:14px 6px;border:3px solid transparent;border-radius:16px;background:#fff;
+  box-shadow:0 2px 8px rgba(0,0,0,.08);text-align:center;font-weight:700}
+.attr-btn .e{font-size:38px;display:block}
+.attr-btn.on{border-color:var(--col);background:color-mix(in srgb,var(--col) 10%,#fff)}
+.meaning{border-left:6px solid var(--col,var(--main));background:#f9fafb;border-radius:8px;padding:14px 16px;font-size:17px;line-height:1.7}
+.ex-btn{margin-top:14px;display:block;margin-inline:auto;padding:12px 28px;border:0;border-radius:40px;
+  background:var(--col,var(--main));color:#fff;font-weight:700;font-size:16px}
+.example{margin-top:12px;background:#fffbeb;border:2px dashed #f59e0b;border-radius:12px;padding:14px 16px;line-height:1.7;display:none}
+.example.on{display:block}
+.hint{color:var(--sub);text-align:center;padding:20px}
+.big-btn{padding:14px 30px;border:0;border-radius:40px;background:var(--main);color:#fff;font-size:18px;font-weight:700}
+.big-btn:disabled{opacity:.5}
+input[type=text],input[type=number],textarea{width:100%;padding:12px;border:2px solid var(--line);border-radius:10px;font:inherit;font-size:17px}
+.center{text-align:center}
+.card{border:3px solid var(--main);border-radius:20px;padding:18px;text-align:center;background:#fff;margin:12px 0}
+.card .pic{font-size:72px;line-height:1.2}
+.card p{font-size:18px;line-height:1.6;margin:8px 0 0}
+.prog{height:10px;background:var(--line);border-radius:6px;overflow:hidden}
+.prog i{display:block;height:100%;background:var(--main);width:0;transition:.3s}
+.meta{display:flex;justify-content:space-between;color:var(--sub);font-size:14px;margin-bottom:6px}
+.fb{min-height:28px;font-weight:700;margin-top:10px;text-align:center;font-size:17px}
+.fb.ok{color:var(--ok)}.fb.bad{color:var(--bad)}
+.score{font-size:56px;font-weight:800;color:var(--main);margin:10px 0}
+table{width:100%;border-collapse:collapse;font-size:14px;margin-top:10px}
+td,th{border-bottom:1px solid var(--line);padding:6px;text-align:left}
+.save{font-size:14px;color:var(--sub);margin-top:6px}
+footer{position:fixed;left:0;right:0;bottom:0;z-index:40;background:#fff;border-top:1px solid var(--line);
+  display:flex;justify-content:center;gap:12px;padding:8px 84px 8px 12px}
+footer a{display:flex;align-items:center;gap:6px;text-decoration:none;color:var(--ink);background:var(--bg);
+  border:1px solid var(--line);border-radius:30px;padding:8px 14px;font-weight:700;font-size:14px}
+footer a:hover{background:#eef2ff}
+#tools{position:fixed;right:8px;top:50%;transform:translateY(-50%);z-index:60;display:flex;flex-direction:column;gap:10px}
+#tools button{width:64px;height:64px;border-radius:50%;border:0;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.25);
+  font-size:11px;font-weight:700;line-height:1.2}
+#tools button span{display:block;font-size:26px}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:100;display:none;align-items:center;justify-content:center;padding:16px}
+.modal.on{display:flex}
+.box{background:#fff;border-radius:20px;padding:22px;width:100%;max-width:440px;text-align:center;max-height:90vh;overflow:auto}
+.box h3{margin:0 0 12px}
+.row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+.sm{padding:10px 18px;border:0;border-radius:10px;background:var(--main);color:#fff;font-weight:700;font-size:15px}
+.sm.gray{background:#9ca3af}
+.pick{font-size:44px;font-weight:800;color:var(--main);margin:14px 0;min-height:56px}
+.time{font-size:72px;font-weight:800;font-variant-numeric:tabular-nums;margin:8px 0}
+.time.end{color:var(--bad);animation:bl .6s infinite}
+@keyframes bl{50%{opacity:.3}}
+#hand{position:fixed;inset:0;z-index:120;background:rgba(255,255,255,.93);display:none;flex-direction:column;
+  align-items:center;justify-content:center;font-size:clamp(120px,30vw,260px);animation:wave 1s infinite}
+#hand.on{display:flex}
+#hand small{font-size:22px;color:var(--sub)}
+@keyframes wave{50%{transform:rotate(12deg)}}
+@media(max-width:600px){body{padding-right:76px}footer{padding-right:76px}footer a{padding:7px 9px;font-size:12px}}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>&lt;사회&gt; 수업 주제: 문화의 속성</h1>
+  <span>삼성중학교 소정샘</span>
+</header>
+
+<main>
+  <nav>
+    <button class="on" data-s="s1">📚 수업 들어가기</button>
+    <button data-s="s2">🌏 문화의 속성</button>
+    <button data-s="s3">🎮 속성 카드 맞추기 게임</button>
+  </nav>
+
+  <!-- 화면 1 -->
+  <section id="s1" class="screen on">
+    <div class="panel">
+      <h2>수업 들어가기</h2>
+      <div class="icons">
+        <a class="icon" id="lnkVideo" href="https://www.youtube.com/watch?v=yebNIHKAC4A" target="_blank" rel="noopener">
+          <span class="e">▶️</span><b>수업 관련 영상</b></a>
+        <a class="icon" id="lnkSheet" href="#" target="_blank" rel="noopener">
+          <span class="e">📝</span><b>수업 학습지</b></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 화면 2 -->
+  <section id="s2" class="screen">
+    <div class="panel">
+      <h2>문화의 속성</h2>
+      <div class="attr-row" id="attrRow"></div>
+      <div id="attrBody"><div class="hint">👆 속성 아이콘을 눌러 보세요!</div></div>
+    </div>
+  </section>
+
+  <!-- 화면 3 -->
+  <section id="s3" class="screen">
+    <div class="panel">
+      <h2>문화의 속성 카드 맞추기 게임</h2>
+
+      <div id="gStart" class="center">
+        <p>이름을 입력하고 시작하세요. 카드의 그림과 설명을 보고 어떤 속성인지 <b>직접 써 보세요!</b><br>
+        (공유성 · 학습성 · 변동성 · 축적성 · 전체성) — 10문제 1세트</p>
+        <input type="text" id="pName" maxlength="20" placeholder="이름을 입력하세요" style="max-width:320px">
+        <p><button class="big-btn" id="btnStart">게임 시작</button></p>
+      </div>
+
+      <div id="gPlay" style="display:none">
+        <div class="meta"><span id="qNo"></span><span id="qWho"></span></div>
+        <div class="prog"><i id="bar"></i></div>
+        <div class="card"><div class="pic" id="cPic"></div><p id="cTxt"></p></div>
+        <input type="text" id="ans" placeholder="어떤 속성일까요? (예: 공유성)" autocomplete="off">
+        <div class="fb" id="fb"></div>
+        <div class="center" style="margin-top:8px">
+          <button class="big-btn" id="btnSubmit">제출</button>
+          <button class="big-btn" id="btnNext" style="display:none">다음 ▶</button>
+        </div>
+      </div>
+
+      <div id="gEnd" class="center" style="display:none">
+        <h2 id="eName"></h2>
+        <div class="score" id="eScore"></div>
+        <div id="eMsg"></div>
+        <div class="save" id="eSave"></div>
+        <div style="text-align:left"><table id="eTbl"></table></div>
+        <p><button class="big-btn" id="btnAgain">다시 도전 🔁</button></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <a href="https://app.notion.com/p/2ceaf6bab4c1818b9a12cd98c4a511db?v=2ceaf6bab4c18181b273000c1d27f588&source=copy_link" target="_blank" rel="noopener">📓 수업 노션</a>
+  <a href="https://www.classting.com/home" target="_blank" rel="noopener">🏫 클래스팅</a>
+  <a href="https://tooning.io/" target="_blank" rel="noopener">🎨 투닝</a>
+</footer>
+
+<div id="tools">
+  <button id="tPick"><span>🎯</span>발표자<br>뽑기</button>
+  <button id="tTimer"><span>⏱️</span>타이머</button>
+  <button id="tHand"><span>🙋</span>손들기</button>
+</div>
+
+<!-- 발표자 뽑기 -->
+<div class="modal" id="mPick"><div class="box">
+  <h3>🎯 발표자 뽑기</h3>
+  <textarea id="pList" rows="5" placeholder="이름을 줄바꿈 또는 쉼표(,)로 입력하세요"></textarea>
+  <div class="pick" id="pRes">?</div>
+  <div class="row"><button class="sm" id="pGo">뽑기!</button><button class="sm gray" data-close>닫기</button></div>
+</div></div>
+
+<!-- 타이머 -->
+<div class="modal" id="mTimer"><div class="box">
+  <h3>⏱️ 타이머</h3>
+  <div class="time" id="tDisp">05:00</div>
+  <div class="row">
+    <input type="number" id="tMin" min="0" max="99" value="5" style="width:80px;text-align:center"> 분
+    <input type="number" id="tSec" min="0" max="59" value="0" style="width:80px;text-align:center"> 초
+  </div>
+  <div class="row">
+    <button class="sm" data-add="60">+1분</button>
+    <button class="sm" data-add="300">+5분</button>
+    <button class="sm" id="tStart">시작</button>
+    <button class="sm gray" id="tReset">초기화</button>
+    <button class="sm gray" data-close>닫기</button>
+  </div>
+</div></div>
+
+<div id="hand"><span>🙋</span><small>화면을 누르면 닫혀요</small></div>
+
+<script>
+/* ===== 설정 ===== */
+// 수업 학습지 링크를 여기에 넣으세요
+var WORKSHEET_URL = '';
+
+var ATTRS = [
+  {k:'공유성', e:'🤝', c:'#ef4444', m:'한 사회의 구성원들이 공통으로 가지고 있어 서로의 행동을 예측하고 상호작용할 수 있게 해주는 속성',
+   x:"10대 신조어 및 줄임말 사용: '중꺾마', '알빠노', '억까', '폼 미쳤다' 등의 유행어를 통해 또래끼리 긴밀한 유대감을 형성하고 의사소통합니다."},
+  {k:'학습성', e:'📖', c:'#f59e0b', m:'문화는 태어날 때부터 타고나는 것이 아니라 후천적인 노력이나 사회화 과정을 통해 배워나가는 속성',
+   x:'AI 툴(ChatGPT 등) 프롬프트 작성법 습득: 수행평가나 과제를 할 때 생성형 AI에게 어떤 질문을 해야 원하는 답변을 얻는지 사용법을 익힙니다.'},
+  {k:'변동성', e:'🔄', c:'#10b981', m:'문화는 시간에 따라 모습이나 형태, 의미가 끊임없이 변화하고 새롭게 형성되는 속성',
+   x:'지면 교과서에서 디지털 교과서 및 패드 학습으로의 변화: 종이책과 공책 중심의 수업 방식에서 태블릿 PC와 전자펜슬을 활용한 스마트 교육으로 변화하고 있습니다.'},
+  {k:'축적성', e:'📚', c:'#3b82f6', m:'문화는 기존의 문화 요소에 새로운 지식과 경험이 계속해서 더해져 더욱 풍부해지고 발전하는 속성',
+   x:'K-POP 시스템의 진화: 1세대 아이돌(음원/방송 위주)부터 시작된 노하우가 축적되어 세계관 구축, 자체 예능, 팬덤 소통 앱(버블, 위버스)으로 발전했습니다.'},
+  {k:'전체성', e:'🧩', c:'#8b5cf6', m:'문화의 각 구성 요소들은 서로 독립되어 있는 것이 아니라 밀접한 연관을 맺으며 하나의 체계를 이루는 속성',
+   x:'수시/정시 입시 제도 변화에 따른 일상의 변화: 대입 제도가 바뀌면 학교 수업 방식, 학원 커리큘럼, 주말 봉사활동, 학생의 수면 시간 및 스트레스 관리 방식까지 전체가 연동되어 변합니다.'}
+];
+
+/* 카드 문제 은행 (속성별 4장 = 20장 중 랜덤 10장) */
+var CARDS = [
+  {p:'🗣️', t:"'중꺾마', '억까' 같은 유행어를 쓰면 또래 친구들끼리 말이 잘 통한다.", a:'공유성'},
+  {p:'🍚', t:'우리나라 사람들은 명절에 가족이 모여 차례를 지내고 떡국·송편을 먹는 것을 함께 이해하고 따른다.', a:'공유성'},
+  {p:'🚦', t:'모두가 초록불에 건너고 빨간불에 멈추기 때문에 서로의 행동을 예측할 수 있다.', a:'공유성'},
+  {p:'👋', t:'같은 학교 학생들은 선생님께 인사하는 방식에 대한 공통된 약속을 가지고 있다.', a:'공유성'},
+  {p:'🤖', t:'수행평가를 할 때 생성형 AI에게 어떻게 질문해야 원하는 답을 얻는지 연습하며 익혔다.', a:'학습성'},
+  {p:'🥢', t:'한국에서 태어난 아기는 자라면서 부모님과 주변 사람을 보고 젓가락질을 배운다.', a:'학습성'},
+  {p:'🙇', t:'어릴 때부터 어른께 두 손으로 물건을 드리는 예절을 가르침받아 몸에 익혔다.', a:'학습성'},
+  {p:'🎹', t:'외국으로 이민 간 한국인 아이가 현지 언어와 생활 방식을 배우며 자연스럽게 따르게 되었다.', a:'학습성'},
+  {p:'📱', t:'종이책과 공책 중심 수업이 태블릿 PC와 전자펜슬을 활용한 디지털 수업으로 바뀌고 있다.', a:'변동성'},
+  {p:'👗', t:'교복과 헤어스타일 규정이 시대에 따라 점점 자유로워졌다.', a:'변동성'},
+  {p:'📞', t:'공중전화와 삐삐 대신 스마트폰으로 소통하는 시대가 되었다.', a:'변동성'},
+  {p:'👪', t:'대가족이 함께 살던 모습에서 핵가족과 1인 가구가 늘어나는 모습으로 변했다.', a:'변동성'},
+  {p:'🎤', t:'1세대 아이돌의 노하우가 쌓여 세계관, 자체 예능, 팬덤 소통 앱(버블, 위버스)으로까지 발전했다.', a:'축적성'},
+  {p:'🔤', t:'세종대왕이 만든 한글에 오랜 세월 새로운 표현과 외래어가 더해져 오늘날 우리말이 되었다.', a:'축적성'},
+  {p:'🔬', t:'앞선 세대의 과학 지식 위에 새로운 발견이 계속 더해져 기술이 발전해 왔다.', a:'축적성'},
+  {p:'🏯', t:'조상들의 건축 기술과 지혜가 대대로 전해지고 보태져 한옥 문화가 더욱 풍부해졌다.', a:'축적성'},
+  {p:'🎓', t:'대입 제도가 바뀌면 학교 수업, 학원 커리큘럼, 주말 활동, 학생의 수면 시간까지 함께 변한다.', a:'전체성'},
+  {p:'🏠', t:'온돌(난방), 한복, 좌식 생활 방식이 서로 연결되어 우리나라 주거 문화를 이룬다.', a:'전체성'},
+  {p:'💻', t:'스마트폰이 보급되자 소통 방식, 쇼핑, 학습, 여가 문화가 한꺼번에 달라졌다.', a:'전체성'},
+  {p:'🍱', t:'쌀 중심 농경 문화가 음식, 명절, 공동체 놀이, 노동 방식에까지 서로 영향을 주고 있다.', a:'전체성'}
+];
+
+/* ===== 공통 ===== */
+function $(s){return document.querySelector(s)}
+function $$(s){return Array.prototype.slice.call(document.querySelectorAll(s))}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+
+$$('nav button').forEach(function(b){b.onclick=function(){
+  $$('nav button').forEach(function(x){x.classList.toggle('on',x===b)});
+  $$('.screen').forEach(function(s){s.classList.toggle('on',s.id===b.dataset.s)});
+}});
+
+if(WORKSHEET_URL){$('#lnkSheet').href=WORKSHEET_URL}
+else{$('#lnkSheet').onclick=function(e){e.preventDefault();alert('수업 학습지 링크가 아직 설정되지 않았어요. (index.html 의 WORKSHEET_URL)')}}
+
+/* ===== 화면 2: 속성 ===== */
+(function(){
+  var row=$('#attrRow');
+  ATTRS.forEach(function(a,i){
+    var b=document.createElement('button');
+    b.className='attr-btn';b.style.setProperty('--col',a.c);
+    b.innerHTML='<span class="e">'+a.e+'</span>'+a.k;
+    b.onclick=function(){
+      $$('.attr-btn').forEach(function(x){x.classList.remove('on')});b.classList.add('on');
+      $('#attrBody').innerHTML='<div class="meaning" style="--col:'+a.c+'"><b>'+a.e+' '+a.k+'</b><br>'+esc(a.m)+'</div>'
+        +'<button class="ex-btn" style="--col:'+a.c+'">💡 대표적인 예</button>'
+        +'<div class="example">'+esc(a.x)+'</div>';
+      var eb=$('.ex-btn');eb.onclick=function(){$('.example').classList.toggle('on')};
+    };
+    row.appendChild(b);
+  });
+})();
+
+/* ===== 화면 3: 게임 ===== */
+var G={name:'',qs:[],i:0,ok:0,log:[],t0:0,done:false};
+
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+function norm(s){return String(s).replace(/\s/g,'').replace(/성$/,'')}
+
+function show(id){['gStart','gPlay','gEnd'].forEach(function(x){$('#'+x).style.display=(x===id?'block':'none')})}
+
+$('#btnStart').onclick=function(){
+  var n=$('#pName').value.trim();
+  if(!n){alert('이름을 입력해 주세요.');$('#pName').focus();return}
+  G={name:n,qs:shuffle(CARDS).slice(0,10),i:0,ok:0,log:[],t0:Date.now(),done:false};
+  $('#qWho').textContent='👤 '+n;
+  show('gPlay');render();
+};
+$('#pName').addEventListener('keydown',function(e){if(e.key==='Enter')$('#btnStart').click()});
+
+function render(){
+  var q=G.qs[G.i];
+  $('#qNo').textContent='문제 '+(G.i+1)+' / '+G.qs.length;
+  $('#bar').style.width=(G.i/G.qs.length*100)+'%';
+  $('#cPic').textContent=q.p;$('#cTxt').textContent=q.t;
+  var a=$('#ans');a.value='';a.disabled=false;a.focus();
+  $('#fb').textContent='';$('#fb').className='fb';
+  $('#btnSubmit').style.display='';$('#btnNext').style.display='none';
+}
+
+function submit(){
+  var q=G.qs[G.i],v=$('#ans').value.trim();
+  if(!v){$('#fb').textContent='답을 써 주세요!';$('#fb').className='fb bad';return}
+  var right=norm(v)===norm(q.a);
+  if(right)G.ok++;
+  G.log.push({q:G.i+1,a:q.a,u:v,r:right});
+  $('#ans').disabled=true;
+  $('#fb').textContent=right?'⭕ 정답! '+q.a:'❌ 아쉬워요. 정답은 「'+q.a+'」';
+  $('#fb').className='fb '+(right?'ok':'bad');
+  $('#btnSubmit').style.display='none';
+  var nb=$('#btnNext');nb.style.display='';nb.textContent=(G.i===G.qs.length-1?'결과 보기 🏁':'다음 ▶');nb.focus();
+}
+$('#btnSubmit').onclick=submit;
+$('#ans').addEventListener('keydown',function(e){if(e.key==='Enter'&&$('#btnSubmit').style.display!=='none')submit()});
+$('#btnNext').onclick=function(){
+  if(G.i<G.qs.length-1){G.i++;render()}else finish();
+};
+
+function finish(){
+  show('gEnd');
+  var total=G.qs.length,sec=Math.round((Date.now()-G.t0)/1000);
+  $('#eName').textContent=G.name+' 님의 결과';
+  $('#eScore').textContent=G.ok+' / '+total;
+  $('#eMsg').textContent=G.ok===total?'🎉 완벽해요! 문화의 속성 마스터!':G.ok>=7?'👏 훌륭해요!':G.ok>=4?'🙂 조금만 더 복습해 볼까요?':'💪 수업 내용을 다시 보고 도전해 봐요!';
+  $('#eTbl').innerHTML='<tr><th>#</th><th>내 답</th><th>정답</th><th></th></tr>'+G.log.map(function(l){
+    return '<tr><td>'+l.q+'</td><td>'+esc(l.u)+'</td><td>'+l.a+'</td><td>'+(l.r?'⭕':'❌')+'</td></tr>'}).join('');
+  var sv=$('#eSave');sv.textContent='⏳ 구글 시트에 기록 중...';
+  var detail=G.log.map(function(l){return l.q+':'+l.a+'/'+l.u+(l.r?'O':'X')}).join(' | ');
+  var payload={name:G.name,correct:G.ok,total:total,seconds:sec,detail:detail};
+  if(window.google&&google.script&&google.script.run){
+    google.script.run.withSuccessHandler(function(r){sv.textContent='✅ 기록 완료 ('+r.attempt+'번째 시도)'})
+      .withFailureHandler(function(e){sv.textContent='⚠️ 기록 실패: '+(e&&e.message||e)}).saveResult(payload);
+  }else sv.textContent='ℹ️ (미리보기 모드) Apps Script 환경에서만 시트에 기록됩니다.';
+}
+$('#btnAgain').onclick=function(){
+  G={name:G.name,qs:shuffle(CARDS).slice(0,10),i:0,ok:0,log:[],t0:Date.now()};
+  show('gPlay');render();
+};
+
+/* ===== 우측 수업 도구 ===== */
+function open_(id){$('#'+id).classList.add('on')}
+$$('[data-close]').forEach(function(b){b.onclick=function(){b.closest('.modal').classList.remove('on')}});
+$$('.modal').forEach(function(m){m.addEventListener('click',function(e){if(e.target===m)m.classList.remove('on')})});
+
+// 발표자 뽑기
+try{$('#pList').value=localStorage.getItem('ca_names')||''}catch(e){}
+$('#tPick').onclick=function(){open_('mPick')};
+$('#pGo').onclick=function(){
+  var names=$('#pList').value.split(/[\n,]+/).map(function(s){return s.trim()}).filter(Boolean);
+  try{localStorage.setItem('ca_names',$('#pList').value)}catch(e){}
+  if(!names.length){$('#pRes').textContent='이름을 입력!';return}
+  var n=0,el=$('#pRes'),btn=$('#pGo');btn.disabled=true;
+  var iv=setInterval(function(){
+    el.textContent=names[Math.floor(Math.random()*names.length)];
+    if(++n>18){clearInterval(iv);el.textContent='🎉 '+names[Math.floor(Math.random()*names.length)];btn.disabled=false}
+  },80);
+};
+
+// 타이머
+var T={left:300,iv:null};
+function fmt(s){return ('0'+Math.floor(s/60)).slice(-2)+':'+('0'+(s%60)).slice(-2)}
+function tShow(){var d=$('#tDisp');d.textContent=fmt(T.left);d.classList.toggle('end',T.left===0&&!T.iv&&T.fin)}
+function tSet(){T.left=(parseInt($('#tMin').value)||0)*60+(parseInt($('#tSec').value)||0);T.fin=false;tShow()}
+function beep(){try{var c=new (window.AudioContext||window.webkitAudioContext)(),o=c.createOscillator();o.connect(c.destination);o.frequency.value=880;o.start();setTimeout(function(){o.stop();c.close()},700)}catch(e){}}
+$('#tTimer').onclick=function(){open_('mTimer')};
+$('#tMin').oninput=$('#tSec').oninput=function(){if(!T.iv)tSet()};
+$$('[data-add]').forEach(function(b){b.onclick=function(){T.left+=parseInt(b.dataset.add);T.fin=false;tShow()}});
+$('#tStart').onclick=function(){
+  if(T.iv){clearInterval(T.iv);T.iv=null;$('#tStart').textContent='계속';return}
+  if(T.left<=0)tSet();
+  if(T.left<=0)return;
+  $('#tStart').textContent='일시정지';
+  T.iv=setInterval(function(){
+    T.left--;
+    if(T.left<=0){T.left=0;clearInterval(T.iv);T.iv=null;T.fin=true;$('#tStart').textContent='시작';beep()}
+    tShow();
+  },1000);
+};
+$('#tReset').onclick=function(){clearInterval(T.iv);T.iv=null;$('#tStart').textContent='시작';tSet()};
+tSet();
+
+// 손들기
+$('#tHand').onclick=function(){$('#hand').classList.add('on')};
+$('#hand').onclick=function(){$('#hand').classList.remove('on')};
+</script>
+</body>
+</html>
