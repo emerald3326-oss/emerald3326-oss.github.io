@@ -275,7 +275,7 @@ var ATTRS = [
    x:'수시/정시 입시 제도 변화에 따른 일상의 변화: 대입 제도가 바뀌면 학교 수업 방식, 학원 커리큘럼, 주말 봉사활동, 학생의 수면 시간 및 스트레스 관리 방식까지 전체가 연동되어 변합니다.'}
 ];
 
-/* 카드 문제 은행: 속성별 10장 = 50장 중 랜덤 10장 (h=제목, t=설명) */
+/* 카드 문제 은행: 속성별 10장 (h=제목, t=설명). 게임 시작 때 속성별 2장씩 랜덤으로 뽑아 10문제 구성 */
 var CARDS = [
   {"a": "공유성", "p": "🗣️", "h": "10대 신조어 및 줄임말 사용", "t": "'중꺾마', '알빠노', '억까', '폼 미쳤다' 등의 유행어를 통해 또래끼리 긴밀한 유대감을 형성하고 의사소통합니다."},
   {"a": "공유성", "p": "📱", "h": "Shorts/Reels/TikTok 챌린지 밈 공유", "t": "특정 챌린지 춤이나 음원 밈(Meme)을 보면 설명 없이도 어떤 의미인지 서로 이해하고 따라 합니다."},
@@ -370,6 +370,14 @@ function cardHtml(q,m){var f=m?mask:function(x){return x};return '<b>'+esc(f(q.h
 var G={name:'',qs:[],i:0,ok:0,log:[],t0:0,done:false};
 
 function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+/* 속성별 10장 중 2장씩 랜덤 추출 → 5속성 × 2장 = 10문제를 다시 섞음 */
+function pickSet(){
+  var out=[];
+  ATTRS.forEach(function(a){
+    out=out.concat(shuffle(CARDS.filter(function(c){return c.a===a.k})).slice(0,2));
+  });
+  return shuffle(out);
+}
 function norm(s){return String(s).replace(/\s/g,'').replace(/성$/,'')}
 
 function show(id){['gStart','gPlay','gEnd'].forEach(function(x){$('#'+x).style.display=(x===id?'block':'none')})}
@@ -377,7 +385,7 @@ function show(id){['gStart','gPlay','gEnd'].forEach(function(x){$('#'+x).style.d
 $('#btnStart').onclick=function(){
   var n=$('#pName').value.trim();
   if(!n){alert('이름을 입력해 주세요.');$('#pName').focus();return}
-  G={name:n,qs:shuffle(CARDS).slice(0,10),i:0,ok:0,log:[],t0:Date.now(),done:false};
+  G={name:n,qs:pickSet(),i:0,ok:0,log:[],t0:Date.now(),done:false};
   $('#qWho').textContent='👤 '+n;
   show('gPlay');render();
 };
@@ -428,7 +436,7 @@ function finish(){
   }else sv.textContent='ℹ️ (미리보기 모드) Apps Script 환경에서만 시트에 기록됩니다.';
 }
 $('#btnAgain').onclick=function(){
-  G={name:G.name,qs:shuffle(CARDS).slice(0,10),i:0,ok:0,log:[],t0:Date.now()};
+  G={name:G.name,qs:pickSet(),i:0,ok:0,log:[],t0:Date.now()};
   show('gPlay');render();
 };
 
