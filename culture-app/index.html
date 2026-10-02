@@ -516,8 +516,8 @@ $('#tPause').onclick=function(){T.paused=!T.paused;this.textContent=T.paused?'�
 $('#tStop').onclick=function(){tClear();T.left=0;tShow(false)};
 
 // 배경음악: 아이콘을 누르면 유튜브 영상이 바로 재생, 다시 누르면 정지
-// 추천: 50 Minute Classroom Countdown Timer with Piano Music (잔잔한 피아노, 50분)
-var MUSIC_ID='G4L60vgcHfA';
+// 영상 주소 https://youtu.be/hBH5LasDWs0 (바꾸려면 아래 MUSIC_ID 값만 교체)
+var MUSIC_ID='hBH5LasDWs0';
 var MUSIC_URL='https://www.youtube.com/watch?v='+MUSIC_ID;
 var M={player:null,ready:false,on:false,loading:false};
 function musicUI(){var b=$('#tMusic');b.classList.toggle('playing',M.on);b.setAttribute('aria-pressed',M.on?'true':'false');b.querySelector('em').textContent=M.on?'재생 중':'배경음악'}
