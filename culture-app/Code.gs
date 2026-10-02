@@ -1,5 +1,5 @@
 /**
- * <사회> 수업 주제: 문화의 속성 - 소정샘
+ * <사회> 수업 주제: 문화의 속성 - 유쾌한 소정샘
  * Code.gs (Google Apps Script 백엔드)
  */
 
@@ -13,7 +13,7 @@ const HEADERS = ['순번', '제출일시', '이름', '시도회차', '정답수'
 
 function doGet() {
   return HtmlService.createHtmlOutputFromFile('index')
-    .setTitle('문화의 속성 - 소정샘')
+    .setTitle('문화의 속성 - 유쾌한 소정샘')
     .addMetaTag('viewport', 'width=device-width, initial-scale=1')
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
