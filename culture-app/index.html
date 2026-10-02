@@ -128,6 +128,17 @@ footer a:hover{background:#ffe3ef}
 #tools button.playing{background:#ffe3ef;outline:3px solid var(--main);animation:pulse 1.6s infinite}
 @keyframes pulse{50%{box-shadow:0 0 0 8px rgba(214,51,108,.25)}}
 #ytBox{position:fixed;left:-9999px;top:0;width:200px;height:200px}
+.choices{display:flex;gap:10px;margin-top:6px}
+.choice{flex:1;padding:10px 4px;border:3px solid var(--col);border-radius:14px;background:#fff;font-size:20px;
+  font-family:'High1DaylilyTitle','High1Daylily','Noto Sans KR',sans-serif;font-weight:700!important;transition:.15s}
+.choice .e{display:block;font-size:32px;line-height:1.2}
+.choice:not(:disabled):hover{background:color-mix(in srgb,var(--col) 12%,#fff);transform:translateY(-3px)}
+.choice:disabled{cursor:default}
+.choice.right{background:#d3f9d8;border-color:#2f9e44}
+.choice.wrong{background:#ffe3e3;border-color:#e03131}
+.choice.dim{opacity:.45}
+.fbrow{display:flex;align-items:center;justify-content:center;gap:16px;min-height:60px;margin-top:6px}
+.fbrow .fb{margin:0;min-height:0}
 </style>
 </head>
 <body>
@@ -181,7 +192,7 @@ footer a:hover{background:#ffe3ef}
       <h2>문화의 속성 카드 맞추기 게임</h2>
 
       <div id="gStart" class="center">
-        <p>이름을 입력하고 시작하세요. 카드의 그림과 설명을 보고 어떤 속성인지 <b>직접 써 보세요!</b><br>
+        <p>이름을 입력하고 시작하세요. 카드의 그림과 설명을 보고, 아래에 놓인 <b>속성 카드 5장 중 알맞은 카드를 골라 눌러 보세요!</b><br>
         (공유성 · 학습성 · 변동성 · 축적성 · 전체성) — 10문제 1세트</p>
         <input type="text" id="pName" maxlength="20" placeholder="이름을 입력하세요" style="max-width:320px">
         <p><button class="big-btn" id="btnStart">게임 시작</button></p>
@@ -191,10 +202,9 @@ footer a:hover{background:#ffe3ef}
         <div class="meta"><span id="qNo"></span><span id="qWho"></span></div>
         <div class="prog"><i id="bar"></i></div>
         <div class="card"><div class="pic" id="cPic"></div><p id="cTxt"></p></div>
-        <input type="text" id="ans" placeholder="어떤 속성일까요? (예: 공유성)" autocomplete="off">
-        <div class="fb" id="fb"></div>
-        <div class="center" style="margin-top:8px">
-          <button class="big-btn" id="btnSubmit">제출</button>
+        <div class="choices" id="choices"></div>
+        <div class="fbrow">
+          <div class="fb" id="fb"></div>
           <button class="big-btn" id="btnNext" style="display:none">다음 ▶</button>
         </div>
       </div>
@@ -384,43 +394,56 @@ function pickSet(){
   });
   return shuffle(out);
 }
-function norm(s){return String(s).replace(/\s/g,'').replace(/성$/,'')}
 
 function show(id){['gStart','gPlay','gEnd'].forEach(function(x){$('#'+x).style.display=(x===id?'block':'none')})}
 
 $('#btnStart').onclick=function(){
   var n=$('#pName').value.trim();
   if(!n){alert('이름을 입력해 주세요.');$('#pName').focus();return}
-  G={name:n,qs:pickSet(),i:0,ok:0,log:[],t0:Date.now(),done:false};
+  G={name:n,qs:pickSet(),i:0,ok:0,log:[],t0:Date.now(),done:false,answered:-1};
   $('#qWho').textContent='👤 '+n;
   show('gPlay');render();
 };
 $('#pName').addEventListener('keydown',function(e){if(e.key==='Enter')$('#btnStart').click()});
+
+function buildChoices(){
+  var box=$('#choices');box.innerHTML='';
+  ATTRS.forEach(function(a){
+    var b=document.createElement('button');b.className='choice';b.dataset.k=a.k;b.style.setProperty('--col',a.c);
+    b.innerHTML='<span class="e">'+a.e+'</span>'+a.k;
+    b.onclick=function(){choose(a.k)};
+    box.appendChild(b);
+  });
+}
+buildChoices();
 
 function render(){
   var q=G.qs[G.i];
   $('#qNo').textContent='문제 '+(G.i+1)+' / '+G.qs.length;
   $('#bar').style.width=(G.i/G.qs.length*100)+'%';
   $('#cPic').textContent=q.p;$('#cTxt').innerHTML=cardHtml(q,HIDE_HINT);
-  var a=$('#ans');a.value='';a.disabled=false;a.focus();
-  $('#fb').textContent='';$('#fb').className='fb';
-  $('#btnSubmit').style.display='';$('#btnNext').style.display='none';
+  $$('.choice').forEach(function(b){b.disabled=false;b.className='choice'});
+  $('#fb').textContent='속성 카드를 골라 눌러 보세요 👇';$('#fb').className='fb';
+  $('#btnNext').style.display='none';
 }
 
-function submit(){
-  var q=G.qs[G.i],v=$('#ans').value.trim();
-  if(!v){$('#fb').textContent='답을 써 주세요!';$('#fb').className='fb bad';return}
-  var right=norm(v)===norm(q.a);
+function choose(k){
+  var q=G.qs[G.i];
+  if(G.answered===G.i)return;G.answered=G.i;
+  var right=(k===q.a);
   if(right)G.ok++;
-  G.log.push({q:G.i+1,a:q.a,u:v,r:right});
-  $('#ans').disabled=true;$('#cTxt').innerHTML=cardHtml(q,false);
+  G.log.push({q:G.i+1,a:q.a,u:k,r:right});
+  $('#cTxt').innerHTML=cardHtml(q,false);
+  $$('.choice').forEach(function(b){
+    b.disabled=true;
+    if(b.dataset.k===q.a)b.classList.add('right');
+    else if(b.dataset.k===k)b.classList.add('wrong');
+    else b.classList.add('dim');
+  });
   $('#fb').textContent=right?'⭕ 정답! '+q.a:'❌ 아쉬워요. 정답은 「'+q.a+'」';
   $('#fb').className='fb '+(right?'ok':'bad');
-  $('#btnSubmit').style.display='none';
   var nb=$('#btnNext');nb.style.display='';nb.textContent=(G.i===G.qs.length-1?'결과 보기 🏁':'다음 ▶');nb.focus();
 }
-$('#btnSubmit').onclick=submit;
-$('#ans').addEventListener('keydown',function(e){if(e.key==='Enter'&&$('#btnSubmit').style.display!=='none')submit()});
 $('#btnNext').onclick=function(){
   if(G.i<G.qs.length-1){G.i++;render()}else finish();
 };
@@ -442,7 +465,7 @@ function finish(){
   }else sv.textContent='ℹ️ (미리보기 모드) Apps Script 환경에서만 시트에 기록됩니다.';
 }
 $('#btnAgain').onclick=function(){
-  G={name:G.name,qs:pickSet(),i:0,ok:0,log:[],t0:Date.now()};
+  G={name:G.name,qs:pickSet(),i:0,ok:0,log:[],t0:Date.now(),answered:-1};
   show('gPlay');render();
 };
 
