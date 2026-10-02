@@ -124,6 +124,10 @@ footer a:hover{background:#ffe3ef}
 #s1 .icon{padding:10px 8px;max-width:190px}#s1 .icon .e{font-size:34px}
 #s1 .lead{font-size:18px;line-height:1.5;margin-bottom:8px}
 .pv-item{padding:8px 12px}.pv-item b{display:inline;font-size:20px;margin-left:8px}.pv-item p{margin-top:4px;font-size:17px}
+#tools button em{font-style:normal}
+#tools button.playing{background:#ffe3ef;outline:3px solid var(--main);animation:pulse 1.6s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 8px rgba(214,51,108,.25)}}
+#ytBox{position:fixed;left:-9999px;top:0;width:200px;height:200px}
 </style>
 </head>
 <body>
@@ -218,6 +222,7 @@ footer a:hover{background:#ffe3ef}
   <button id="tPick"><span>🎯</span>발표자<br>뽑기</button>
   <button id="tTimer"><span>⏱️</span>타이머</button>
   <button id="tHand"><span>🙋</span>손들기</button>
+  <button id="tMusic" aria-pressed="false"><span>🎵</span><em>배경음악</em></button>
 </div>
 
 <!-- 발표자 뽑기 -->
@@ -510,9 +515,35 @@ $$('[data-min]').forEach(function(b){b.onclick=function(){
 $('#tPause').onclick=function(){T.paused=!T.paused;this.textContent=T.paused?'계속':'일시정지'};
 $('#tStop').onclick=function(){tClear();T.left=0;tShow(false)};
 
+// 배경음악: 아이콘을 누르면 유튜브 영상이 바로 재생, 다시 누르면 정지
+// 추천: 50 Minute Classroom Countdown Timer with Piano Music (잔잔한 피아노, 50분)
+var MUSIC_ID='G4L60vgcHfA';
+var MUSIC_URL='https://www.youtube.com/watch?v='+MUSIC_ID;
+var M={player:null,ready:false,on:false,loading:false};
+function musicUI(){var b=$('#tMusic');b.classList.toggle('playing',M.on);b.setAttribute('aria-pressed',M.on?'true':'false');b.querySelector('em').textContent=M.on?'재생 중':'배경음악'}
+function musicFail(){M.on=false;M.loading=false;musicUI();if(confirm('이 환경에서는 배경음악을 바로 재생할 수 없어요.\n유튜브에서 새 창으로 열까요?'))window.open(MUSIC_URL,'_blank','noopener')}
+function musicInit(){
+  if(M.loading)return;M.loading=true;
+  window.onYouTubeIframeAPIReady=function(){
+    M.player=new YT.Player('ytPlayer',{width:200,height:200,videoId:MUSIC_ID,
+      playerVars:{autoplay:1,controls:0,loop:1,playlist:MUSIC_ID,playsinline:1,rel:0},
+      events:{onReady:function(e){M.ready=true;e.target.setVolume(60);if(M.on)e.target.playVideo()},
+              onStateChange:function(e){if(e.data===0&&M.on)e.target.playVideo()},
+              onError:musicFail}});
+  };
+  var t=document.createElement('script');t.src='https://www.youtube.com/iframe_api';t.onerror=musicFail;document.head.appendChild(t);
+}
+$('#tMusic').onclick=function(){
+  M.on=!M.on;musicUI();
+  if(!M.player){if(M.on)musicInit();return}
+  if(!M.ready)return;
+  if(M.on)M.player.playVideo();else M.player.pauseVideo();
+};
+
 // 손들기: 누르면 알림음 + 손 화면
 $('#tHand').onclick=function(){audio();ding();$('#hand').classList.add('on')};
 $('#hand').onclick=function(){$('#hand').classList.remove('on')};
 </script>
+<div id="ytBox"><div id="ytPlayer"></div></div>
 </body>
 </html>
