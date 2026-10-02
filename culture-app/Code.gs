@@ -11,11 +11,23 @@ const HEADERS = ['순번', '제출일시', '이름', '시도회차', '정답수'
 // Gemini API는 이번 버전에서 사용하지 않음 (추후 확장용 자리)
 // 키는 코드에 직접 쓰지 말고 [프로젝트 설정 > 스크립트 속성]에 GEMINI_API_KEY 로 저장하세요.
 
-function doGet() {
+function doGet(e) {
+  // ?page=worksheet → 수업 학습지(worksheet.html)
+  if (e && e.parameter && e.parameter.page === 'worksheet') {
+    return HtmlService.createHtmlOutputFromFile('worksheet')
+      .setTitle('문화의 속성 찾기 학습지')
+      .addMetaTag('viewport', 'width=device-width, initial-scale=1')
+      .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+  }
   return HtmlService.createHtmlOutputFromFile('index')
     .setTitle('문화의 속성 - 유쾌한 소정샘')
     .addMetaTag('viewport', 'width=device-width, initial-scale=1')
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+}
+
+/** 화면에서 수업 학습지 링크 주소를 얻기 위해 호출 */
+function getWorksheetUrl() {
+  return ScriptApp.getService().getUrl() + '?page=worksheet';
 }
 
 function getSheet_() {

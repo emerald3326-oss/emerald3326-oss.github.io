@@ -279,7 +279,7 @@ footer a:hover{background:#ffe3ef}
 <script>
 /* ===== 설정 ===== */
 // 수업 학습지 링크를 여기에 넣으세요
-var WORKSHEET_URL = 'https://emerald3326-oss.github.io/username.github.io/culture-app/worksheet.html';
+var WORKSHEET_URL = 'worksheet.html'; // 로컬 미리보기용. Apps Script 배포 시에는 서버가 알려주는 주소(?page=worksheet)로 자동 교체
 
 var ATTRS = [
   {k:'공유성', e:'🤝', c:'#e64980', m:'한 사회의 구성원들이 공통으로 가지고 있어 서로의 행동을 예측하고 상호작용할 수 있게 해주는 속성',
@@ -358,8 +358,10 @@ $$('nav button').forEach(function(b){b.onclick=function(){
   $$('.screen').forEach(function(s){s.classList.toggle('on',s.id===b.dataset.s)});
 }});
 
-if(WORKSHEET_URL){$('#lnkSheet').href=WORKSHEET_URL}
-else{$('#lnkSheet').onclick=function(e){e.preventDefault();alert('수업 학습지 링크가 아직 설정되지 않았어요. (index.html 의 WORKSHEET_URL)')}}
+$('#lnkSheet').href=WORKSHEET_URL;
+if(window.google&&google.script&&google.script.run){
+  google.script.run.withSuccessHandler(function(u){if(u)$('#lnkSheet').href=u}).getWorksheetUrl();
+}
 
 /* ===== 화면 2: 속성 ===== */
 (function(){
