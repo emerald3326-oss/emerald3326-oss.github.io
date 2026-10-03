@@ -6,6 +6,7 @@
 // ===== 설정 =====
 const SPREADSHEET_ID = '';      // 비워두면 스크립트가 연결된 시트(컨테이너 바인딩)를 사용
 const SHEET_NAME = '기록';
+const DRIVE_FOLDER_NAME = '문화의 속성 학습지 제출';   // 학습지 답안이 저장될 드라이브 폴더(없으면 자동 생성)
 const HEADERS = ['순번', '제출일시', '이름', '시도회차', '정답수', '총문항', '점수(%)', '소요시간(초)', '상세결과'];
 
 // Gemini API는 이번 버전에서 사용하지 않음 (추후 확장용 자리)
@@ -80,4 +81,64 @@ function saveResult(r) {
   } finally {
     lock.releaseLock();
   }
+}
+
+
+/**
+ * 수업 학습지 답안을 구글 드라이브에 저장
+ * - 학생이 보낸 값(칸 번호 → 입력값)만 받아서, 서버에 있는 worksheet 원본에 끼워 넣어 HTML을 새로 만듭니다.
+ *   (학생이 보낸 HTML을 그대로 저장하지 않으므로 안전합니다.)
+ * - 파일은 스크립트 실행 계정(교사) 드라이브의 DRIVE_FOLDER_NAME 폴더에 '학번_이름_학습지.html'로 저장되고,
+ *   같은 학번·이름으로 다시 저장하면 그 파일을 덮어씁니다.
+ * @param {{fields: Object<string,string>}} p
+ * @return {{ok:boolean, fileName:string, updated:boolean}}
+ */
+function saveWorksheet(p) {
+  const fields = (p && p.fields) || {};
+  const id = cleanName_(fields['who-id']);
+  const name = cleanName_(fields['who-name']);
+  if (!id || !name) throw new Error('학번과 이름을 먼저 적어 주세요.');
+
+  const clean = {};
+  Object.keys(fields).forEach(function (k) {
+    if (/^[A-Za-z0-9-]{1,40}$/.test(k) && typeof fields[k] === 'string') clean[k] = fields[k].slice(0, 2000);
+  });
+  const html = buildAnswerHtml_(clean);
+  const fileName = id + '_' + name + '_학습지.html';
+
+  const lock = LockService.getScriptLock();
+  lock.waitLock(10000);
+  try {
+    const folders = DriveApp.getFoldersByName(DRIVE_FOLDER_NAME);
+    const folder = folders.hasNext() ? folders.next() : DriveApp.createFolder(DRIVE_FOLDER_NAME);
+    const files = folder.getFilesByName(fileName);
+    if (files.hasNext()) {
+      files.next().setContent(html);
+      return { ok: true, fileName: fileName, updated: true };
+    }
+    folder.createFile(fileName, html, MimeType.HTML);
+    return { ok: true, fileName: fileName, updated: false };
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function cleanName_(v) {
+  return String(v || '').replace(/[\\/:*?"<>|\r\n\t]/g, '').trim().slice(0, 20);
+}
+
+function escHtml_(v) {
+  return String(v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+/** worksheet 원본 HTML의 입력칸(data-k)에 학생 답을 채워 넣은 HTML 문자열을 만든다 */
+function buildAnswerHtml_(values) {
+  let html = HtmlService.createHtmlOutputFromFile('worksheet').getContent();
+  html = html.replace(/<input([^>]*?)data-k="([^"]+)"([^>]*)>/g, function (m, a, k, b) {
+    return values[k] ? '<input' + a + 'data-k="' + k + '"' + b + ' value="' + escHtml_(values[k]) + '">' : m;
+  });
+  html = html.replace(/(<textarea[^>]*?data-k="([^"]+)"[^>]*>)(<\/textarea>)/g, function (m, open, k, close) {
+    return values[k] ? open + escHtml_(values[k]) + close : m;
+  });
+  return html;
 }

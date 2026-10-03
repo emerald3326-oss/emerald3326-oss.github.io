@@ -67,6 +67,7 @@ input.blank:focus,textarea.blank-area:focus{outline:2px solid var(--accent);outl
   <span class="prog" id="prog"></span>
   <span class="saved" id="saved"></span>
   <button type="button" id="btnClear">답안 지우기</button>
+  <button type="button" id="btnDrive">☁️ 구글 드라이브에 저장</button>
   <button type="button" id="btnSave">답안 포함 저장</button>
   <button type="button" class="primary" id="btnPrint">인쇄 / PDF</button>
 </header>
@@ -98,6 +99,21 @@ window.addEventListener('resize',fit);window.addEventListener('beforeprint',fit)
     var html='<!doctype html>\n'+document.documentElement.outerHTML;
     var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([html],{type:'text/html'}));
     a.download=(document.title||'학습지')+'_답안.html';document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},500)};
+  document.getElementById('btnDrive').onclick=function(){
+    var btn=this,vals={};
+    fields.forEach(function(f){if(f.value)vals[f.dataset.k]=f.value});
+    if(!vals['who-id']||!vals['who-name']){alert('학번과 이름을 먼저 적어 주세요.');return}
+    if(!(window.google&&google.script&&google.script.run)){alert('구글 드라이브 저장은 배포된 수업 앱(웹 앱 주소)에서만 사용할 수 있어요.\n지금은 [답안 포함 저장]으로 내 기기에 저장해 주세요.');return}
+    btn.disabled=true;saved.textContent='☁️ 저장 중...';
+    google.script.run.withSuccessHandler(function(r){
+      btn.disabled=false;var t=new Date();
+      saved.textContent='☁️ 드라이브에 저장됨 ('+('0'+t.getHours()).slice(-2)+':'+('0'+t.getMinutes()).slice(-2)+')';
+      alert('구글 드라이브에 저장했어요!\n파일 이름: '+r.fileName+(r.updated?'\n(이전에 저장한 답안을 새로 덮어썼어요.)':''));
+    }).withFailureHandler(function(e){
+      btn.disabled=false;saved.textContent='';
+      alert('저장하지 못했어요.\n'+((e&&e.message)||e));
+    }).saveWorksheet({fields:vals});
+  };
   load();fields.forEach(grow);update();
 })();
 </script>
