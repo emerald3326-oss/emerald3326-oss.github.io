@@ -8,7 +8,7 @@ const CFG = {
   SHEET_ID: '',                 // 비워두면 이 스크립트가 연결된 스프레드시트 사용
   SHEET_NAME: '기록',
   TEACHER_PW_DEFAULT: '1234',   // 스크립트 속성 TEACHER_PW 로 덮어쓰기 권장
-  WORKSHEET_FILE_ID: ''         // 드라이브에 올린 독도 학습지 HTML 파일 ID
+  DRIVE_FOLDER_NAME: '독도 학습지 제출'   // 학습지 답안이 저장될 드라이브 폴더(없으면 자동 생성)
 };
 
 const HEADERS = ['순번', '일시', '구분', '문제번호', '이름', '제출답안', '정답여부', '생존여부', '비고'];
@@ -33,12 +33,9 @@ function doGet(e) {
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
 
-/** 드라이브의 학습지 HTML 파일을 웹앱 주소(?page=worksheet)로 보여줌 (파일 공유 설정 불필요) */
+/** ?page=worksheet -> 프로젝트 안의 worksheet.html */
 function worksheetPage_() {
-  const id = PropertiesService.getScriptProperties().getProperty('WORKSHEET_FILE_ID') || CFG.WORKSHEET_FILE_ID;
-  if (!id) return HtmlService.createHtmlOutput('<h2>학습지 파일 ID가 설정되지 않았어요.</h2>');
-  const html = DriveApp.getFileById(id).getBlob().getDataAsString('UTF-8');
-  return HtmlService.createHtmlOutput(html).setTitle('독도 학습지')
+  return HtmlService.createHtmlOutputFromFile('worksheet').setTitle('독도 학습지')
     .addMetaTag('viewport', 'width=device-width, initial-scale=1')
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
@@ -220,4 +217,43 @@ function teacherAction(pw, act) {
     save_('meta', m);
     return { ok: true };
   });
+}
+
+
+/* ---------- 학습지 답안 자동저장 (구글 드라이브) ---------- */
+/**
+ * 학생이 보낸 값(칸 번호 -> 입력값)만 받아 서버의 worksheet 원본에 끼워 넣어 HTML을 새로 만들어 저장합니다.
+ * 파일명: 학번_이름_학습지.html (같은 학번·이름이면 덮어쓰기)
+ */
+function saveWorksheet(p) {
+  const fields = (p && p.fields) || {};
+  const id = cleanName_(fields['who-id']);
+  const name = cleanName_(fields['who-name']);
+  if (!id || !name) throw new Error('학번과 이름을 먼저 적어 주세요.');
+  const clean = {};
+  Object.keys(fields).forEach(function (k) {
+    if (/^[A-Za-z0-9-]{1,40}$/.test(k) && typeof fields[k] === 'string') clean[k] = fields[k].slice(0, 2000);
+  });
+  const html = buildAnswerHtml_(clean);
+  const fileName = id + '_' + name + '_학습지.html';
+  return withLock_(() => {
+    const it = DriveApp.getFoldersByName(CFG.DRIVE_FOLDER_NAME);
+    const folder = it.hasNext() ? it.next() : DriveApp.createFolder(CFG.DRIVE_FOLDER_NAME);
+    const files = folder.getFilesByName(fileName);
+    if (files.hasNext()) { files.next().setContent(html); return { ok: true, fileName: fileName, updated: true }; }
+    folder.createFile(fileName, html, MimeType.HTML);
+    return { ok: true, fileName: fileName, updated: false };
+  });
+}
+function cleanName_(v) { return String(v || '').replace(/[\\/:*?"<>|\r\n\t]/g, '').trim().slice(0, 20); }
+function escHtml_(v) { return String(v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+function buildAnswerHtml_(values) {
+  let html = HtmlService.createHtmlOutputFromFile('worksheet').getContent();
+  html = html.replace(/<input([^>]*?)data-k="([^"]+)"([^>]*)>/g, function (m, a, k, b) {
+    return values[k] ? '<input' + a + 'data-k="' + k + '"' + b + ' value="' + escHtml_(values[k]) + '">' : m;
+  });
+  html = html.replace(/(<textarea[^>]*?data-k="([^"]+)"[^>]*>)(<\/textarea>)/g, function (m, open, k, close) {
+    return values[k] ? open + escHtml_(values[k]) + close : m;
+  });
+  return html;
 }

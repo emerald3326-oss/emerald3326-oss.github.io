@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>독도 학습지</title>
+<style>
+body{margin:0;background:#eef3f6;font-family:'Noto Sans KR',sans-serif;color:#17323f}
+.bar{position:sticky;top:0;background:#0b3c5d;color:#fff;padding:10px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;z-index:5}
+.bar b{margin-right:auto;font-size:18px}.bar span{font-size:14px;opacity:.9}
+.bar button{font:inherit;padding:6px 14px;border-radius:8px;border:0;background:#f4b400;cursor:pointer}
+.paper{max-width:860px;margin:18px auto;background:#fff;padding:28px 34px;border-radius:12px;box-shadow:0 3px 12px rgba(0,0,0,.15)}
+h1{text-align:center;margin:0 0 14px}.q{margin:22px 0}.q p{margin:0 0 8px;font-weight:700;line-height:1.6}
+input[data-k],textarea[data-k]{font:inherit;border:0;border-bottom:2px solid #1b7fa8;background:#f3f7ff;padding:6px 8px;outline:none;border-radius:4px}
+input[data-k]{width:12em}textarea[data-k]{width:100%;height:5.5em;border:2px solid #1b7fa8}
+.who{display:flex;gap:16px;justify-content:flex-end;margin-bottom:10px}
+@media print{.bar{display:none}.paper{box-shadow:none;margin:0}}
+</style>
+</head>
+<body>
+<div class="bar"><b>🏝️ 독도 학습지</b><span id="prog"></span><span id="saved"></span><button id="btnDrive">☁️ 드라이브에 저장</button><button id="btnPrint">인쇄</button></div>
+<div class="paper">
+  <h1>독도 체험관 학습지</h1>
+  <div class="who">학번 <input data-k="who-id" style="width:6em"> 이름 <input data-k="who-name" style="width:7em"></div>
+
+  <!-- ▼▼ 여기부터 실제 학습지 내용으로 교체하세요. 입력칸마다 data-k 값은 서로 다르게(q1, q2 …) ▼▼ -->
+  <div class="q"><p>1. 독도는 (   ) 도와 (   ) 도 두 개의 큰 섬으로 이루어져 있다.</p><input data-k="q1a"> <input data-k="q1b"></div>
+  <div class="q"><p>2. 독도에서 가장 가까운 우리나라 섬은?</p><input data-k="q2"></div>
+  <div class="q"><p>3. 안용복이 한 일을 간단히 써 보세요.</p><textarea data-k="q3"></textarea></div>
+  <div class="q"><p>4. 독도를 지켜야 하는 까닭을 내 생각으로 써 보세요.</p><textarea data-k="q4"></textarea></div>
+  <!-- ▲▲ 여기까지 ▲▲ -->
+</div>
+<script>
+(function(){
+  var KEY='ws:dokdo', fields=[].slice.call(document.querySelectorAll('[data-k]'));
+  var prog=document.getElementById('prog'), saved=document.getElementById('saved'), btn=document.getElementById('btnDrive');
+  var inGas=!!(window.google&&google.script&&google.script.run), busy=false, dirty=false;
+  function store(){try{return window.localStorage}catch(e){return null}}
+  function values(){var d={};fields.forEach(function(f){if(f.value)d[f.dataset.k]=f.value});return d}
+  function update(){var qs=fields.filter(function(f){return !/^who-/.test(f.dataset.k)});
+    prog.textContent='작성 '+qs.filter(function(f){return f.value.trim()}).length+' / '+qs.length}
+  function local(){var s=store();if(s){try{s.setItem(KEY,JSON.stringify(values()))}catch(e){}}update()}
+  function load(){var s=store();if(!s)return;try{var d=JSON.parse(s.getItem(KEY)||'{}');fields.forEach(function(f){if(d[f.dataset.k]!=null&&!f.value)f.value=d[f.dataset.k]})}catch(e){}}
+  function toDrive(manual){
+    var v=values();
+    if(!v['who-id']||!v['who-name']){if(manual)alert('학번과 이름을 먼저 적어 주세요.');return}
+    if(!inGas){if(manual)alert('구글 드라이브 저장은 배포된 앱(웹 앱 주소)에서만 사용할 수 있어요.');return}
+    if(busy){dirty=true;return}
+    busy=true;dirty=false;saved.textContent='☁️ 저장 중...';
+    google.script.run.withSuccessHandler(function(r){
+      busy=false;var t=new Date();
+      saved.textContent='☁️ 자동 저장됨 ('+('0'+t.getHours()).slice(-2)+':'+('0'+t.getMinutes()).slice(-2)+')';
+      if(manual)alert('구글 드라이브에 저장했어요!\n파일 이름: '+r.fileName);
+      if(dirty)toDrive(false);
+    }).withFailureHandler(function(e){busy=false;saved.textContent='⚠ 저장 실패 (다시 시도 중)';if(manual)alert('저장하지 못했어요.\n'+((e&&e.message)||e))}).saveWorksheet({fields:v});
+  }
+  var tl,td;
+  fields.forEach(function(f){f.addEventListener('input',function(){
+    clearTimeout(tl);tl=setTimeout(local,300);        // 기기 저장
+    clearTimeout(td);td=setTimeout(function(){toDrive(false)},4000);  // 입력이 멈추면 4초 뒤 드라이브 자동저장
+  })});
+  setInterval(function(){if(dirty&&!busy)toDrive(false)},15000);
+  window.addEventListener('pagehide',function(){local()});
+  btn.onclick=function(){toDrive(true)};
+  document.getElementById('btnPrint').onclick=function(){window.print()};
+  load();update();
+})();
+</script>
+</body>
+</html>
