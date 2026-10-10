@@ -193,8 +193,8 @@ function srv(fn, ...a){ return new Promise((ok, ng) => google.script.run.withSuc
 function go(v){
   document.querySelectorAll('.view').forEach(e => e.classList.remove('on'));
   $('v-' + v).classList.add('on');
-  clearInterval(S.timer);
-  if (v === 'bell'){ S.lastKey = ''; renderBell(); poll(); S.timer = setInterval(poll, 2000); }
+  clearTimeout(S.timer); S.timer = null;
+  if (v === 'bell'){ S.lastKey = ''; renderBell(); loop(); }
 }
 
 /* ===== 영상 / 링크 ===== */
@@ -280,13 +280,28 @@ async function resetGame(){
 }
 
 /* ===== 골든벨 ===== */
+/* 접속자가 많아도 서버에 부담이 없도록: 겹치지 않는 순차 호출 + 무작위 지연 + 오류 시 점점 느리게 + 화면이 가려지면 거의 쉬기 */
+S.fail = 0;
+function nextDelay(){
+  let base = S.teacher ? 2000 : (S.st && S.st.phase === 2 ? 2500 : 4000);
+  if (document.hidden) base = 10000;
+  base *= Math.min(Math.pow(2, S.fail), 4);
+  return base + Math.random() * 1000;
+}
+async function loop(){
+  clearTimeout(S.timer);
+  await poll();
+  if (!$('v-bell').classList.contains('on')) return;
+  S.timer = setTimeout(loop, nextDelay());
+}
 async function poll(){
   try{
     S.st = await srv('getState', S.name);
+    S.fail = 0;
     const key = JSON.stringify([S.st.v, S.st.phase, S.st.q, S.st.joined, S.st.alive, S.st.submitted, S.st.me]);
     if (key !== S.lastKey){ S.lastKey = key; renderBell(); }
     refreshTeacher();
-  }catch(e){ /* 일시적 오류 무시 */ }
+  }catch(e){ S.fail++; /* 일시적 오류: 다음 차례에 더 천천히 재시도 */ }
 }
 async function enter(){
   const n = $('nm').value.trim();
@@ -339,7 +354,10 @@ function renderBell(){
     }
   }
   if (S.teacher) h += `<div style="text-align:center;margin-top:8px"><button class="back" onclick="resetGame()">⚠ 대회 초기화</button></div>`;
+  const old = $('ans'), keepVal = old ? old.value : null, keepFocus = old && document.activeElement === old;
   el.innerHTML = h;
+  const nu = $('ans');
+  if (nu && keepVal != null){ nu.value = keepVal; if (keepFocus) nu.focus(); }
   if (ph !== 2) S.sel = null;
 }
 
