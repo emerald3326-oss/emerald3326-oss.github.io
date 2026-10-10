@@ -7,7 +7,8 @@
 const CFG = {
   SHEET_ID: '',                 // 비워두면 이 스크립트가 연결된 스프레드시트 사용
   SHEET_NAME: '기록',
-  TEACHER_PW_DEFAULT: '1234'    // 스크립트 속성 TEACHER_PW 로 덮어쓰기 권장
+  TEACHER_PW_DEFAULT: '1234',   // 스크립트 속성 TEACHER_PW 로 덮어쓰기 권장
+  WORKSHEET_FILE_ID: ''         // 드라이브에 올린 독도 학습지 HTML 파일 ID
 };
 
 const HEADERS = ['순번', '일시', '구분', '문제번호', '이름', '제출답안', '정답여부', '생존여부', '비고'];
@@ -24,12 +25,24 @@ const QUESTIONS = [
   { type: 'short', q: '1900년 대한제국이 울릉도를 울도군으로 승격하며 독도를 관할 구역으로 명시한 법령은? (칙령 제 몇 호, 숫자만)', a: ['41'] }
 ];
 
-function doGet() {
+function doGet(e) {
+  if (e && e.parameter && e.parameter.page === 'worksheet') return worksheetPage_();
   return HtmlService.createHtmlOutputFromFile('index')
     .setTitle('독도 골든벨 대회')
     .addMetaTag('viewport', 'width=device-width, initial-scale=1')
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
+
+/** 드라이브의 학습지 HTML 파일을 웹앱 주소(?page=worksheet)로 보여줌 (파일 공유 설정 불필요) */
+function worksheetPage_() {
+  const id = PropertiesService.getScriptProperties().getProperty('WORKSHEET_FILE_ID') || CFG.WORKSHEET_FILE_ID;
+  if (!id) return HtmlService.createHtmlOutput('<h2>학습지 파일 ID가 설정되지 않았어요.</h2>');
+  const html = DriveApp.getFileById(id).getBlob().getDataAsString('UTF-8');
+  return HtmlService.createHtmlOutput(html).setTitle('독도 학습지')
+    .addMetaTag('viewport', 'width=device-width, initial-scale=1')
+    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+}
+function getWorksheetUrl() { return ScriptApp.getService().getUrl() + '?page=worksheet'; }
 
 /* ---------- 저장소 헬퍼 ---------- */
 function load_(key, def) {
