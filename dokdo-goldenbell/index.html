@@ -166,8 +166,8 @@ h2{font:400 32px var(--f-menu);margin:6px 0 12px;color:var(--navy)}
 <script>
 /* ===== 설정 (여기만 수정하세요) ===== */
 const CONFIG = {
-  VIDEO_BIRTH:   '',   // 독도의 탄생 유튜브 영상 ID (예: 'abcDEF12345')
-  VIDEO_HISTORY: '',   // 독도의 역사 유튜브 영상 ID
+  VIDEO_BIRTH:   '1h3duJafUGGstyW0y_SGsksQytR5jzRPe',   // 독도의 탄생 (구글 드라이브 파일 ID)
+  VIDEO_HISTORY: '1CFasHfN1jhY7a1ulOn2uxJurXlcLvpBc',   // 독도의 역사 (구글 드라이브 파일 ID)
   ZEP_URL:   'https://zep.us/play/R5dPlZ',
   SHEET_URL: 'file:///C:/Users/user/Downloads/%EB%8F%85%EB%8F%84%EC%B2%B4%ED%97%98%EA%B4%80%20%ED%95%99%EC%8A%B5%EC%A7%80.html',
   BGM_ID: 'VAoR8bL04qA', BGM_START: 24
@@ -194,8 +194,8 @@ function playVideo(k){
   const id = k === 'birth' ? CONFIG.VIDEO_BIRTH : CONFIG.VIDEO_HISTORY;
   if (bgmOn) toggleBgm();
   $('modal-in').innerHTML = id
-    ? `<iframe allow="autoplay; encrypted-media; fullscreen" allowfullscreen src="https://www.youtube.com/embed/${id}?autoplay=1&rel=0"></iframe>`
-    : `<div class="note">영상 ID가 아직 설정되지 않았어요.<br>index.html의 CONFIG에 유튜브 영상 ID를 넣어 주세요.</div>`;
+    ? `<iframe allow="autoplay; encrypted-media; fullscreen" allowfullscreen src="https://drive.google.com/file/d/${id}/preview"></iframe>`
+    : `<div class="note">영상 ID가 아직 설정되지 않았어요.</div>`;
   $('modal').classList.add('on');
 }
 function closeModal(){ $('modal').classList.remove('on'); $('modal-in').innerHTML = ''; }
