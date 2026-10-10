@@ -15,7 +15,7 @@
 @font-face{font-family:'OM';src:local('오뮤다예쁨체'),local('OmyuPretty');}
 @font-face{font-family:'GWS';src:local('강원교육새음체'),local('GangwonEduSaeeum');}
 :root{
-  --navy:#0b3c5d;--sea:#1b7fa8;--sky:#dff3fb;--gold:#f4b400;--ink:#17323f;--red:#d64545;--green:#2e9e5b;
+  --navy:#b04a76;--sea:#d4709a;--sky:#fde4ee;--gold:#f4b400;--ink:#4a2638;--red:#d64545;--green:#2e9e5b;
   --f-title:'YD','Jua','Noto Sans KR',sans-serif;
   --f-school:'GWH','Noto Sans KR',sans-serif;
   --f-menu:'SJ','Noto Sans KR',sans-serif;
@@ -24,7 +24,7 @@
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;height:100%;font-family:'Noto Sans KR',sans-serif;color:var(--ink);
-  background:linear-gradient(#bfe6f6,#eaf8fd 55%,#cfeaf5);overflow:hidden}
+  background:linear-gradient(#fbcfe0,#fff2f7 55%,#f6c8dc);overflow:hidden}
 button{font-family:inherit;cursor:pointer;border:0}
 
 /* ===== 상단 고정 ===== */
@@ -43,7 +43,7 @@ button{font-family:inherit;cursor:pointer;border:0}
 .back{background:#fff;border-radius:14px;padding:8px 16px;font:400 20px var(--f-menu);color:var(--navy);margin-bottom:14px;box-shadow:0 2px 6px rgba(0,0,0,.15)}
 
 .menu{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;height:calc(100% - 4px);min-height:300px}
-.card{background:#fff;border-radius:26px;box-shadow:0 6px 16px rgba(11,60,93,.22);display:flex;flex-direction:column;
+.card{background:#fff;border-radius:26px;box-shadow:0 6px 16px rgba(176,74,118,.25);display:flex;flex-direction:column;
   align-items:center;justify-content:center;gap:14px;font:400 34px var(--f-menu);color:var(--navy);padding:18px;text-align:center}
 .card .em{font-size:84px;line-height:1}
 .card:active{transform:scale(.97)}
@@ -54,7 +54,7 @@ button{font-family:inherit;cursor:pointer;border:0}
 h2{font:400 32px var(--f-menu);margin:6px 0 12px;color:var(--navy)}
 
 /* ===== 골든벨 ===== */
-.panel{background:#fff;border-radius:24px;padding:26px;box-shadow:0 6px 16px rgba(11,60,93,.2);max-width:900px;margin:0 auto}
+.panel{background:#fff;border-radius:24px;padding:26px;box-shadow:0 6px 16px rgba(176,74,118,.22);max-width:900px;margin:0 auto}
 .panel input[type=text]{width:100%;font:400 30px var(--f-menu);padding:14px 18px;border:3px solid var(--sea);border-radius:16px;outline:none}
 .big{background:var(--sea);color:#fff;border-radius:18px;padding:14px 34px;font:400 30px var(--f-menu);margin-top:16px}
 .big:disabled{opacity:.45}
@@ -70,7 +70,7 @@ h2{font:400 32px var(--f-menu);margin:6px 0 12px;color:var(--navy)}
 .ans{margin-top:12px;text-align:center;font:400 30px var(--f-menu);background:#fff4cc;border-radius:16px;padding:12px}
 
 /* ===== 옆면(오른쪽) 고정 ===== */
-#side{position:fixed;right:0;top:96px;bottom:128px;width:96px;background:rgba(11,60,93,.9);z-index:15;
+#side{position:fixed;right:0;top:96px;bottom:128px;width:96px;background:rgba(176,74,118,.93);z-index:15;
   display:flex;flex-direction:column;justify-content:center;gap:22px;align-items:center}
 .ic{width:76px;height:84px;border-radius:18px;background:#fff;color:var(--navy);display:flex;flex-direction:column;
   align-items:center;justify-content:center;font:400 15px var(--f-icon);gap:2px;white-space:nowrap;padding:0}
@@ -85,8 +85,8 @@ h2{font:400 32px var(--f-menu);margin:6px 0 12px;color:var(--navy)}
 #bottom .ic:disabled{opacity:.35}
 #bottom .ic.go{background:var(--gold)}
 #lock{position:absolute;left:10px;top:8px;background:none;color:#fff;font:400 18px var(--f-icon);opacity:.9}
-#bottom .tag{position:absolute;left:0;right:0;top:6px;text-align:center;color:#cfe;font:400 16px var(--f-icon)}
-#credit{position:fixed;left:0;right:0;bottom:4px;text-align:center;color:#bcd;font:400 15px var(--f-school);z-index:21;pointer-events:none}
+#bottom .tag{position:absolute;left:0;right:0;top:6px;text-align:center;color:#ffe3ee;font:400 16px var(--f-icon)}
+#credit{position:fixed;left:0;right:0;bottom:4px;text-align:center;color:#ffe3ee;font:400 15px var(--f-school);z-index:21;pointer-events:none}
 
 /* ===== 모달/토스트 ===== */
 #modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:50;align-items:center;justify-content:center;flex-direction:column;gap:14px}
