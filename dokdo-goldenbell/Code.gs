@@ -103,7 +103,8 @@ function appendRows_(rows) {
   if (!rows.length) return;
   const sh = sheet_();
   const start = sh.getLastRow();            // 헤더 포함 -> 첫 순번 = start
-  const data = rows.map((r, i) => { r[0] = start + i; return r; });
+  const safe = v => (typeof v === 'string' && /^[=+\-@]/.test(v)) ? "'" + v : v;   // 학생 답이 수식으로 실행되지 않게
+  const data = rows.map((r, i) => { r[0] = start + i; return r.map(safe); });
   sh.getRange(start + 1, 1, data.length, HEADERS.length).setValues(data);
 }
 function now_() {

@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>독도 골든벨 대회</title>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
+<style>
+/* ===== 글꼴 =====
+   학교/기관 배포 글꼴은 태블릿에 설치돼 있으면 local()로 쓰이고,
+   웹폰트 주소(woff2)를 알면 src 끝에 url(...)을 추가하세요. 없으면 기본 고딕으로 대체됩니다. */
+@font-face{font-family:'YJ';src:local('양진체'),local('Yangjin'),local('YangJin'),local('YANGJIN');}
+@font-face{font-family:'TR';src:local('티머니 둥근바람체'),local('티머니 둥근바람'),local('TmoneyRoundWind Regular'),local('TmoneyRoundWind'),local('TmoneyRoundWindRegular');}
+@font-face{font-family:'GWH';src:local('강원교육현옥샘체'),local('GangwonEduHyeonokSam');}
+@font-face{font-family:'SJ';src:local('세종글꽃체'),local('SejongGeulggot');}
+@font-face{font-family:'OM';src:local('오뮤다예쁨체'),local('OmyuPretty');}
+@font-face{font-family:'GWS';src:local('강원교육새음체'),local('GangwonEduSaeeum');}
+:root{
+  --navy:#b04a76;--sea:#d4709a;--sky:#fde4ee;--gold:#f4b400;--ink:#4a2638;--red:#d64545;--green:#2e9e5b;
+  --f-title:'YJ','맑은 고딕','Malgun Gothic','Noto Sans KR',sans-serif;
+  --f-school:'GWH','맑은 고딕','Malgun Gothic','Noto Sans KR',sans-serif;
+  --f-menu:'SJ','맑은 고딕','Malgun Gothic','Noto Sans KR',sans-serif;
+  --f-sub:'OM','맑은 고딕','Malgun Gothic','Noto Sans KR',sans-serif;
+  --f-round:'TR','맑은 고딕','Malgun Gothic','Noto Sans KR',sans-serif;
+  --f-icon:'GWS','맑은 고딕','Malgun Gothic','Noto Sans KR',sans-serif;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;font-family:'맑은 고딕','Malgun Gothic','Noto Sans KR',sans-serif;color:var(--ink);
+  background:linear-gradient(#fbcfe0,#fff2f7 55%,#f6c8dc);overflow:hidden}
+button{font-family:inherit;cursor:pointer;border:0}
+
+/* ===== 상단 고정 ===== */
+#top{position:fixed;top:0;left:0;right:0;height:120px;background:var(--navy);color:#fff;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:20;
+  box-shadow:0 3px 10px rgba(0,0,0,.25)}
+#top h1{margin:0;font:400 58px/1.1 var(--f-title);letter-spacing:2px}
+#top h1 span{color:var(--gold)}
+#top p{position:absolute;left:20px;top:14px;margin:0;font:400 20px var(--f-school);opacity:.95}
+
+/* ===== 본문 ===== */
+#main{position:fixed;top:120px;bottom:100px;left:0;right:96px;overflow:auto;padding:22px 26px}
+.view{display:none;animation:fade .25s}
+.view.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.back{background:#fff;border-radius:14px;padding:8px 16px;font:400 20px var(--f-menu);color:var(--navy);margin-bottom:14px;box-shadow:0 2px 6px rgba(0,0,0,.15)}
+
+#v-home.on{display:flex;flex-direction:column;justify-content:center;height:100%}
+#v-home .menu{height:auto;flex:0 0 auto;min-height:0}
+.dday{margin-top:16px;background:#fffffff0;border:3px dashed var(--sea);border-radius:20px;padding:12px 22px;font:400 20px/1.55 var(--f-school);color:var(--ink);text-align:center}
+.dday b{font:400 24px var(--f-menu);color:var(--navy);margin-right:8px}
+.menu{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;height:calc(100% - 4px);min-height:300px}
+.card{background:#fff;border-radius:26px;box-shadow:0 6px 16px rgba(176,74,118,.25);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:10px;font:400 30px var(--f-round);color:var(--navy);padding:22px 14px 24px;text-align:center;word-break:keep-all}
+.card .em{font-size:112px;line-height:1}
+.card:active{transform:scale(.97)}
+.card.gold{background:linear-gradient(135deg,#ffe08a,#f4b400)}
+.sub{display:grid;grid-template-columns:repeat(2,minmax(220px,360px));gap:22px;justify-content:center;margin-top:20px}
+.sub .card{font:400 30px var(--f-sub);min-height:240px}
+.sub .card .em{font-size:96px}
+h2{font:400 32px var(--f-round);margin:6px 0 12px;color:var(--navy)}
+
+/* ===== 골든벨 ===== */
+.panel{background:#fff;border-radius:24px;padding:26px;box-shadow:0 6px 16px rgba(176,74,118,.22);max-width:900px;margin:0 auto}
+.panel input[type=text]{width:100%;font:400 30px var(--f-menu);padding:14px 18px;border:3px solid var(--sea);border-radius:16px;outline:none}
+.big{background:var(--sea);color:#fff;border-radius:18px;padding:14px 34px;font:400 30px var(--f-menu);margin-top:16px}
+.big:disabled{opacity:.45}
+.stat{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin:0 0 14px}
+.stat b{background:var(--sky);border-radius:999px;padding:6px 18px;font:400 22px var(--f-menu)}
+.qbox{font:400 36px/1.5 var(--f-sub);text-align:center;padding:10px 6px;word-break:keep-all}
+.qno{display:inline-block;background:var(--gold);color:#000;border-radius:999px;padding:4px 18px;font:400 24px var(--f-menu);margin-bottom:6px}
+.choices{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:12px}
+.choices button{background:var(--sky);border:4px solid transparent;border-radius:18px;padding:18px;font:400 30px var(--f-menu);color:var(--navy)}
+.choices button.sel{border-color:var(--gold);background:#fff4cc}
+.msg{text-align:center;font:400 28px/1.5 var(--f-menu);padding:26px 8px}
+.ok{color:var(--green)} .no{color:var(--red)}
+.ans{margin-top:12px;text-align:center;font:400 30px var(--f-menu);background:#fff4cc;border-radius:16px;padding:12px}
+
+/* ===== 옆면(오른쪽) 고정 ===== */
+#side{position:fixed;right:0;top:120px;bottom:100px;width:96px;background:rgba(176,74,118,.93);z-index:15;
+  display:flex;flex-direction:column;justify-content:center;gap:22px;align-items:center}
+.ic{width:76px;height:84px;border-radius:18px;background:#fff;color:var(--navy);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;font:400 15px var(--f-icon);gap:2px;white-space:nowrap;padding:0}
+.ic .e{font-size:34px;line-height:1}
+.ic.on{background:var(--gold)}
+
+/* ===== 하단(선생님) 고정 ===== */
+#bottom{position:fixed;left:0;right:0;bottom:0;height:100px;background:var(--navy);z-index:20;
+  display:flex;align-items:center;justify-content:center;gap:18px;padding:0 100px 16px 176px}
+#bottom .ic{width:128px;height:60px;flex-direction:column;gap:0;font-size:16px;border-radius:20px;white-space:nowrap;padding:0}
+#bottom .ic .e{font-size:22px}
+#bottom .ic:disabled{opacity:.35}
+#bottom .ic.go{background:var(--gold)}
+#lock{position:absolute;left:10px;top:8px;background:none;color:#fff;font:400 18px var(--f-icon);opacity:.9}
+#bottom .tag{white-space:pre-line;position:absolute;left:12px;top:40px;width:152px;text-align:left;color:#ffe3ee;font:400 14px/1.3 var(--f-icon);word-break:keep-all}
+@media(max-width:900px){#bottom{gap:10px;padding-right:96px}#bottom .ic{width:100px}}
+#credit{position:fixed;right:20px;top:14px;text-align:right;color:#fff;font:400 20px var(--f-school);z-index:25;pointer-events:none;opacity:.95}
+@media(max-width:1000px){#top h1{font-size:44px}#top p,#credit{font-size:16px}}
+
+/* ===== 모달/토스트 ===== */
+#modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:50;align-items:center;justify-content:center;flex-direction:column;gap:14px}
+#modal.on{display:flex}
+#modal iframe{width:86vw;height:70vh;border:0;border-radius:14px;background:#000}
+#modal .note{color:#fff;font:400 26px var(--f-menu);text-align:center;padding:20px}
+#modal button{background:var(--gold);border-radius:14px;padding:10px 30px;font:400 24px var(--f-menu)}
+#toast{position:fixed;left:50%;top:130px;transform:translateX(-50%);background:#222;color:#fff;border-radius:999px;padding:10px 24px;
+  font:400 22px var(--f-menu);z-index:60;display:none}
+#ytbgm{position:fixed;width:1px;height:1px;left:-10px;top:-10px;opacity:0}
+</style>
+</head>
+<body>
+
+<header id="top">
+  <h1>독도 <span>골든벨</span> 대회</h1>
+  <p>2026.10.21.(수) 삼성중학교</p>
+</header>
+
+<main id="main">
+  <!-- 홈 -->
+  <section class="view on" id="v-home">
+    <div class="menu">
+      <button class="card" onclick="go('video')"><span class="em">🎬</span>독도 소개 영상</button>
+      <button class="card" onclick="go('activity')"><span class="em">🧭</span>독도 관련 활동</button>
+      <button class="card gold" onclick="go('bell')"><span class="em">🔔</span>독도 골든벨 대회 입장<small style="font-size:22px">(오늘)</small></button>
+    </div>
+    <div class="dday"><b>🇰🇷 10월 25일, 독도의 날</b>1900년 10월 25일 대한제국이 칙령 제41호로 울릉도를 울도군으로 승격하고 독도(석도)를 관할 구역으로 정한 사실을 기념하고, 독도가 우리 영토임을 널리 알리기 위해 정한 날이에요. 2010년 울릉군이 조례로 지정했어요.</div>
+  </section>
+
+  <!-- 1. 영상 -->
+  <section class="view" id="v-video">
+    <button class="back" onclick="go('home')">◀ 처음으로</button>
+    <h2>독도 소개 영상</h2>
+    <div class="sub">
+      <button class="card" onclick="playVideo('birth')"><span class="em">🌋</span>독도의 탄생</button>
+      <button class="card" onclick="playVideo('history')"><span class="em">📜</span>독도의 역사</button>
+    </div>
+  </section>
+
+  <!-- 2. 활동 -->
+  <section class="view" id="v-activity">
+    <button class="back" onclick="go('home')">◀ 처음으로</button>
+    <h2>독도 관련 활동</h2>
+    <div class="sub">
+      <button class="card" onclick="openLink('zep')"><span class="em">🏝️</span>독도 탐험대(zep)</button>
+      <button class="card" onclick="openLink('sheet')"><span class="em">📝</span>독도 학습지 풀이</button>
+    </div>
+  </section>
+
+  <!-- 3. 골든벨 -->
+  <section class="view" id="v-bell">
+    <button class="back" onclick="go('home')">◀ 처음으로</button>
+    <div class="panel" id="bell-body"></div>
+  </section>
+</main>
+
+<!-- 옆면 아이콘 -->
+<nav id="side">
+  <button class="ic" onclick="clap()"><span class="e">👏</span>집중</button>
+  <button class="ic" id="bgmBtn" onclick="toggleBgm()"><span class="e">🎵</span>배경음악</button>
+</nav>
+
+<!-- 하단 선생님 아이콘 -->
+<footer id="bottom">
+  <div class="tag" id="tag">선생님 전용</div>
+  <button id="lock" onclick="teacherLogin()">🔒 선생님</button>
+  <button class="ic" id="b-show"  onclick="act('show')"><span class="e">📖</span>문제보기</button>
+  <button class="ic" id="b-open"  onclick="act('open')"><span class="e">✍️</span>답안제출가능</button>
+  <button class="ic" id="b-close" onclick="act('close')"><span class="e">⏰</span>답안마감</button>
+  <button class="ic" id="b-check" onclick="act('check')"><span class="e">✅</span>정답확인</button>
+</footer>
+<div id="credit">made by 유쾌한 소정샘</div>
+
+<div id="modal"><div id="modal-in"></div><button onclick="closeModal()">닫기 ✕</button></div>
+<div id="toast"></div>
+<div id="ytbgm"></div>
+
+<script>
+/* ===== 설정 (여기만 수정하세요) ===== */
+const CONFIG = {
+  VIDEO_BIRTH:   '1h3duJafUGGstyW0y_SGsksQytR5jzRPe',   // 독도의 탄생 (구글 드라이브 파일 ID)
+  VIDEO_HISTORY: '1CFasHfN1jhY7a1ulOn2uxJurXlcLvpBc',   // 독도의 역사 (구글 드라이브 파일 ID)
+  ZEP_URL:   'https://zep.us/play/R5dPlZ',
+  // 학습지(구글 드라이브 자동저장)는 Apps Script 웹앱 주소 뒤에 ?page=worksheet 를 붙여 엽니다 (/u/숫자/ 는 빼세요)
+  WORKSHEET_URL: 'https://script.google.com/macros/s/AKfycbxqxmR30tAXYF-HwalX71SUUta6KUKFloOXZih3dccz28QfHnK_yKboNaoP6bxyAnyG-A/exec?page=worksheet',
+  BGM_ID: 'VAoR8bL04qA', BGM_START: 24,
+  // 선생님 로그인 이메일 (Firebase Authentication 에 만든 계정, database.rules.json 의 이메일과 같아야 합니다)
+  TEACHER_EMAIL: 'teacher@dokdo.kr',
+  FIREBASE: {
+    apiKey: "AIzaSyD9jGAgr-jv8xJV2zrD2oXdqSvkWWxEPuY",
+    authDomain: "dokdo-goldenbell.firebaseapp.com",
+    databaseURL: "https://dokdo-goldenbell-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "dokdo-goldenbell",
+    storageBucket: "dokdo-goldenbell.firebasestorage.app",
+    messagingSenderId: "46092959814",
+    appId: "1:46092959814:web:90866a5d8ee85c89cb4a47"
+  }
+};
+
+const $ = id => document.getElementById(id);
+const S = { name: sessionStorage.getItem('dg_name') || '', teacher: false, st: null, sel: null, lastKey: '', editing: false, priv: null };
+
+function toast(t, ms = 2200){ const e = $('toast'); e.textContent = t; e.style.display = 'block'; clearTimeout(toast.t); toast.t = setTimeout(() => e.style.display = 'none', ms); }
+function esc(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+/* ===== 화면 전환 ===== */
+function go(v){
+  document.querySelectorAll('.view').forEach(e => e.classList.remove('on'));
+  $('v-' + v).classList.add('on');
+  if (v === 'bell'){ S.lastKey = ''; renderBell(); }
+}
+
+/* ===== 영상 / 링크 ===== */
+function playVideo(k){
+  const id = k === 'birth' ? CONFIG.VIDEO_BIRTH : CONFIG.VIDEO_HISTORY;
+  if (bgmOn) toggleBgm();
+  $('modal-in').innerHTML = id
+    ? `<iframe allow="autoplay; encrypted-media; fullscreen" allowfullscreen src="https://drive.google.com/file/d/${id}/preview"></iframe>`
+    : `<div class="note">영상 ID가 아직 설정되지 않았어요.</div>`;
+  $('modal').classList.add('on');
+}
+function closeModal(){ $('modal').classList.remove('on'); $('modal-in').innerHTML = ''; }
+function openLink(k){
+  window.open(k === 'zep' ? CONFIG.ZEP_URL : CONFIG.WORKSHEET_URL, '_blank');
+}
+
+/* ===== 옆면: 박수 / 배경음악 ===== */
+let actx = null;
+function clap(){
+  actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+  if (actx.state === 'suspended') actx.resume();
+  const dur = 3.2, sr = actx.sampleRate, buf = actx.createBuffer(1, sr * dur, sr), d = buf.getChannelData(0);
+  const claps = Array.from({length: 70}, () => Math.random() * (dur - .15));
+  claps.forEach(t0 => {
+    const s = Math.floor(t0 * sr), len = Math.floor(sr * (.03 + Math.random() * .05)), amp = .35 + Math.random() * .65;
+    for (let i = 0; i < len && s + i < d.length; i++) d[s + i] += (Math.random() * 2 - 1) * amp * Math.pow(1 - i / len, 2.5);
+  });
+  const src = actx.createBufferSource(), bp = actx.createBiquadFilter(), g = actx.createGain();
+  src.buffer = buf; bp.type = 'bandpass'; bp.frequency.value = 2200; bp.Q.value = .6;
+  g.gain.setValueAtTime(.9, actx.currentTime); g.gain.linearRampToValueAtTime(0, actx.currentTime + dur);
+  src.connect(bp); bp.connect(g); g.connect(actx.destination); src.start();
+  toast('👏 집중! 짝짝짝');
+}
+
+let yt = null, ytReady = false, bgmOn = false;
+(function(){ const s = document.createElement('script'); s.src = 'https://www.youtube.com/iframe_api'; document.head.appendChild(s); })();
+window.onYouTubeIframeAPIReady = function(){
+  yt = new YT.Player('ytbgm', { width: '1', height: '1', videoId: CONFIG.BGM_ID,
+    playerVars: { start: CONFIG.BGM_START, loop: 1, playlist: CONFIG.BGM_ID, playsinline: 1 },
+    events: { onReady: () => { ytReady = true; } } });
+};
+function toggleBgm(){
+  if (!ytReady){ toast('배경음악을 준비 중이에요. 잠시 후 다시 눌러 주세요'); return; }
+  bgmOn = !bgmOn;
+  if (bgmOn) yt.playVideo(); else yt.pauseVideo();
+  $('bgmBtn').classList.toggle('on', bgmOn);
+}
+
+/* ===== Firebase 연결 ===== */
+firebase.initializeApp(CONFIG.FIREBASE);
+const auth = firebase.auth(), db = firebase.database();
+const D = { state: null, current: null, result: null, players: null, submitted: null, myAnswer: null };
+let uid = null, refs = [];
+
+function attach(){
+  refs.forEach(r => r.off()); refs = [];
+  const on = (path, key) => { const r = db.ref(path); r.on('value', sn => { D[key] = sn.val(); compute(); }, err => toast('서버 연결 오류: ' + err.code)); refs.push(r); };
+  on('state', 'state'); on('current', 'current'); on('result', 'result'); on('players', 'players'); on('submitted', 'submitted');
+  D.myAnswer = null;
+  if (!S.teacher) { const r = db.ref('answers/' + uid + '/a'); r.on('value', sn => { D.myAnswer = sn.val(); compute(); }); refs.push(r); }
+}
+auth.onAuthStateChanged(async u => {
+  if (!u) { try { await auth.signInAnonymously(); } catch (e) { toast('접속 준비에 실패했어요. 인터넷을 확인해 주세요'); } return; }
+  uid = u.uid;
+  S.teacher = !!u.email && u.email === CONFIG.TEACHER_EMAIL;
+  if (S.teacher) { try { S.priv = (await db.ref('private').once('value')).val(); } catch (e) { toast('문제 정보를 읽지 못했어요'); } }
+  attach(); refreshTeacher();
+});
+
+/* 서버에서 받은 조각들을 화면용 상태로 합침 */
+function compute(){
+  const s = D.state || { phase: 0, q: -1, v: 0, total: 0 };
+  const P = D.players || {}, ids = Object.keys(P), me = P[uid];
+  const st = {
+    phase: s.phase, q: s.q, total: s.total || 0, v: s.v || 0,
+    joined: ids.length, alive: ids.filter(k => P[k].alive).length,
+    submitted: Object.keys(D.submitted || {}).length,
+    correct: s.correct == null ? null : s.correct,
+    question: (s.phase >= 1 && s.phase <= 4) ? D.current : null,
+    answerText: null, explanation: '', champions: s.champions || null,
+    me: { joined: !!me, alive: !!(me && me.alive), submitted: D.myAnswer != null, answer: D.myAnswer }
+  };
+  if (s.phase === 4 && D.result){ st.answerText = D.result.answerText; st.explanation = D.result.explanation || ''; }
+  if (me) S.name = me.name;
+  if (S.st && S.st.q !== st.q) S.editing = false;
+  S.st = st;
+  const key = JSON.stringify([st.v, st.phase, st.q, st.joined, st.alive, st.submitted, st.me, st.question, S.teacher, S.editing]);
+  if (key !== S.lastKey){ S.lastKey = key; renderBell(); }
+  refreshTeacher();
+}
+
+/* ===== 선생님 권한 ===== */
+async function teacherLogin(){
+  if (S.teacher){ await auth.signOut(); toast('선생님 모드를 껐어요'); return; }
+  const pw = prompt('선생님 비밀번호를 입력하세요');
+  if (!pw) return;
+  try{ await auth.signInWithEmailAndPassword(CONFIG.TEACHER_EMAIL, pw); toast('선생님 모드 ON'); }
+  catch(e){ toast(e.code === 'auth/network-request-failed' ? '인터넷 연결을 확인해 주세요' : '비밀번호가 달라요'); }
+}
+function refreshTeacher(){
+  $('lock').textContent = S.teacher ? '🔓 선생님' : '🔒 선생님';
+  const ph = S.st ? S.st.phase : 0;
+  const can = { show: ph === 0 || ph === 4, open: ph === 1, close: ph === 2, check: ph === 3 };
+  ['show', 'open', 'close', 'check'].forEach(k => {
+    const b = $('b-' + k);
+    b.disabled = !S.teacher;                 // 선생님만 클릭 가능
+    b.classList.toggle('go', S.teacher && can[k]); // 지금 누를 차례 강조
+  });
+  $('tag').textContent = S.teacher ? '선생님 모드 ON\n노란 버튼이 다음 순서' : '선생님 전용';
+}
+
+/* ---- 채점 (정답은 선생님 로그인 후에만 읽을 수 있는 private 영역에 있음) ---- */
+function norm(s){ return String(s == null ? '' : s).replace(/\(.*?\)/g, '').replace(/[\s.,!?'"\[\]]/g, '').replace(/킬로미터|km|약/gi, '').toLowerCase(); }
+function isCorrect(Q, ans){
+  const n = norm(ans);
+  if (Q.type === 'multi') return Q.must.every(w => n.indexOf(norm(w)) > -1);
+  return Q.a.some(a => norm(a) === n);
+}
+function currentOf(i){
+  const Q = S.priv.questions[i], ox = S.priv.oxCount, isOx = i < ox;
+  const c = { text: Q.q, type: Q.type, sec: isOx ? 'OX 퀴즈' : '주관식', no: isOx ? i + 1 : i - ox + 1, secTotal: isOx ? ox : S.priv.questions.length - ox };
+  if (Q.choices) c.choices = Q.choices;
+  return c;
+}
+/* 구글 시트 "기록" 에 남기기 (Apps Script 웹앱으로 전송) */
+function logRows(rows){
+  const L = S.priv && S.priv.log;
+  if (!L || !L.url) return;
+  fetch(L.url, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ secret: L.secret, rows: rows }) })
+    .catch(() => toast('시트 기록을 보내지 못했어요 (대회 진행에는 문제 없어요)'));
+}
+const nowStr = () => { const d = new Date(), p = n => String(n).padStart(2, '0'); return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()) + ' ' + p(d.getHours()) + ':' + p(d.getMinutes()) + ':' + p(d.getSeconds()); };
+
+async function act(a){
+  if (!S.teacher) return;
+  try{
+    if (!S.priv || !S.priv.questions){ S.priv = (await db.ref('private').once('value')).val(); }
+    if (!S.priv || !S.priv.questions){ toast('문제 데이터가 없어요. 설정 방법의 seed.json 가져오기를 확인해 주세요'); return; }
+    const s = D.state || { phase: 0, q: -1, v: 0 }, N = S.priv.questions.length, v = (s.v || 0) + 1, t = nowStr();
+    if (a === 'show'){
+      if (s.phase !== 0 && s.phase !== 4) return toast('지금은 문제를 열 수 없어요');
+      const nq = s.q + 1, up = { answers: null, submitted: null, result: null };
+      if (nq >= N){
+        const P = D.players || {}, champs = Object.keys(P).filter(k => P[k].alive).map(k => P[k].name).slice(0, 50);
+        up.state = { phase: 5, q: nq, v: v, total: N, champions: champs };
+        up.current = null;
+        logRows([['', t, '종료', '', '', '', champs.length, '', '최종 생존자: ' + champs.join(', ')]]);
+      } else {
+        up.current = currentOf(nq);
+        up.state = { phase: 1, q: nq, v: v, total: N };
+        if (nq === 0){
+          const P = D.players || {};
+          logRows(Object.keys(P).map(k => ['', t, '입장', '', P[k].name, '', '', P[k].alive ? '생존' : '관전', P[k].alive ? '' : '중간입장(관전)']));
+        }
+      }
+      await db.ref().update(up);
+    } else if (a === 'open'){
+      if (s.phase !== 1) return toast('먼저 문제보기를 눌러 주세요');
+      await db.ref().update({ 'state/phase': 2, 'state/v': v });
+    } else if (a === 'close'){
+      if (s.phase !== 2) return toast('답안 제출 중이 아니에요');
+      await db.ref().update({ 'state/phase': 3, 'state/v': v });
+    } else if (a === 'check'){
+      if (s.phase !== 3) return toast('먼저 답안을 마감해 주세요');
+      const Q = S.priv.questions[s.q];
+      const [as, ps] = await Promise.all([db.ref('answers').once('value'), db.ref('players').once('value')]);
+      const A = as.val() || {}, P = ps.val() || {}, up = {}, rows = [];
+      let correct = 0;
+      Object.keys(P).forEach(id => {
+        if (!P[id].alive) return;
+        const has = A[id] && A[id].a != null, ok = has && isCorrect(Q, A[id].a);
+        if (ok) correct++; else up['players/' + id + '/alive'] = false;
+        rows.push(['', t, '답안', s.q + 1, P[id].name, has ? A[id].a : '(미제출)', ok ? 'O' : 'X', ok ? '생존' : '탈락', '']);
+      });
+      const show = Q.show || Q.a[0];
+      rows.push(['', t, '결과', s.q + 1, '', show, correct, '', '정답자 ' + correct + '명 / 문제: ' + Q.q]);
+      up.result = { answerText: show, explanation: Q.exp || '' };
+      up['state/correct'] = correct; up['state/phase'] = 4; up['state/v'] = v;
+      await db.ref().update(up);
+      logRows(rows);
+    }
+  }catch(e){ toast('실패: ' + (e.code || e.message)); }
+}
+async function resetGame(){
+  if (!confirm('모든 참가자와 진행 상태를 초기화할까요?')) return;
+  try{
+    const N = S.priv && S.priv.questions ? S.priv.questions.length : 0, v = ((D.state && D.state.v) || 0) + 1;
+    await db.ref().update({ players: null, answers: null, submitted: null, current: null, result: null, state: { phase: 0, q: -1, v: v, total: N } });
+    logRows([['', nowStr(), '리셋', '', '', '', '', '', '새 대회 시작']]);
+    S.name = ''; sessionStorage.removeItem('dg_name');
+  }catch(e){ toast('실패: ' + (e.code || e.message)); }
+}
+
+/* ===== 골든벨 (학생) ===== */
+async function enter(){
+  const n = $('nm').value.trim();
+  if (!n || n.length > 12){ toast('이름을 1~12자로 적어 주세요'); return; }
+  if (!uid){ toast('접속 준비 중이에요. 잠시 후 다시 눌러 주세요'); return; }
+  const late = D.state && D.state.q >= 0;
+  try{
+    await db.ref('players/' + uid).set({ name: n, alive: !late });
+    S.name = n; sessionStorage.setItem('dg_name', n); S.lastKey = '';
+  }catch(e){ toast('입장하지 못했어요: ' + (e.code || e.message)); }
+}
+async function send(){
+  let a = S.sel;
+  if (a == null){ const i = $('ans'); a = i ? i.value.trim() : ''; }
+  if (!a){ toast('답안을 입력하거나 골라 주세요'); return; }
+  try{
+    await db.ref().update({ ['answers/' + uid]: { a: String(a).slice(0, 100) }, ['submitted/' + uid]: true });
+    S.editing = false; toast('제출 완료!');
+  }catch(e){ toast('제출하지 못했어요. 마감됐을 수 있어요'); }
+}
+function pick(i){ S.sel = S.st.question.choices[i]; renderBell(); }
+
+function renderBell(){
+  const el = $('bell-body'), st = S.st;
+  if (!S.teacher && (!S.name || (st && st.me && !st.me.joined))){
+    el.innerHTML = `<h2 style="text-align:center">🔔 독도 골든벨 입장</h2>
+      <input type="text" id="nm" maxlength="12" placeholder="이름을 적어 주세요" value="${esc(S.name)}">
+      <div style="text-align:center"><button class="big" onclick="enter()">입장하기</button></div>`;
+    return;
+  }
+  if (!st){ el.innerHTML = '<div class="msg">불러오는 중…</div>'; return; }
+  const me = st.me || {}, ph = st.phase, Q = st.question;
+  if (ph >= 1 && ph <= 4 && !Q){ el.innerHTML = '<div class="msg">문제를 불러오는 중…</div>'; return; }
+  let h = `<div class="stat"><b>👤 ${S.teacher ? '선생님' : esc(S.name) + (me.alive ? '' : ' (관전)')}</b><b>입장 ${st.joined}명</b><b>생존 ${st.alive}명</b>${ph >= 2 && ph <= 3 ? `<b>제출 ${st.submitted}명</b>` : ''}</div>`;
+  if (ph === 0){
+    h += `<div class="msg">⏳ 대기 중입니다.<br>선생님이 문제를 열 때까지 기다려 주세요.</div>`;
+  } else if (ph === 5){
+    h += `<div class="msg">🏆 대회가 끝났어요!<br>${st.champions && st.champions.length ? '골든벨의 주인공<br><b style="font-size:44px;color:#c98a00">' + st.champions.map(esc).join(' · ') + '</b>' : '끝까지 살아남은 사람이 없어요.'}</div>`;
+  } else {
+    h += `<div style="text-align:center"><span class="qno">${esc(Q.sec)} ${Q.no} / ${Q.secTotal}</span></div><div class="qbox">${esc(Q.text)}</div>`;
+    if (ph === 1) h += `<div class="msg">👀 문제를 잘 읽어 보세요. 곧 답안을 낼 수 있어요.</div>`;
+    if (ph === 2){
+      if (S.teacher) h += `<div class="msg">✍️ 학생들이 답안을 내는 중이에요<br>제출 ${st.submitted} / 생존 ${st.alive}명</div>`;
+      else if (!me.alive) h += `<div class="msg">관전 중이에요. 다음 대회를 기대해 주세요!</div>`;
+      else if (me.submitted && !S.editing) h += `<div class="msg ok">✅ 제출 완료! (내 답: ${esc(me.answer)})<br><small>마감까지 기다려 주세요.</small></div>
+          <div style="text-align:center"><button class="big" onclick="S.editing=true;renderBell()">답 바꾸기</button></div>`;
+      else if (Q.choices) h += `<div class="choices">${Q.choices.map((c, i) => `<button class="${S.sel === c ? 'sel' : ''}" onclick="pick(${i})">${esc(c)}</button>`).join('')}</div>
+          <div style="text-align:center"><button class="big" onclick="send()">제출하기</button></div>`;
+      else h += `<input type="text" id="ans" placeholder="정답을 적어 주세요" onkeydown="if(event.key==='Enter')send()">
+          <div style="text-align:center"><button class="big" onclick="send()">제출하기</button></div>`;
+    }
+    if (ph === 3) h += `<div class="msg">⏰ 답안이 마감됐어요. 정답을 확인할게요!</div>`;
+    if (ph === 4){
+      h += `<div class="ans">정답 : <b>${esc(st.answerText)}</b>${st.explanation ? `<div style="font-size:22px;margin-top:6px">💡 ${esc(st.explanation)}</div>` : ''}</div>
+        <div class="msg">🎯 정답자 <b style="font-size:46px;color:#c98a00">${st.correct}</b>명<br>
+        ${S.teacher ? '' : me.alive ? '<span class="ok">정답! 다음 문제에 도전해요 🎉</span>' : '<span class="no">아쉽지만 이번 문제에서 탈락했어요 😢</span>'}</div>`;
+    }
+  }
+  if (S.teacher) h += `<div style="text-align:center;margin-top:8px"><button class="back" onclick="resetGame()">⚠ 대회 초기화</button></div>`;
+  const old = $('ans'), keepVal = old ? old.value : null, keepFocus = old && document.activeElement === old;
+  el.innerHTML = h;
+  const nu = $('ans');
+  if (nu && keepVal != null){ nu.value = keepVal; if (keepFocus) nu.focus(); }
+  if (ph !== 2) S.sel = null;
+}
+
+refreshTeacher();
+</script>
+</body>
+</html>

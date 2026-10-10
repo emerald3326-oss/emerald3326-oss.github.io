@@ -1,0 +1,43 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+
+    "state":   { ".read": true, ".write": "auth != null && auth.token.email == 'teacher@dokdo.kr'" },
+    "current": { ".read": true, ".write": "auth != null && auth.token.email == 'teacher@dokdo.kr'" },
+    "result":  { ".read": true, ".write": "auth != null && auth.token.email == 'teacher@dokdo.kr'" },
+
+    "private": {
+      ".read":  "auth != null && auth.token.email == 'teacher@dokdo.kr'",
+      ".write": "auth != null && auth.token.email == 'teacher@dokdo.kr'"
+    },
+
+    "players": {
+      ".read": true,
+      ".write": "auth != null && auth.token.email == 'teacher@dokdo.kr'",
+      "$uid": {
+        ".write": "auth != null && auth.uid === $uid && !data.exists() && newData.child('alive').val() === (root.child('state/q').val() < 0)",
+        ".validate": "newData.hasChildren(['name', 'alive']) && newData.child('name').isString() && newData.child('name').val().length >= 1 && newData.child('name').val().length <= 12 && newData.child('alive').isBoolean()"
+      }
+    },
+
+    "answers": {
+      ".read":  "auth != null && auth.token.email == 'teacher@dokdo.kr'",
+      ".write": "auth != null && auth.token.email == 'teacher@dokdo.kr'",
+      "$uid": {
+        ".read":  "auth != null && auth.uid === $uid",
+        ".write": "auth != null && auth.uid === $uid && root.child('state/phase').val() === 2 && root.child('players/' + $uid + '/alive').val() === true",
+        ".validate": "newData.hasChildren(['a']) && newData.child('a').isString() && newData.child('a').val().length <= 100"
+      }
+    },
+
+    "submitted": {
+      ".read": true,
+      ".write": "auth != null && auth.token.email == 'teacher@dokdo.kr'",
+      "$uid": {
+        ".write": "auth != null && auth.uid === $uid && root.child('state/phase').val() === 2 && root.child('players/' + $uid + '/alive').val() === true",
+        ".validate": "newData.val() === true"
+      }
+    }
+  }
+}
