@@ -140,18 +140,33 @@ textarea[data-k]{width:100%;min-height:5.5em;font:inherit;border:2px solid var(-
   function load(){var s=store();if(!s)return;try{var d=JSON.parse(s.getItem(KEY)||'{}');fields.forEach(function(f){if(d[f.dataset.k]!=null&&!f.value)f.value=d[f.dataset.k]})}catch(e){}}
   function changed(){clearTimeout(tl);tl=setTimeout(local,300);clearTimeout(td);td=setTimeout(function(){toDrive(false)},4000)}
   function setv(k,v){F[k].value=v;changed()}
+  /* 드라이브 저장: 이 페이지가 GitHub Pages 에 있으면 Apps Script 주소로 전송, Apps Script 안에서 열리면 google.script.run 사용 */
+  var API='https://script.google.com/macros/s/AKfycbxqxmR30tAXYF-HwalX71SUUta6KUKFloOXZih3dccz28QfHnK_yKboNaoP6bxyAnyG-A/exec';
   function toDrive(manual){
     var v=values();
     if(!v['who-id']||!v['who-name']){if(manual)alert('학번과 이름을 먼저 적어 주세요.');return}
-    if(!inGas){if(manual)alert('구글 드라이브 저장은 배포된 앱(웹 앱 주소)에서만 사용할 수 있어요.');return}
+    if(!inGas&&!/^https?:/.test(location.protocol)){if(manual)alert('구글 드라이브 저장은 인터넷 주소로 연 학습지에서만 사용할 수 있어요.');return}
     if(busy){dirty=true;return}
     busy=true;dirty=false;saved.textContent='☁️ 저장 중...';
-    google.script.run.withSuccessHandler(function(r){
+    function ok(r,unsure){
       busy=false;var t=new Date();
-      saved.textContent='☁️ 자동 저장됨 ('+('0'+t.getHours()).slice(-2)+':'+('0'+t.getMinutes()).slice(-2)+')';
-      if(manual)alert('구글 드라이브에 저장했어요!\n파일 이름: '+r.fileName);
+      saved.textContent=(unsure?'☁️ 전송함(확인 불가) ':'☁️ 자동 저장됨 ')+'('+('0'+t.getHours()).slice(-2)+':'+('0'+t.getMinutes()).slice(-2)+')';
+      if(manual)alert(unsure?'드라이브로 보냈어요. 선생님께 저장 확인을 받아 보세요.':'구글 드라이브에 저장했어요!\n파일 이름: '+r.fileName);
       if(dirty)toDrive(false);
-    }).withFailureHandler(function(e){busy=false;saved.textContent='⚠ 저장 실패';if(manual)alert('저장하지 못했어요.\n'+((e&&e.message)||e))}).saveWorksheet({fields:v});
+    }
+    function fail(e){busy=false;saved.textContent='⚠ 저장 실패 (잠시 후 다시 시도)';if(manual)alert('저장하지 못했어요.\n'+((e&&e.message)||e))}
+    if(inGas){
+      google.script.run.withSuccessHandler(function(r){ok(r)}).withFailureHandler(fail).saveWorksheet({fields:v});
+      return;
+    }
+    fetch(API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'worksheet',fields:v})})
+      .then(function(r){return r.json()})
+      .then(function(r){if(r&&r.ok)ok(r);else fail(new Error((r&&r.msg)||'저장 실패'))})
+      .catch(function(){
+        // 응답을 읽지 못해도 전송은 됐을 수 있어 한 번 더 보내 둠(같은 파일을 덮어쓰므로 안전)
+        fetch(API,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'worksheet',fields:v})})
+          .then(function(){ok(null,true)},function(){fail(new Error('인터넷 연결을 확인해 주세요.'))});
+      });
   }
   fields.forEach(function(f){if(f.type!=='hidden')f.addEventListener('input',changed)});
   setInterval(function(){if(dirty&&!busy)toDrive(false)},15000);

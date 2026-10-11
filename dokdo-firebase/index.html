@@ -186,8 +186,6 @@ const CONFIG = {
   VIDEO_HISTORY: '1CFasHfN1jhY7a1ulOn2uxJurXlcLvpBc',   // 독도의 역사 (구글 드라이브 파일 ID)
   VIDEO_BOYS_YT: 'GZg092WUV8c',                         // 독도보이즈 노래 (유튜브 영상 ID)
   ZEP_URL:   'https://zep.us/play/R5dPlZ',
-  // 학습지(구글 드라이브 자동저장)는 Apps Script 웹앱 주소 뒤에 ?page=worksheet 를 붙여 엽니다 (/u/숫자/ 는 빼세요)
-  WORKSHEET_URL: 'https://script.google.com/macros/s/AKfycbxqxmR30tAXYF-HwalX71SUUta6KUKFloOXZih3dccz28QfHnK_yKboNaoP6bxyAnyG-A/exec?page=worksheet',
   BGM_ID: 'VAoR8bL04qA', BGM_START: 24,
   // 선생님 로그인 이메일 (Firebase Authentication 에 만든 계정, database.rules.json 의 이메일과 같아야 합니다)
   TEACHER_EMAIL: 'teacher@dokdo.kr',
@@ -233,7 +231,7 @@ function playVideo(k){
 }
 function closeModal(){ $('modal').classList.remove('on'); $('modal-in').innerHTML = ''; }
 function openLink(k){
-  window.open(k === 'zep' ? CONFIG.ZEP_URL : CONFIG.WORKSHEET_URL, '_blank');
+  window.open(k === 'zep' ? CONFIG.ZEP_URL : 'worksheet.html', '_blank');   // 학습지는 이 앱과 같은 곳(GitHub Pages)에서 열림
 }
 
 /* ===== 옆면: 박수 / 배경음악 ===== */

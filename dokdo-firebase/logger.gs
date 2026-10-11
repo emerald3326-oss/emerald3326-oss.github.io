@@ -21,6 +21,10 @@ function doGet(e) {
 function doPost(e) {
   try {
     const body = JSON.parse(e.postData.contents);
+    if (body.action === 'worksheet') {            // 학생 학습지 자동저장 (GitHub Pages 에서 호출)
+      try { return jsonOut_(saveWorksheet({ fields: body.fields })); }
+      catch (err) { return jsonOut_({ ok: false, msg: String(err.message || err) }); }
+    }
     const secret = PropertiesService.getScriptProperties().getProperty('LOG_SECRET');
     if (!secret || body.secret !== secret) return ContentService.createTextOutput('denied');
     const rows = (body.rows || []).slice(0, 400).map(function (r) {
@@ -33,6 +37,10 @@ function doPost(e) {
   } catch (err) {
     return ContentService.createTextOutput('error');
   }
+}
+
+function jsonOut_(o) {
+  return ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON);
 }
 
 /** 시트에서 수식으로 실행되지 않도록(= + - @ 로 시작하는 글자) 앞에 ' 를 붙임 */
