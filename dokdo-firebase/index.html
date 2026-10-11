@@ -58,6 +58,7 @@ button{font-family:inherit;cursor:pointer;border:0}
 .card.gold{background:linear-gradient(135deg,#ffe08a,#f4b400)}
 .sub{display:grid;grid-template-columns:repeat(2,minmax(220px,360px));gap:22px;justify-content:center;margin-top:20px}
 .sub .card{font:400 30px var(--f-sub);min-height:240px}
+#v-video .sub{grid-template-columns:repeat(3,minmax(190px,300px))}
 .sub .card .em{font-size:96px}
 h2{font:400 32px var(--f-round);margin:6px 0 12px;color:var(--navy)}
 
@@ -134,6 +135,7 @@ h2{font:400 32px var(--f-round);margin:6px 0 12px;color:var(--navy)}
     <div class="sub">
       <button class="card" onclick="playVideo('birth')"><span class="em">🌋</span>독도의 탄생</button>
       <button class="card" onclick="playVideo('history')"><span class="em">📜</span>독도의 역사</button>
+      <button class="card" onclick="playVideo('boys')"><span class="em">🎤</span>독도보이즈 노래</button>
     </div>
   </section>
 
@@ -180,6 +182,7 @@ h2{font:400 32px var(--f-round);margin:6px 0 12px;color:var(--navy)}
 const CONFIG = {
   VIDEO_BIRTH:   '1h3duJafUGGstyW0y_SGsksQytR5jzRPe',   // 독도의 탄생 (구글 드라이브 파일 ID)
   VIDEO_HISTORY: '1CFasHfN1jhY7a1ulOn2uxJurXlcLvpBc',   // 독도의 역사 (구글 드라이브 파일 ID)
+  VIDEO_BOYS_YT: 'GZg092WUV8c',                         // 독도보이즈 노래 (유튜브 영상 ID)
   ZEP_URL:   'https://zep.us/play/R5dPlZ',
   // 학습지(구글 드라이브 자동저장)는 Apps Script 웹앱 주소 뒤에 ?page=worksheet 를 붙여 엽니다 (/u/숫자/ 는 빼세요)
   WORKSHEET_URL: 'https://script.google.com/macros/s/AKfycbxqxmR30tAXYF-HwalX71SUUta6KUKFloOXZih3dccz28QfHnK_yKboNaoP6bxyAnyG-A/exec?page=worksheet',
@@ -212,11 +215,18 @@ function go(v){
 
 /* ===== 영상 / 링크 ===== */
 function playVideo(k){
-  const id = k === 'birth' ? CONFIG.VIDEO_BIRTH : CONFIG.VIDEO_HISTORY;
   if (bgmOn) toggleBgm();
-  $('modal-in').innerHTML = id
-    ? `<iframe allow="autoplay; encrypted-media; fullscreen" allowfullscreen src="https://drive.google.com/file/d/${id}/preview"></iframe>`
-    : `<div class="note">영상 ID가 아직 설정되지 않았어요.</div>`;
+  let h;
+  if (k === 'boys'){
+    const id = CONFIG.VIDEO_BOYS_YT;
+    h = `<iframe allow="autoplay; encrypted-media; fullscreen" allowfullscreen src="https://www.youtube.com/embed/${id}?autoplay=1&rel=0"></iframe>
+         <div class="note" style="font-size:18px;padding:6px"><a style="color:#ffe3ee" target="_blank" href="https://www.youtube.com/watch?v=${id}">재생이 안 되면 유튜브에서 열기 ▶</a></div>`;
+  } else {
+    const id = k === 'birth' ? CONFIG.VIDEO_BIRTH : CONFIG.VIDEO_HISTORY;
+    h = id ? `<iframe allow="autoplay; encrypted-media; fullscreen" allowfullscreen src="https://drive.google.com/file/d/${id}/preview"></iframe>`
+           : `<div class="note">영상 ID가 아직 설정되지 않았어요.</div>`;
+  }
+  $('modal-in').innerHTML = h;
   $('modal').classList.add('on');
 }
 function closeModal(){ $('modal').classList.remove('on'); $('modal-in').innerHTML = ''; }
