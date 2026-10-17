@@ -39,79 +39,79 @@ button{font-family:inherit;cursor:pointer;border:0}
 #top{position:fixed;top:0;left:0;right:0;height:120px;background:var(--navy);color:#fff;
   display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:20;
   box-shadow:0 3px 10px rgba(0,0,0,.25)}
-#top h1{margin:0;font:400 58px/1.1 var(--f-title);letter-spacing:2px}
+#top h1{margin:0;font:400 65px/1.1 var(--f-title);letter-spacing:2px}
 #top h1 span{color:var(--gold)}
-#top p{position:absolute;left:20px;top:14px;margin:0;font:400 20px var(--f-school);opacity:.95}
+#top p{position:absolute;left:20px;top:14px;margin:0;font:400 22px var(--f-school);opacity:.95}
 
 /* ===== 본문 ===== */
 #main{position:fixed;top:120px;bottom:100px;left:0;right:96px;overflow:auto;padding:22px 26px}
 .view{display:none;animation:fade .25s}
 .view.on{display:block}
 @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-.back{background:#fff;border-radius:14px;padding:8px 16px;font:400 20px var(--f-round);color:var(--navy);margin-bottom:14px;box-shadow:0 2px 6px rgba(0,0,0,.15)}
+.back{background:#fff;border-radius:14px;padding:8px 16px;font:400 22px var(--f-round);color:var(--navy);margin-bottom:14px;box-shadow:0 2px 6px rgba(0,0,0,.15)}
 
 #v-home.on{display:flex;flex-direction:column;justify-content:center;height:100%}
 #v-home .menu{height:auto;flex:0 0 auto;min-height:0}
-.dday{margin-top:16px;background:#fffffff0;border:3px dashed var(--sea);border-radius:20px;padding:12px 22px;font:400 20px/1.55 var(--f-body);color:var(--ink);text-align:center}
-.dday b{font:400 24px var(--f-round);color:var(--navy);margin-right:8px}
+.dday{margin-top:16px;background:#fffffff0;border:3px dashed var(--sea);border-radius:20px;padding:12px 22px;font:400 22px/1.55 var(--f-body);color:var(--ink);text-align:center}
+.dday b{font:400 27px var(--f-round);color:var(--navy);margin-right:8px}
 .menu{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;height:calc(100% - 4px);min-height:300px}
 .card{background:#fff;border-radius:26px;box-shadow:0 6px 16px rgba(176,74,118,.25);display:flex;flex-direction:column;
-  align-items:center;justify-content:center;gap:10px;font:400 30px var(--f-round);color:var(--navy);padding:22px 14px 24px;text-align:center;word-break:keep-all}
-.card .em{font-size:112px;line-height:1}
+  align-items:center;justify-content:center;gap:10px;font:400 34px var(--f-round);color:var(--navy);padding:22px 14px 24px;text-align:center;word-break:keep-all}
+.card .em{font-size:125px;line-height:1}
 .card:active{transform:scale(.97)}
 .card.gold{background:linear-gradient(135deg,#ffe08a,#f4b400)}
 .sub{display:grid;grid-template-columns:repeat(2,minmax(220px,360px));gap:22px;justify-content:center;margin-top:20px}
-.sub .card{font:400 30px var(--f-round);min-height:240px}
+.sub .card{font:400 34px var(--f-round);min-height:240px}
 #v-video .sub{grid-template-columns:repeat(3,minmax(190px,300px))}
-.sub .card .em{font-size:96px}
-h2{font:400 32px var(--f-round);margin:6px 0 12px;color:var(--navy)}
+.sub .card .em{font-size:108px}
+h2{font:400 36px var(--f-round);margin:6px 0 12px;color:var(--navy)}
 
 /* ===== 골든벨 ===== */
 .panel{background:#fff;border-radius:24px;padding:26px;box-shadow:0 6px 16px rgba(176,74,118,.22);max-width:900px;margin:0 auto}
-.panel input[type=text]{width:100%;font:400 30px var(--f-body);padding:14px 18px;border:3px solid var(--sea);border-radius:16px;outline:none}
-.big{background:var(--sea);color:#fff;border-radius:18px;padding:14px 34px;font:400 30px var(--f-body);margin-top:16px}
+.panel input[type=text]{width:100%;font:400 34px var(--f-body);padding:14px 18px;border:3px solid var(--sea);border-radius:16px;outline:none}
+.big{background:var(--sea);color:#fff;border-radius:18px;padding:14px 34px;font:400 34px var(--f-body);margin-top:16px}
 .big:disabled{opacity:.45}
 .stat{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin:0 0 14px}
-.stat b{background:var(--sky);border-radius:999px;padding:6px 18px;font:400 22px var(--f-body)}
-.qbox{font:400 36px/1.5 var(--f-body);text-align:center;padding:10px 6px;word-break:keep-all}
-.qno{display:inline-block;background:var(--gold);color:#000;border-radius:999px;padding:4px 18px;font:400 24px var(--f-body);margin-bottom:6px}
+.stat b{background:var(--sky);border-radius:999px;padding:6px 18px;font:400 25px var(--f-body)}
+.qbox{font:400 40px/1.5 var(--f-body);text-align:center;padding:10px 6px;word-break:keep-all}
+.qno{display:inline-block;background:var(--gold);color:#000;border-radius:999px;padding:4px 18px;font:400 27px var(--f-body);margin-bottom:6px}
 .choices{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:12px}
-.choices button{background:var(--sky);border:4px solid transparent;border-radius:18px;padding:18px;font:400 30px var(--f-body);color:var(--navy)}
+.choices button{background:var(--sky);border:4px solid transparent;border-radius:18px;padding:18px;font:400 34px var(--f-body);color:var(--navy)}
 .choices button.sel{border-color:var(--gold);background:#fff4cc}
-.msg{text-align:center;font:400 28px/1.5 var(--f-body);padding:26px 8px}
+.msg{text-align:center;font:400 31px/1.5 var(--f-body);padding:26px 8px}
 .ok{color:var(--green)} .no{color:var(--red)}
-.ans{margin-top:12px;text-align:center;font:400 30px var(--f-body);background:#fff4cc;border-radius:16px;padding:12px}
+.ans{margin-top:12px;text-align:center;font:400 34px var(--f-body);background:#fff4cc;border-radius:16px;padding:12px}
 
 /* ===== 옆면(오른쪽) 고정 ===== */
 #side{position:fixed;right:0;top:120px;bottom:100px;width:96px;background:rgba(176,74,118,.93);z-index:15;
   display:flex;flex-direction:column;justify-content:center;gap:22px;align-items:center}
 .ic{width:76px;height:84px;border-radius:18px;background:#fff;color:var(--navy);display:flex;flex-direction:column;
-  align-items:center;justify-content:center;font:400 15px var(--f-icon);gap:2px;white-space:nowrap;padding:0}
-.ic .e{font-size:34px;line-height:1}
+  align-items:center;justify-content:center;font:400 17px var(--f-icon);gap:2px;white-space:nowrap;padding:0}
+.ic .e{font-size:38px;line-height:1}
 .ic.on{background:var(--gold)}
 
 /* ===== 하단(선생님) 고정 ===== */
 #bottom{position:fixed;left:0;right:0;bottom:0;height:100px;background:var(--navy);z-index:20;
   display:flex;align-items:center;justify-content:center;gap:18px;padding:0 100px 16px 176px}
-#bottom .ic{width:128px;height:60px;flex-direction:column;gap:0;font-size:16px;border-radius:20px;white-space:nowrap;padding:0}
-#bottom .ic .e{font-size:22px}
+#bottom .ic{width:128px;height:60px;flex-direction:column;gap:0;font-size:18px;border-radius:20px;white-space:nowrap;padding:0}
+#bottom .ic .e{font-size:25px}
 #bottom .ic:disabled{opacity:.35}
 #bottom .ic.go{background:var(--gold)}
-#lock{position:absolute;left:10px;top:8px;background:none;color:#fff;font:400 18px var(--f-icon);opacity:.9}
-#bottom .tag{white-space:pre-line;position:absolute;left:12px;top:40px;width:152px;text-align:left;color:#ffe3ee;font:400 14px/1.3 var(--f-icon);word-break:keep-all}
-@media(max-width:900px){#bottom{gap:10px;padding-right:96px}#bottom .ic{width:100px}}
-#ver{position:fixed;right:10px;bottom:3px;z-index:30;color:#ffe3ee;opacity:.85;font:400 11px 'Malgun Gothic',sans-serif;pointer-events:none}
-#credit{position:fixed;right:20px;top:14px;text-align:right;color:#fff;font:400 20px var(--f-school);z-index:25;pointer-events:none;opacity:.95}
-@media(max-width:1000px){#top h1{font-size:44px}#top p,#credit{font-size:16px}}
+#lock{position:absolute;left:10px;top:8px;background:none;color:#fff;font:400 20px var(--f-icon);opacity:.9}
+#bottom .tag{white-space:pre-line;position:absolute;left:12px;top:40px;width:152px;text-align:left;color:#ffe3ee;font:400 16px/1.3 var(--f-icon);word-break:keep-all}
+@media(max-width:900px){#bottom{gap:10px;padding-right:96px}#bottom .ic{width:112px;font-size:15px}}
+#ver{position:fixed;right:10px;bottom:3px;z-index:30;color:#ffe3ee;opacity:.85;font:400 12px 'Malgun Gothic',sans-serif;pointer-events:none}
+#credit{position:fixed;right:20px;top:14px;text-align:right;color:#fff;font:400 22px var(--f-school);z-index:25;pointer-events:none;opacity:.95}
+@media(max-width:1000px){#top h1{font-size:49px}#top p,#credit{font-size:18px}}
 
 /* ===== 모달/토스트 ===== */
 #modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:50;align-items:center;justify-content:center;flex-direction:column;gap:14px}
 #modal.on{display:flex}
 #modal iframe{width:86vw;height:70vh;border:0;border-radius:14px;background:#000}
-#modal .note{color:#fff;font:400 26px var(--f-body);text-align:center;padding:20px}
-#modal button{background:var(--gold);border-radius:14px;padding:10px 30px;font:400 24px var(--f-body)}
+#modal .note{color:#fff;font:400 29px var(--f-body);text-align:center;padding:20px}
+#modal button{background:var(--gold);border-radius:14px;padding:10px 30px;font:400 27px var(--f-body)}
 #toast{position:fixed;left:50%;top:130px;transform:translateX(-50%);background:#222;color:#fff;border-radius:999px;padding:10px 24px;
-  font:400 22px var(--f-body);z-index:60;display:none}
+  font:400 25px var(--f-body);z-index:60;display:none}
 #ytbgm{position:fixed;width:1px;height:1px;left:-10px;top:-10px;opacity:0}
 </style>
 </head>
@@ -128,7 +128,7 @@ h2{font:400 32px var(--f-round);margin:6px 0 12px;color:var(--navy)}
     <div class="menu">
       <button class="card" onclick="go('video')"><span class="em">🎬</span>독도 소개 영상</button>
       <button class="card" onclick="go('activity')"><span class="em">🧭</span>독도 관련 활동</button>
-      <button class="card gold" onclick="go('bell')"><span class="em">🔔</span>독도 골든벨 대회 입장<small style="font-size:22px">(오늘)</small></button>
+      <button class="card gold" onclick="go('bell')"><span class="em">🔔</span>독도 골든벨 대회 입장<small style="font-size:25px">(오늘)</small></button>
     </div>
     <div class="dday"><b>🇰🇷 10월 25일, 독도의 날</b>1900년 10월 25일 대한제국이 칙령 제41호로 울릉도를 울도군으로 승격하고 독도(석도)를 관할 구역으로 정한 사실을 기념하고, 독도가 우리 영토임을 널리 알리기 위해 정한 날이에요. 2010년 울릉군이 조례로 지정했어요.</div>
   </section>
@@ -224,7 +224,7 @@ function playVideo(k){
   if (k === 'boys'){
     const id = CONFIG.VIDEO_BOYS_YT;
     h = `<iframe allow="autoplay; encrypted-media; fullscreen" allowfullscreen src="https://www.youtube.com/embed/${id}?autoplay=1&rel=0"></iframe>
-         <div class="note" style="font-size:18px;padding:6px"><a style="color:#ffe3ee" target="_blank" href="https://www.youtube.com/watch?v=${id}">재생이 안 되면 유튜브에서 열기 ▶</a></div>`;
+         <div class="note" style="font-size:20px;padding:6px"><a style="color:#ffe3ee" target="_blank" href="https://www.youtube.com/watch?v=${id}">재생이 안 되면 유튜브에서 열기 ▶</a></div>`;
   } else {
     const id = k === 'birth' ? CONFIG.VIDEO_BIRTH : CONFIG.VIDEO_HISTORY;
     h = id ? `<iframe allow="autoplay; encrypted-media; fullscreen" allowfullscreen src="https://drive.google.com/file/d/${id}/preview"></iframe>`
@@ -452,7 +452,7 @@ function renderBell(){
   if (ph === 0){
     h += `<div class="msg">⏳ 대기 중입니다.<br>선생님이 문제를 열 때까지 기다려 주세요.</div>`;
   } else if (ph === 5){
-    h += `<div class="msg">🏆 대회가 끝났어요!<br>${st.champions && st.champions.length ? '골든벨의 주인공<br><b style="font-size:44px;color:#c98a00">' + st.champions.map(esc).join(' · ') + '</b>' : '끝까지 살아남은 사람이 없어요.'}</div>`;
+    h += `<div class="msg">🏆 대회가 끝났어요!<br>${st.champions && st.champions.length ? '골든벨의 주인공<br><b style="font-size:49px;color:#c98a00">' + st.champions.map(esc).join(' · ') + '</b>' : '끝까지 살아남은 사람이 없어요.'}</div>`;
   } else {
     h += `<div style="text-align:center"><span class="qno">${esc(Q.sec)} ${Q.no} / ${Q.secTotal}</span></div><div class="qbox">${esc(Q.text)}</div>`;
     if (ph === 1) h += `<div class="msg">👀 문제를 잘 읽어 보세요. 곧 답안을 낼 수 있어요.</div>`;
@@ -468,8 +468,8 @@ function renderBell(){
     }
     if (ph === 3) h += `<div class="msg">⏰ 답안이 마감됐어요. 정답을 확인할게요!</div>`;
     if (ph === 4){
-      h += `<div class="ans">정답 : <b>${esc(st.answerText)}</b>${st.explanation ? `<div style="font-size:22px;margin-top:6px">💡 ${esc(st.explanation)}</div>` : ''}</div>
-        <div class="msg">🎯 정답자 <b style="font-size:46px;color:#c98a00">${st.correct}</b>명<br>
+      h += `<div class="ans">정답 : <b>${esc(st.answerText)}</b>${st.explanation ? `<div style="font-size:25px;margin-top:6px">💡 ${esc(st.explanation)}</div>` : ''}</div>
+        <div class="msg">🎯 정답자 <b style="font-size:52px;color:#c98a00">${st.correct}</b>명<br>
         ${S.teacher ? '' : me.alive ? '<span class="ok">정답! 다음 문제에 도전해요 🎉</span>' : '<span class="no">아쉽지만 이번 문제에서 탈락했어요 😢</span>'}</div>`;
     }
   }
