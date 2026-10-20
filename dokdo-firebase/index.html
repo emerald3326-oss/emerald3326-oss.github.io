@@ -80,7 +80,7 @@ h2{font:400 36px var(--f-round);margin:6px 0 12px;color:var(--navy)}
 .choices{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:12px}
 .choices button{background:var(--sky);border:4px solid transparent;border-radius:18px;padding:18px;font:400 34px var(--f-body);color:var(--navy)}
 .choices button.sel{border-color:var(--gold);background:#fff4cc}
-.roster{margin-top:14px;border:2px dashed var(--sea);border-radius:16px;padding:10px 14px;text-align:left;max-height:230px;overflow:auto}
+.roster{border:2px dashed var(--sea);border-radius:16px;padding:10px 14px;text-align:left;max-height:170px;overflow:auto;margin:0 0 12px}
 .roster .rh{font:400 20px var(--f-round);color:var(--navy);margin-bottom:6px}.roster .rh small{font-size:15px;opacity:.8}
 .rl{display:flex;flex-wrap:wrap;gap:6px}.rc{border-radius:999px;padding:3px 12px;font:400 18px var(--f-body)}
 .rc.on{background:#d9f5e3;color:#14532d}.rc.off{background:#eee;color:#888;text-decoration:line-through}
@@ -470,6 +470,7 @@ function renderBell(){
   const me = st.me || {}, ph = st.phase, Q = st.question;
   if (ph >= 1 && ph <= 4 && !Q){ el.innerHTML = '<div class="msg">문제를 불러오는 중…</div>'; return; }
   let h = `<div class="stat"><b>👤 ${S.teacher ? '선생님' : esc(S.name) + (me.alive ? '' : ' (관전)')}</b><b>입장 ${st.joined}명</b><b>생존 ${st.alive}명</b>${ph >= 2 && ph <= 3 ? `<b>제출 ${st.submitted}명</b>` : ''}</div>`;
+  if (S.teacher) h += rosterHtml();   // 선생님 전용 명단: 문제 위쪽
   if (ph === 0){
     h += `<div class="msg">⏳ 대기 중입니다.<br>선생님이 문제를 열 때까지 기다려 주세요.</div>`;
   } else if (ph === 5){
@@ -494,7 +495,6 @@ function renderBell(){
         ${S.teacher ? '' : me.alive ? '<span class="ok">정답! 다음 문제에 도전해요 🎉</span>' : '<span class="no">아쉽지만 이번 문제에서 탈락했어요 😢</span>'}</div>`;
     }
   }
-  if (S.teacher) h += rosterHtml();
   if (S.teacher) h += `<div style="text-align:center;margin-top:8px"><button class="back" onclick="resetGame()">⚠ 대회 초기화</button></div>`;
   const old = $('ans'), keepVal = old ? old.value : null, keepFocus = old && document.activeElement === old;
   el.innerHTML = h;
