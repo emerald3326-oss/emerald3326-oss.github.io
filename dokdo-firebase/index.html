@@ -80,6 +80,10 @@ h2{font:400 36px var(--f-round);margin:6px 0 12px;color:var(--navy)}
 .choices{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:12px}
 .choices button{background:var(--sky);border:4px solid transparent;border-radius:18px;padding:18px;font:400 34px var(--f-body);color:var(--navy)}
 .choices button.sel{border-color:var(--gold);background:#fff4cc}
+.roster{margin-top:14px;border:2px dashed var(--sea);border-radius:16px;padding:10px 14px;text-align:left;max-height:230px;overflow:auto}
+.roster .rh{font:400 20px var(--f-round);color:var(--navy);margin-bottom:6px}.roster .rh small{font-size:15px;opacity:.8}
+.rl{display:flex;flex-wrap:wrap;gap:6px}.rc{border-radius:999px;padding:3px 12px;font:400 18px var(--f-body)}
+.rc.on{background:#d9f5e3;color:#14532d}.rc.off{background:#eee;color:#888;text-decoration:line-through}
 .msg{text-align:center;font:400 31px/1.5 var(--f-body);padding:26px 8px}
 .ok{color:var(--green)} .no{color:var(--red)}
 .ans{margin-top:12px;text-align:center;font:400 34px var(--f-body);background:#fff4cc;border-radius:16px;padding:12px}
@@ -312,7 +316,7 @@ function compute(){
   if (me) S.name = me.name;
   if (S.st && S.st.q !== st.q) S.editing = false;
   S.st = st;
-  const key = JSON.stringify([st.v, st.phase, st.q, st.joined, st.alive, st.submitted, st.me, st.question, S.teacher, S.editing]);
+  const key = JSON.stringify([st.v, st.phase, st.q, st.joined, st.alive, st.submitted, st.me, st.question, S.teacher, S.editing, S.teacher ? [D.players, D.submitted] : 0]);
   if (key !== S.lastKey){ S.lastKey = key; renderBell(); }
   refreshTeacher();
 }
@@ -441,6 +445,19 @@ async function send(){
 }
 function pick(i){ S.sel = S.st.question.choices[i]; renderBell(); }
 
+/* 선생님 전용: 실시간 남은 학생·탈락 학생 명단 (답안 제출 중에는 제출한 학생에 ✔) */
+function rosterHtml(){
+  const P = D.players || {}, sub = D.submitted || {}, ids = Object.keys(P);
+  if (!ids.length) return '';
+  const byName = (a, b) => String(P[a].name).localeCompare(String(P[b].name), 'ko');
+  const alive = ids.filter(k => P[k].alive).sort(byName), out = ids.filter(k => !P[k].alive).sort(byName);
+  const ph = S.st ? S.st.phase : 0, showSub = ph === 2 || ph === 3;
+  const chip = (k, cls) => `<span class="rc ${cls}">${esc(P[k].name)}${showSub && cls === 'on' ? (sub[k] ? ' ✔' : ' …') : ''}</span>`;
+  return `<div class="roster"><div class="rh">🟢 남은 학생 ${alive.length}명${showSub ? ' <small>(✔ 제출함 · … 아직)</small>' : ''}</div>
+    <div class="rl">${alive.map(k => chip(k, 'on')).join('') || '<i>아무도 남지 않았어요</i>'}</div>
+    ${out.length ? `<div class="rh" style="margin-top:10px">⚪ 탈락·관전 ${out.length}명</div><div class="rl">${out.map(k => chip(k, 'off')).join('')}</div>` : ''}</div>`;
+}
+
 function renderBell(){
   const el = $('bell-body'), st = S.st;
   if (!S.teacher && (!S.name || (st && st.me && !st.me.joined))){
@@ -477,6 +494,7 @@ function renderBell(){
         ${S.teacher ? '' : me.alive ? '<span class="ok">정답! 다음 문제에 도전해요 🎉</span>' : '<span class="no">아쉽지만 이번 문제에서 탈락했어요 😢</span>'}</div>`;
     }
   }
+  if (S.teacher) h += rosterHtml();
   if (S.teacher) h += `<div style="text-align:center;margin-top:8px"><button class="back" onclick="resetGame()">⚠ 대회 초기화</button></div>`;
   const old = $('ans'), keepVal = old ? old.value : null, keepFocus = old && document.activeElement === old;
   el.innerHTML = h;
