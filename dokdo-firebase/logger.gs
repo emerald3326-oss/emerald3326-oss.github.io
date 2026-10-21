@@ -43,6 +43,37 @@ function jsonOut_(o) {
   return ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON);
 }
 
+/**
+ * [처음 한 번 실행] 설정 점검 + 권한 승인
+ * 편집기 위쪽 함수 선택에서 `setup` 을 고르고 ▶ 실행을 누르세요.
+ * 권한 창이 뜨면 허용하고, 아래 "실행 로그"에 점검 결과(✅/❌)가 표시됩니다.
+ */
+function setup() {
+  const log = [];
+  try {
+    const ss = CFG.SHEET_ID ? SpreadsheetApp.openById(CFG.SHEET_ID) : SpreadsheetApp.getActiveSpreadsheet();
+    if (!ss) throw new Error('시트에 연결된 스크립트가 아닙니다. 구글 시트에서 [확장 프로그램 > Apps Script]로 열거나 CFG.SHEET_ID 에 시트 ID를 넣으세요.');
+    sheet_();
+    log.push('✅ 구글 시트 연결 + "' + CFG.SHEET_NAME + '" 시트 확인: ' + ss.getName());
+  } catch (e) { log.push('❌ 구글 시트: ' + e.message); }
+  try {
+    const it = DriveApp.getFoldersByName(CFG.DRIVE_FOLDER_NAME);
+    if (!it.hasNext()) DriveApp.createFolder(CFG.DRIVE_FOLDER_NAME);
+    log.push('✅ 드라이브 폴더 확인: ' + CFG.DRIVE_FOLDER_NAME);
+  } catch (e) { log.push('❌ 드라이브: ' + e.message); }
+  try {
+    const sec = PropertiesService.getScriptProperties().getProperty('LOG_SECRET');
+    log.push(sec ? '✅ LOG_SECRET 설정됨 (길이 ' + sec.length + ')' : '❌ LOG_SECRET 이 없습니다. 프로젝트 설정 > 스크립트 속성에 추가하세요.');
+  } catch (e) { log.push('❌ 스크립트 속성: ' + e.message); }
+  try {
+    HtmlService.createHtmlOutputFromFile('worksheet').getContent();
+    log.push('✅ 학습지 파일(worksheet) 확인');
+  } catch (e) { log.push('❌ HTML 파일 이름이 정확히 worksheet 인지 확인하세요: ' + e.message); }
+  log.push('웹앱 주소: ' + (ScriptApp.getService().getUrl() || '(아직 배포 전)'));
+  Logger.log(log.join('\n'));
+  return log.join('\n');
+}
+
 /** 시트에서 수식으로 실행되지 않도록(= + - @ 로 시작하는 글자) 앞에 ' 를 붙임 */
 function safe_(v) {
   if (v === null || v === undefined) return '';
