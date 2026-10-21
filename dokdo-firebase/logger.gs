@@ -74,6 +74,17 @@ function setup() {
   return log.join('\n');
 }
 
+/**
+ * [시험] 드라이브 저장이 되는지 확인: 함수 선택에서 testSave 를 고르고 ▶ 실행
+ * 성공하면 드라이브 "독도 학습지 제출" 폴더에 00000_테스트_학습지.html 파일이 생깁니다.
+ */
+function testSave() {
+  const r = saveWorksheet({ fields: { 'who-id': '00000', 'who-name': '테스트', 'a-month': '10', 'a-day': '25' } });
+  Logger.log(JSON.stringify(r));
+  return r;
+}
+
+/** 웹 주소로 직접 접속했을 때(GET) 보이는 상태 확인 문구 */
 /** 시트에서 수식으로 실행되지 않도록(= + - @ 로 시작하는 글자) 앞에 ' 를 붙임 */
 function safe_(v) {
   if (v === null || v === undefined) return '';
