@@ -12,7 +12,7 @@
  */
 
 const CFG = {
-  SHEET_ID: '',                  // 비워두면 이 스크립트가 연결된 스프레드시트 사용
+  SHEET_ID: '11mGWsmflG2aHBZwKcZ7StCyfDskFr_EnLTx74y9M1FE',   // 비우면 이 스크립트가 연결된 스프레드시트 사용
   SHEET_NAME: '기록',
   TEACHER_PW_DEFAULT: '1234',
   GEMINI_MODEL: 'gemini-3.6-flash',   // ※ 실제 모델 ID를 AI Studio에서 확인해 맞추세요
@@ -72,7 +72,11 @@ function setup() {
 function sheet_() {
   const ss = CFG.SHEET_ID ? SpreadsheetApp.openById(CFG.SHEET_ID) : SpreadsheetApp.getActiveSpreadsheet();
   let sh = ss.getSheetByName(CFG.SHEET_NAME);
-  if (!sh) sh = ss.insertSheet(CFG.SHEET_NAME);
+  if (!sh) {
+    const all = ss.getSheets();
+    if (all.length === 1) { sh = all[0]; sh.setName(CFG.SHEET_NAME); }   // 새 파일의 기본 탭을 '기록'으로
+    else sh = ss.insertSheet(CFG.SHEET_NAME);
+  }
   if (sh.getLastRow() === 0) {
     sh.getRange(1, 1, 1, HEADERS.length).setValues([HEADERS]).setFontWeight('bold').setBackground('#fde68a');
     sh.setFrozenRows(1);
@@ -255,7 +259,7 @@ function ask_(p) {
       '너는 "유쾌한 소정샘의 역사 Class"의 AI 보조 선생님이야. 중·고등학생에게 한국사·세계사 용어와 사진(사료, 유물, 지도 등)을 쉽고 친절한 존댓말로 설명해 줘. ' +
       '형식: 1) 한 줄 뜻 2) 시기·배경 3) 핵심 포인트 2~3개 4) 함께 알면 좋은 용어. 전체 400자 내외. 역사와 무관한 질문은 정중히 사양하고, 확실하지 않은 내용은 추측하지 말고 모른다고 말해.' }] },
     contents: [{ role: 'user', parts: parts }],
-    generationConfig: { temperature: 0.4, maxOutputTokens: 1024 }
+    generationConfig: { maxOutputTokens: 1024 }
   };
   const url = 'https://generativelanguage.googleapis.com/v1beta/models/' + CFG.GEMINI_MODEL + ':generateContent';
   const res = UrlFetchApp.fetch(url, {
