@@ -105,7 +105,7 @@ footer{text-align:center;color:var(--sub);font-size:13px;padding:18px 14px 28px}
 
 <nav class="tabs" id="tabs">
   <a href="#eval">학교평가 설문</a>
-  <a href="#agenda">사전 의제 설문</a>
+  <a href="#agenda">사전 의제·참여 신청</a>
   <a href="#forum">대토론회</a>
   <a href="#contact">문의</a>
 </nav>
@@ -123,8 +123,8 @@ footer{text-align:center;color:var(--sub);font-size:13px;padding:18px 14px 28px}
 
 <!-- 사전 의제 설문 -->
 <section id="agenda">
-  <h2>🗳️ 대토론회 사전 의제 설문</h2>
-  <p class="lead">토론 주제는 사전 의제 설문 결과를 반영해 확정합니다. 토론하고 싶은 주제를 골라 주세요.</p>
+  <h2>🗳️ 대토론회 사전 의제 설문 및 참여 신청</h2>
+  <p class="lead">대토론회에 참여하고 싶은 분은 이름을 적어 신청해 주세요. 토론 주제는 사전 의제 설문 결과를 반영해 확정하니, 토론하고 싶은 주제도 골라 주세요.</p>
   <div id="agendaBox"></div>
 </section>
 
@@ -334,15 +334,17 @@ $('#evalForm').addEventListener('submit', async e=>{
 /* ---------------- 사전 의제 설문 ---------------- */
 (function(){
   const st=state([CONFIG.agendaStart,CONFIG.agendaEnd]); const box=$('#agendaBox');
-  const head=`<p class="lead"><span class="badge ${st}">${{wait:'시작 전',open:'진행 중',end:'마감'}[st]}</span> ${fmt(CONFIG.agendaStart)} ~ ${fmt(CONFIG.agendaEnd)} · 약 3분 · 익명</p>`;
+  const head=`<p class="lead"><span class="badge ${st}">${{wait:'시작 전',open:'진행 중',end:'마감'}[st]}</span> ${fmt(CONFIG.agendaStart)} ~ ${fmt(CONFIG.agendaEnd)} · 약 3분</p>`;
   if(st!=='open'){ box.innerHTML=head+`<div class="note">${st==='wait'?'사전 의제 설문은 '+fmt(CONFIG.agendaStart)+'부터 참여할 수 있습니다.':'사전 의제 설문이 마감되었습니다.'}</div>`; return; }
   box.innerHTML=head+`<form id="agendaForm" novalidate>
-    <div class="q"><p><b>1. 참여 구분</b></p><div class="choice">${ROLES.map(r=>`<label><input type="radio" name="arole" value="${r[0]}">${r[1]} ${r[0]}</label>`).join('')}</div></div>
+    <div class="q"><p><b>참여 구분</b></p><div class="choice">${ROLES.map(r=>`<label><input type="radio" name="arole" value="${r[0]}">${r[1]} ${r[0]}</label>`).join('')}</div></div>
+    <div class="q"><p><b>이름</b> <small style="color:var(--sub)">(참가 확인과 모둠 편성에만 사용합니다)</small></p>
+      <input type="text" name="aname" maxlength="20" autocomplete="name" placeholder="이름을 입력해 주세요" style="width:100%;border:1.5px solid var(--line);border-radius:10px;padding:11px;font:inherit;font-size:16px"></div>
     <div id="agradeBox"></div>
-    <div class="q"><p><b>2. 가장 이야기 나누고 싶은 주제를 골라 주세요. (최대 2개)</b></p><div class="choice">
+    <div class="q"><p><b>가장 이야기 나누고 싶은 주제를 골라 주세요. (최대 2개)</b></p><div class="choice">
       ${CONFIG.topics.map((t,i)=>`<label><input type="checkbox" name="atopic" value="${esc(t.name)}"><span><b>${esc(t.name)}</b><br><small>${esc(t.q[0])}</small></span></label>`).join('')}</div></div>
-    <div class="q"><p><b>3. 내가 바라는 우리 학교의 모습은? (키워드 또는 한 문장)</b></p><textarea name="awish" maxlength="500" placeholder="예: 학생이 직접 기획하는 행사가 많은 학교"></textarea></div>
-    <div class="q"><p><b>4. 대토론회에서 꼭 다루었으면 하는 의제가 있다면 적어 주세요. (선택)</b></p><textarea name="aextra" maxlength="1000"></textarea></div>
+    <div class="q"><p><b>내가 바라는 우리 학교의 모습은? (키워드 또는 한 문장)</b></p><textarea name="awish" maxlength="500" placeholder="예: 학생이 직접 기획하는 행사가 많은 학교"></textarea></div>
+    <div class="q"><p><b>대토론회에서 꼭 다루었으면 하는 의제가 있다면 적어 주세요. (선택)</b></p><textarea name="aextra" maxlength="1000"></textarea></div>
     <button class="btn big" type="submit">제출하기</button></form>`;
   const f=$('#agendaForm');
   f.addEventListener('change',e=>{ if(e.target.name==='arole') $('#agradeBox').innerHTML = NEEDS_GRADE(e.target.value) ? gradeHtml(e.target.value==='학생'?'본인의 학년을 선택해 주세요.':'자녀의 학년을 선택해 주세요.') : ''; });
@@ -350,13 +352,15 @@ $('#evalForm').addEventListener('submit', async e=>{
   f.addEventListener('submit',async e=>{
     e.preventDefault(); const r=f.querySelector('[name=arole]:checked');
     if(!r){ toast('참여 구분을 선택해 주세요'); return; }
+    const name=f.aname.value.trim();
+    if(!name){ toast('이름을 입력해 주세요'); f.aname.focus(); return; }
     let grade=''; if(NEEDS_GRADE(r.value)){ const g=f.querySelector('input[name=grade]:checked'); if(!g){ toast('학년을 선택해 주세요'); $('#agradeBox').scrollIntoView({behavior:'smooth',block:'center'}); return; } grade=g.value; }
     const topics=[...f.querySelectorAll('[name=atopic]:checked')].map(x=>x.value);
     if(!topics.length){ toast('주제를 1개 이상 선택해 주세요'); return; }
-    const payload={type:'agenda',role:r.value,grade,topics,wish:f.awish.value.trim(),extra:f.aextra.value.trim(),ts:new Date().toISOString()};
+    const payload={type:'agenda',role:r.value,name,grade,topics,wish:f.awish.value.trim(),extra:f.aextra.value.trim(),ts:new Date().toISOString()};
     f.querySelector('button[type=submit]').disabled=true;
     try{ const res=await submit(payload);
-      doneView(f,payload,res.saved,'사전의제설문.csv',[['구분','역할','학년','선택주제','바라는 학교','추가 의제'],['사전의제',payload.role,grade,topics.join(' / '),payload.wish,payload.extra]]);
+      doneView(f,payload,res.saved,'사전의제설문.csv',[['구분','역할','이름','학년','선택주제','바라는 학교','추가 의제'],['사전의제',payload.role,name,grade,topics.join(' / '),payload.wish,payload.extra]]);
     }catch(err){ f.querySelector('button[type=submit]').disabled=false; toast('전송에 실패했어요. 잠시 후 다시 시도해 주세요'); }
   });
 })();
