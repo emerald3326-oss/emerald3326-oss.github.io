@@ -142,12 +142,9 @@ footer{text-align:center;color:var(--sub);font-size:13px;padding:18px 14px 28px}
   <div class="grid" id="topics"></div>
   <p class="lead" style="margin-top:8px">※ 사전 의제 설문 결과에 따라 세부 질문은 조정될 수 있습니다.</p>
 
-  <h3>프로그램</h3>
-  <table class="table" id="program"></table>
-  <p class="lead" style="margin-top:8px">※ 스마트기기가 없어도 괜찮아요. 모둠별로 학교 태블릿PC를 1대 이상 비치하고, 전지·포스트잇도 함께 사용합니다.</p>
-
   <h3>이렇게 운영해요</h3>
   <div class="grid" id="howto"></div>
+  <p class="lead" style="margin-top:8px">※ 스마트기기가 없어도 괜찮아요. 모둠별로 학교 태블릿PC를 1대 이상 비치하고, 전지·포스트잇도 함께 사용합니다.</p>
 
   <h3>토론 결과는 이렇게 활용돼요</h3>
   <ol id="feedback" style="margin:0;padding-left:20px"></ol>
@@ -208,15 +205,6 @@ const CONFIG = {
       q:['AI·디지털 에듀테크를 접목한 미래형 수업을 위해 전학공에서 무엇을 함께 배우고 나누어야 하는가?','학생·학부모가 바라는 수업의 모습은 무엇인가?'] },
     { name:'창의적 교육과정 운영', way:'배움을 만드는 방식', area:'공동체 기반 교육과정, 역량중심 설계, 지역 특성 반영, 학생 주도, 삶의 역량 성장, 성장중심 평가',
       q:['학생이 배움의 주체가 되는 2027학년도 교육과정을 위해 무엇을 바꿔야 하는가?','3S 디지털 창작소를 학생 주도 프로젝트와 배움의 공간으로 어떻게 활용할 것인가?'] }
-  ],
-
-  program:[
-    ['14:30~14:50','여는 마당 및 기조 발제',['교장 인사말','혁신자치학교 추진 경과 및 2027학년도 방향 안내','3S 디지털 창작소 개조식'],'도서관'],
-    ['14:50~15:10','아이스브레이킹',['키워드 설문 (예: "내가 바라는 우리 학교의 모습은?")','모둠 배정 안내 후 라운지로 이동'],'VR 역사관'],
-    ['15:10~15:50','[1부] 월드카페 원탁 토론',['학생·학부모·교사가 섞인 6~8인 1모둠 구성','1라운드(15분) → 테이블 이동 → 2라운드(15분)','라운드 정리 및 모둠 핵심 의견 선정(10분)','패들렛 또는 전지에 실시간 기록'],'VR 역사관'],
-    ['15:50~16:00','휴식 및 갤러리 워크',['다과 라운지 운영','다른 모둠 결과물을 둘러보며 스티커로 공감 표시'],'VR 역사관'],
-    ['16:00~16:20','[2부] 전체 공유',['모둠별 대표 발표(모둠당 2분 내외)','질의응답 및 핵심 의제 우선순위 즉석 투표'],'VR 역사관'],
-    ['16:20~16:30','마무리 및 평가',['소감 나눔, 결과 환류 일정 안내','모바일 만족도 조사 제출'],'VR 역사관']
   ],
 
   howto:[
@@ -374,7 +362,6 @@ $('#evalForm').addEventListener('submit', async e=>{
   $('#topics').innerHTML=CONFIG.topics.map(t=>`<div class="topic"><h4>${esc(t.name)}</h4><div class="sub">${esc(t.way)}</div>
     <ul>${t.q.map(q=>`<li>${esc(q)}</li>`).join('')}</ul>
     <details style="margin-top:8px"><summary style="cursor:pointer;font-size:14px;color:var(--main)">들여다볼 영역</summary><p style="font-size:14px;color:var(--sub);margin:6px 0 0">${esc(t.area)}</p></details></div>`).join('');
-  $('#program').innerHTML=CONFIG.program.map(p=>`<tr><th>${p[0]}</th><td><b>${esc(p[1])}</b><ul>${p[2].map(x=>`<li>${esc(x)}</li>`).join('')}</ul><small style="color:var(--sub)">📍 ${esc(p[3])}</small></td></tr>`).join('');
   $('#howto').innerHTML=CONFIG.howto.map(h=>`<div class="box"><div class="ico">${h.icon}</div><h3>${esc(h.t)}</h3><p>${esc(h.d)}</p></div>`).join('');
   $('#feedback').innerHTML=CONFIG.feedback.map(x=>`<li>${esc(x)}</li>`).join('');
 
