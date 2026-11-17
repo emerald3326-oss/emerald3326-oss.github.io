@@ -220,7 +220,7 @@ const CONFIG = {
     '만족도 조사 결과는 다음 대토론회 운영 개선에 활용합니다.'
   ],
 
-  contact:{ dept:'교육연구부(학교평가) · 대토론회 기획 담당', tel:'', email:'', note:'문의는 가정통신문 또는 e알리미로 안내된 연락처를 이용해 주세요.' }
+  contact:{ dept:'교육연구부(학교평가) · 대토론회 기획 담당', person:'김소정', tel:'', email:'', note:'문의는 가정통신문 또는 e알리미로 안내된 연락처를 이용해 주세요.' }
 };
 
 /* 학교평가 설문 문항 (붙임 2. 학생·학부모·교직원 공통 10문항 + 의견 2문항) */
@@ -365,7 +365,7 @@ $('#evalForm').addEventListener('submit', async e=>{
   $('#howto').innerHTML=CONFIG.howto.map(h=>`<div class="box"><div class="ico">${h.icon}</div><h3>${esc(h.t)}</h3><p>${esc(h.d)}</p></div>`).join('');
   $('#feedback').innerHTML=CONFIG.feedback.map(x=>`<li>${esc(x)}</li>`).join('');
 
-  const c=CONFIG.contact, r=[['담당',c.dept]]; if(c.tel) r.push(['전화',c.tel]); if(c.email) r.push(['이메일',c.email]); r.push(['안내',c.note]);
+  const c=CONFIG.contact, r=[['담당',c.dept]]; if(c.person) r.push(['담당자',c.person]); if(c.tel) r.push(['전화',c.tel]); if(c.email) r.push(['이메일',c.email]); r.push(['안내',c.note]);
   $('#contactInfo').innerHTML=r.map(x=>`<dt>${x[0]}</dt><dd>${esc(x[1])}</dd>`).join('');
 })();
 
