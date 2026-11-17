@@ -4,46 +4,50 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>삼성중학교 교육공동체 학교평가·대토론회 안내</title>
-<meta name="description" content="삼성중학교 교육공동체 학교평가 설문 참여 및 교육공동체 대토론회 안내">
-<meta name="theme-color" content="#1d4ed8">
+<meta name="description" content="삼성중학교 2026학년도 학교평가 설문 참여 및 2027학년도 혁신자치학교 도약을 위한 교육공동체 대토론회 안내">
+<meta name="theme-color" content="#15803d">
 <style>
 :root{
-  --bg:#f5f8ff; --card:#fff; --ink:#1e293b; --sub:#64748b; --line:#dbe5f7;
-  --main:#1d4ed8; --main2:#3b82f6; --soft:#e8f0ff; --accent:#f59e0b; --ok:#16a34a;
+  --bg:#f4faf5; --card:#fff; --ink:#1f2937; --sub:#64748b; --line:#d5e8d9;
+  --main:#15803d; --main2:#22a35a; --soft:#e4f4e8; --accent:#f59e0b; --warn:#b45309;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{margin:0;background:var(--bg);color:var(--ink);word-break:keep-all;line-height:1.65;
-  font-family:'Pretendard','Noto Sans KR','Malgun Gothic',system-ui,sans-serif;font-size:17px;padding-bottom:72px}
-header.hero{background:linear-gradient(135deg,#1e3a8a,#2563eb 60%,#60a5fa);color:#fff;padding:36px 18px 56px;text-align:center}
-.hero small{display:block;opacity:.85;letter-spacing:.05em}
-.hero h1{margin:8px 0 6px;font-size:clamp(24px,6vw,38px);line-height:1.3}
-.hero p{margin:0 auto;max-width:560px;opacity:.92}
+  font-family:'Pretendard','Noto Sans KR','Malgun Gothic',system-ui,sans-serif;font-size:17px;padding-bottom:76px}
+header.hero{background:linear-gradient(135deg,#14532d,#15803d 55%,#4ade80);color:#fff;padding:34px 18px 58px;text-align:center}
+.hero small{display:block;opacity:.9;letter-spacing:.04em;font-size:14px}
+.hero .vision{font-size:15px;opacity:.95;margin-bottom:4px}
+.hero h1{margin:8px 0 6px;font-size:clamp(23px,5.6vw,36px);line-height:1.35}
+.hero p{margin:0 auto;max-width:580px;opacity:.95;font-size:16px}
 .dday{display:inline-block;margin-top:18px;background:#fff;color:var(--main);border-radius:999px;padding:8px 20px;font-weight:700}
-nav.tabs{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.95);backdrop-filter:blur(6px);
-  border-bottom:1px solid var(--line);display:flex;gap:4px;justify-content:center;padding:8px;overflow-x:auto}
+nav.tabs{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.96);backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--line);display:flex;gap:4px;justify-content:flex-start;padding:8px;overflow-x:auto}
+@media(min-width:700px){nav.tabs{justify-content:center}}
 nav.tabs a{flex:none;text-decoration:none;color:var(--sub);padding:7px 14px;border-radius:999px;font-size:15px;font-weight:600}
-nav.tabs a:hover,nav.tabs a.on{background:var(--soft);color:var(--main)}
-main{max-width:860px;margin:-28px auto 0;padding:0 14px}
+nav.tabs a.on,nav.tabs a:hover{background:var(--soft);color:var(--main)}
+main{max-width:860px;margin:-30px auto 0;padding:0 14px}
 section{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px 20px;margin:0 0 16px;
-  box-shadow:0 4px 14px rgba(30,64,175,.06);scroll-margin-top:60px}
+  box-shadow:0 4px 14px rgba(21,128,61,.07);scroll-margin-top:60px}
 section h2{margin:0 0 4px;font-size:22px;color:var(--main)}
+section h3{margin:22px 0 8px;font-size:18px}
 section .lead{margin:0 0 16px;color:var(--sub);font-size:15px}
 .grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
-.box{border:1px solid var(--line);border-radius:14px;padding:16px;background:#fbfdff}
+.box{border:1px solid var(--line);border-radius:14px;padding:16px;background:#fbfefc}
 .box h3{margin:0 0 6px;font-size:17px}
 .box .ico{font-size:28px}
 .box p{margin:4px 0 12px;font-size:15px;color:var(--sub)}
 .btn{display:inline-block;background:var(--main);color:#fff;text-decoration:none;border:0;border-radius:10px;
   padding:10px 16px;font:inherit;font-size:15px;font-weight:600;cursor:pointer}
-.btn:hover{background:#1e40af}
+.btn:hover{background:#166534}
 .btn.ghost{background:var(--soft);color:var(--main)}
-.btn.off{background:#cbd5e1;color:#fff;pointer-events:none}
+.btn.off{background:#cbd5e1;color:#fff;pointer-events:none;cursor:default}
+.btn.big{width:100%;padding:14px;font-size:17px;margin-top:16px}
 .badge{display:inline-block;font-size:12px;font-weight:700;border-radius:6px;padding:2px 8px;background:var(--soft);color:var(--main);vertical-align:middle}
-.badge.open{background:#dcfce7;color:var(--ok)} .badge.wait{background:#fef3c7;color:#b45309} .badge.end{background:#e2e8f0;color:#475569}
-dl.info{display:grid;grid-template-columns:90px 1fr;gap:10px 12px;margin:0}
+.badge.wait{background:#fef3c7;color:var(--warn)} .badge.end{background:#e2e8f0;color:#475569}
+dl.info{display:grid;grid-template-columns:84px 1fr;gap:10px 12px;margin:0}
 dl.info dt{font-weight:700;color:var(--main)} dl.info dd{margin:0}
-ol.timeline{list-style:none;margin:0;padding:0;position:relative}
+ol.timeline{list-style:none;margin:0;padding:0}
 ol.timeline li{position:relative;padding:0 0 18px 28px;border-left:3px solid var(--soft);margin-left:8px}
 ol.timeline li:last-child{border-color:transparent;padding-bottom:0}
 ol.timeline li::before{content:"";position:absolute;left:-9px;top:5px;width:15px;height:15px;border-radius:50%;background:var(--main2);border:3px solid #fff;box-shadow:0 0 0 2px var(--main2)}
@@ -53,18 +57,39 @@ ol.timeline b{display:block} ol.timeline span{color:var(--sub);font-size:15px}
 .table{width:100%;border-collapse:collapse;font-size:15px}
 .table th,.table td{border-bottom:1px solid var(--line);padding:9px 8px;text-align:left;vertical-align:top}
 .table th{color:var(--main);white-space:nowrap}
-.chips{display:flex;flex-wrap:wrap;gap:8px}
-.chip{background:var(--soft);color:var(--main);padding:6px 12px;border-radius:999px;font-size:15px;font-weight:600}
-details{border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin-bottom:8px;background:#fbfdff}
-details summary{cursor:pointer;font-weight:700}
-details p{margin:8px 0 0;color:var(--sub);font-size:15px}
+.table ul{margin:0;padding-left:18px}
 .note{background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:12px 14px;font-size:14px;color:#92400e;margin-top:14px}
+.topic{border:1px solid var(--line);border-radius:14px;padding:14px 16px;background:#fbfefc}
+.topic h4{margin:0 0 2px;font-size:17px;color:var(--main)} .topic .sub{font-size:13px;color:var(--sub);margin-bottom:8px}
+.topic ul{margin:0;padding-left:18px;font-size:15px}
 .actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+
+/* 설문 폼 */
+.roles{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+.roles button{flex:1;min-width:96px;border:2px solid var(--line);background:#fff;border-radius:12px;padding:12px 8px;font:inherit;font-weight:700;cursor:pointer;color:var(--sub)}
+.roles button.on{border-color:var(--main);background:var(--soft);color:var(--main)}
+.q{border:1px solid var(--line);border-radius:14px;padding:14px;margin:12px 0;background:#fbfefc}
+.q.err{border-color:#dc2626;background:#fef2f2}
+.q .tag{display:inline-block;font-size:12px;font-weight:700;background:var(--soft);color:var(--main);border-radius:6px;padding:1px 8px;margin-bottom:4px}
+.q p{margin:2px 0 10px;font-size:15.5px}
+.scale{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.scale label{position:relative;cursor:pointer}
+.scale input{position:absolute;opacity:0;inset:0;cursor:pointer}
+.scale span{display:block;text-align:center;border:1.5px solid var(--line);border-radius:10px;padding:8px 2px;font-size:12px;line-height:1.3;background:#fff;color:var(--sub)}
+.scale span b{display:block;font-size:18px;color:var(--ink)}
+.scale input:checked+span{background:var(--main);border-color:var(--main);color:#fff}
+.scale input:checked+span b{color:#fff}
+.scale input:focus-visible+span{outline:3px solid #86efac}
+textarea{width:100%;min-height:84px;border:1.5px solid var(--line);border-radius:10px;padding:10px;font:inherit;font-size:15px;resize:vertical}
+.choice label{display:flex;gap:10px;align-items:flex-start;border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;margin:6px 0;cursor:pointer;font-size:15px;background:#fff}
+.choice input{margin-top:4px;accent-color:var(--main)}
+.choice label:has(input:checked){border-color:var(--main);background:var(--soft)}
+.done-msg{text-align:center;padding:24px 8px}
+.done-msg .big{font-size:44px}
 footer{text-align:center;color:var(--sub);font-size:13px;padding:18px 14px 28px}
-.bar{position:fixed;left:0;right:0;bottom:0;z-index:30;background:#fff;border-top:1px solid var(--line);
-  display:flex;gap:8px;padding:10px 14px;justify-content:center}
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:30;background:#fff;border-top:1px solid var(--line);display:flex;gap:8px;padding:10px 14px;justify-content:center}
 .bar .btn{flex:1;max-width:260px;text-align:center}
-#toast{position:fixed;left:50%;bottom:84px;transform:translateX(-50%);background:#1e293b;color:#fff;padding:9px 16px;border-radius:999px;font-size:14px;opacity:0;pointer-events:none;transition:.25s}
+#toast{position:fixed;left:50%;bottom:88px;transform:translateX(-50%);background:#1e293b;color:#fff;padding:9px 16px;border-radius:999px;font-size:14px;opacity:0;pointer-events:none;transition:.25s;z-index:40;max-width:90vw;text-align:center}
 #toast.show{opacity:1}
 @media print{nav.tabs,.bar,.actions{display:none} section{box-shadow:none;break-inside:avoid}}
 </style>
@@ -72,29 +97,40 @@ footer{text-align:center;color:var(--sub);font-size:13px;padding:18px 14px 28px}
 <body>
 
 <header class="hero">
-  <small>SAMSUNG MIDDLE SCHOOL</small>
-  <h1>2026 교육공동체 학교평가<br>&amp; 교육공동체 대토론회</h1>
-  <p>학생·학부모·교직원이 함께 우리 학교를 돌아보고, 더 나은 삼성중학교를 만들어 갑니다.</p>
+  <small class="vision">배려와 존중으로 물을 주어 행복한 배움 나무를 가꾸자</small>
+  <small>삼성중학교 · 인성으로 바르게! 지성으로 현명하게! 감성으로 따뜻하게!</small>
+  <h1>2026학년도 학교평가 설문<br>&amp; 교육공동체 대토론회</h1>
+  <p>2027학년도 혁신자치학교 도약을 위해, 학생·학부모·교직원이 함께 우리 학교를 돌아보고 이야기합니다.</p>
   <span class="dday" id="dday"></span>
 </header>
 
 <nav class="tabs" id="tabs">
-  <a href="#eval">학교평가</a>
+  <a href="#eval">학교평가 설문</a>
+  <a href="#agenda">사전 의제 설문</a>
   <a href="#schedule">일정</a>
   <a href="#forum">대토론회</a>
-  <a href="#faq">자주 묻는 질문</a>
   <a href="#contact">문의</a>
 </nav>
 
 <main>
 
+<!-- 학교평가 설문 -->
 <section id="eval">
-  <h2>📝 교육공동체 학교평가</h2>
-  <p class="lead">대상별로 아래 버튼을 눌러 설문에 참여해 주세요. 응답은 익명으로 처리되며 학교 교육과정 개선에만 활용됩니다.</p>
-  <div class="grid" id="surveyGrid"></div>
-  <div class="note">⚠️ 설문 링크·기간은 학교에서 확정한 뒤 파일 상단 <code>CONFIG</code>에 입력하면 자동 반영됩니다. (링크가 비어 있으면 '준비 중'으로 표시)</div>
+  <h2>📝 2026학년도 학교평가 설문조사</h2>
+  <p class="lead">본교 교육활동 전반을 평가하고 삼성중학교 교육을 개선하기 위한 기초자료로 활용됩니다. 솔직한 응답이 우리 학교 발전의 밑거름이 됩니다.</p>
+  <div class="roles" id="evalRoles"></div>
+  <div id="evalStatus" class="lead" style="margin:6px 0 0"></div>
+  <form id="evalForm" novalidate hidden></form>
 </section>
 
+<!-- 사전 의제 설문 -->
+<section id="agenda">
+  <h2>🗳️ 대토론회 사전 의제 설문</h2>
+  <p class="lead">토론 주제는 사전 의제 설문 결과를 반영해 확정합니다. 토론하고 싶은 주제를 골라 주세요.</p>
+  <div id="agendaBox"></div>
+</section>
+
+<!-- 일정 -->
 <section id="schedule">
   <h2>📅 추진 일정</h2>
   <p class="lead">오늘 날짜를 기준으로 진행 상황이 자동 표시됩니다.</p>
@@ -102,34 +138,39 @@ footer{text-align:center;color:var(--sub);font-size:13px;padding:18px 14px 28px}
   <div class="actions"><button class="btn ghost" id="icsBtn">📆 대토론회 일정 캘린더에 저장</button></div>
 </section>
 
+<!-- 대토론회 -->
 <section id="forum">
   <h2>💬 교육공동체 대토론회</h2>
-  <p class="lead">평가 결과를 함께 나누고, 학교 발전 방향을 학생·학부모·교직원이 직접 토론합니다.</p>
+  <p class="lead">2027학년도 혁신자치학교 도약을 위한 월드카페 원탁 토론입니다. 학생·학부모·교직원이 동등한 발언권으로 참여합니다.</p>
   <dl class="info" id="forumInfo"></dl>
 
-  <h3 style="margin:22px 0 8px">토론 주제</h3>
-  <div class="chips" id="topics"></div>
+  <h3>이런 목적으로 열려요</h3>
+  <ul id="purpose" style="margin:0;padding-left:20px"></ul>
 
-  <h3 style="margin:22px 0 8px">진행 순서</h3>
+  <h3>모둠별 토론 주제(안)</h3>
+  <div class="grid" id="topics"></div>
+  <p class="lead" style="margin-top:8px">※ 사전 의제 설문 결과에 따라 세부 질문은 조정될 수 있습니다.</p>
+
+  <h3>프로그램</h3>
   <table class="table" id="program"></table>
+  <p class="lead" style="margin-top:8px">※ 스마트기기가 없어도 괜찮아요. 모둠별로 학교 태블릿PC를 1대 이상 비치하고, 전지·포스트잇도 함께 사용합니다.</p>
 
-  <h3 style="margin:22px 0 8px">참여 방법</h3>
+  <h3>이렇게 운영해요</h3>
   <div class="grid" id="howto"></div>
-</section>
 
-<section id="faq">
-  <h2>❓ 자주 묻는 질문</h2>
-  <div id="faqList"></div>
+  <h3>토론 결과는 이렇게 활용돼요</h3>
+  <ol id="feedback" style="margin:0;padding-left:20px"></ol>
 </section>
 
 <section id="contact">
   <h2>📞 문의</h2>
   <dl class="info" id="contactInfo"></dl>
+  <div class="note">📸 행사 중 사진·영상 촬영과 결과물 공개는 사전 동의를 받은 범위에서만 진행합니다.</div>
 </section>
 
 </main>
 
-<footer>© 삼성중학교 · 교육공동체 학교평가 안내 웹앱</footer>
+<footer>© 삼성중학교 · 교육공동체 학교평가·대토론회 안내 웹앱</footer>
 
 <div class="bar">
   <a class="btn" href="#eval">설문 참여하기</a>
@@ -139,130 +180,239 @@ footer{text-align:center;color:var(--sub);font-size:13px;padding:18px 14px 28px}
 
 <script>
 /* =========================================================
-   ★ 학교에서 수정할 값은 이 CONFIG 한 곳뿐입니다. ★
-   (예시 값은 확정 전 가안입니다. 반드시 실제 내용으로 바꾸세요.)
-   날짜 형식: 'YYYY-MM-DD' / 시간 'HH:MM'
+   ★ 학교에서 수정할 값은 이 CONFIG 한 곳입니다. ★
+   날짜 형식 'YYYY-MM-DD'
    ========================================================= */
 const CONFIG = {
-  schoolName: '삼성중학교',
+  /* 응답 저장 주소(구글 Apps Script 웹 앱 URL). 비어 있으면 '테스트 모드'(응답이 저장되지 않음)
+     설정 방법은 samsung-eval/Code.gs 상단 주석 참고 */
+  submitUrl: '',
 
-  surveys: [
-    { icon:'🎒', who:'학생',   desc:'학교생활·수업·안전·생활지도 만족도',      url:'', start:'2026-11-23', end:'2026-12-04', time:'약 10분' },
-    { icon:'👪', who:'학부모', desc:'교육과정·소통·학교 운영 전반에 대한 의견', url:'', start:'2026-11-23', end:'2026-12-04', time:'약 10분' },
-    { icon:'🧑‍🏫', who:'교직원', desc:'업무환경·교육활동 지원·학교 문화',         url:'', start:'2026-11-23', end:'2026-12-04', time:'약 10분' }
-  ],
+  /* 학교평가 설문 기간 (※ 가안: 실제 기간으로 수정) */
+  evalStart: '2026-11-17',
+  evalEnd:   '2026-12-04',
+  /* 사전 의제 설문 기간 (계획서: 12. 1.~12. 4.) */
+  agendaStart: '2026-12-01',
+  agendaEnd:   '2026-12-04',
 
   forum: {
-    date:'2026-12-16', start:'15:00', end:'17:00',
-    place:'삼성중학교 다목적실 (예시)',
-    target:'학생 대표·학부모·교직원 (참관 희망자 누구나)',
-    note:'온라인 참여 링크는 확정 후 안내합니다.',
-    liveUrl:''   // 온라인 중계/참여 링크가 있으면 입력
+    date:'2026-12-16', start:'14:30', end:'16:30',
+    place:'본교 3S 디지털 창작소 및 삼성다락방',
+    target:'학생 대표(학생회 및 희망 학생), 학부모 대표 및 희망 학부모, 전체 교직원 (총 40명 내외)',
+    method:'실시간 에듀테크 도구를 활용한 의견 수집 및 월드카페 형식의 원탁 토론'
   },
 
-  schedule: [
-    { date:'2026-11-17', title:'교육공동체 학교평가 안내',        desc:'가정통신문·웹앱 안내 시작' },
-    { date:'2026-11-23', title:'학교평가 설문 시작',              desc:'학생·학부모·교직원 온라인 설문 (~12/4)' },
-    { date:'2026-12-04', title:'학교평가 설문 마감',              desc:'마감일 23:59까지' },
-    { date:'2026-12-09', title:'결과 분석 및 토론 주제 확정',     desc:'평가위원회에서 분석' },
-    { date:'2026-12-16', title:'교육공동체 대토론회',             desc:'15:00 ~ 17:00' },
-    { date:'2026-12-23', title:'평가·토론 결과 공유',             desc:'학교 홈페이지 및 가정통신문 게시' }
+  purpose:[
+    '혁신자치학교의 철학과 비전을 학생·학부모·교직원이 함께 공유하고, 교육공동체가 주도하는 민주적 학교 문화를 안착시킵니다.',
+    '2027학년도 교육과정, 학교 공간 활용, 전문적 학습공동체 운영에 관한 현장의 의견을 수렴해 학교 운영 계획에 실질적으로 반영합니다.',
+    '학생·학부모·교직원 간 수평적 소통을 통해 상호 존중과 연대감을 형성합니다.'
   ],
 
-  topics:['학교폭력 예방 및 안전한 학교','학생 자치·참여 활동','교육과정과 수업 개선','학부모 소통·참여 방식','교복·생활규정 개선','방과후·돌봄 프로그램'],
+  schedule:[
+    { date:'2026-11-23', end:'2026-11-27', title:'운영 계획 수립 및 결재', desc:'11월 4주 · 업무 분장 협의' },
+    { date:'2026-12-01', end:'2026-12-04', title:'가정통신문(e알리미) 발송 · 사전 의제 설문', desc:'12. 1.~12. 4. · 웹 앱으로 실시' },
+    { date:'2026-12-09', title:'참가 신청서 취합 · 모둠 편성 마감', desc:'학생·학부모 참가 신청서 (~12. 9.)' },
+    { date:'2026-12-07', end:'2026-12-11', title:'퍼실리테이터(이끄미) 사전 연수', desc:'12월 2주 · 기기·장소 점검' },
+    { date:'2026-12-16', title:'교육공동체 대토론회', desc:'14:30 ~ 16:30 · 3S 디지털 창작소 및 삼성다락방' },
+    { date:'2026-12-21', end:'2026-12-31', title:'결과 정리 및 보고서 작성·공유', desc:'12월 4주 · 학교 누리집·e알리미·교직원 회의' },
+    { date:'2027-01-04', end:'2027-02-26', title:'2027학년도 교육과정·예산 편성에 결과 반영', desc:'2027. 1.~2.' }
+  ],
+
+  topics:[
+    { name:'민주적 자치공동체', way:'결정하는 방식', area:'비전 공유와 책무성, 교육활동 중심 시스템, 권한위임과 책임, 소통과 참여, 학생·학부모 참여, 지역사회 연계',
+      q:['학생 자치 역량을 키우고, 학생이 스스로 기획·운영하는 활동을 확대하기 위한 방안은 무엇인가?','학교 텃밭 운영과 지역 사회 연계 방안'] },
+    { name:'윤리적 생활공동체', way:'관계 맺는 방식', area:'존엄과 신뢰, 공동체 협약과 실천, 존중과 배려의 생활교육, 중재와 회복, 학생자치, 시민교육',
+      q:['모두가 존중받는 학교를 위해 어떤 약속을 함께 만들고 지킬 것인가? (학교 헌장 만들기)'] },
+    { name:'전문적 학습공동체', way:'함께 배우는 방식', area:'학습조직화, 공동과제 찾기, 공동연구와 공동실천, 수업 개방과 공유, 성찰과 환류, 연구 결과 공유·축적',
+      q:['AI·디지털 에듀테크를 접목한 미래형 수업을 위해 전학공에서 무엇을 함께 배우고 나누어야 하는가?','학생·학부모가 바라는 수업의 모습은 무엇인가?'] },
+    { name:'창의적 교육과정 운영', way:'배움을 만드는 방식', area:'공동체 기반 교육과정, 역량중심 설계, 지역 특성 반영, 학생 주도, 삶의 역량 성장, 성장중심 평가',
+      q:['학생이 배움의 주체가 되는 2027학년도 교육과정을 위해 무엇을 바꿔야 하는가?','3S 디지털 창작소를 학생 주도 프로젝트와 배움의 공간으로 어떻게 활용할 것인가?'] }
+  ],
 
   program:[
-    ['15:00','개회 및 학교평가 결과 보고'],
-    ['15:20','주제별 모둠 토론 (학생·학부모·교직원 혼합)'],
-    ['16:10','모둠별 발표 및 전체 질의응답'],
-    ['16:40','의견 정리 및 학교장 총평'],
-    ['17:00','폐회']
+    ['14:30~14:50','여는 마당 및 기조 발제',['교장 인사말','혁신자치학교 추진 경과 및 2027학년도 방향 안내','3S 디지털 창작소 개조식'],'도서관'],
+    ['14:50~15:10','아이스브레이킹',['키워드 설문 (예: "내가 바라는 우리 학교의 모습은?")','모둠 배정 안내 후 라운지로 이동'],'VR 역사관'],
+    ['15:10~15:50','[1부] 월드카페 원탁 토론',['학생·학부모·교사가 섞인 6~8인 1모둠 구성','1라운드(15분) → 테이블 이동 → 2라운드(15분)','라운드 정리 및 모둠 핵심 의견 선정(10분)','패들렛 또는 전지에 실시간 기록'],'VR 역사관'],
+    ['15:50~16:00','휴식 및 갤러리 워크',['다과 라운지 운영','다른 모둠 결과물을 둘러보며 스티커로 공감 표시'],'VR 역사관'],
+    ['16:00~16:20','[2부] 전체 공유',['모둠별 대표 발표(모둠당 2분 내외)','질의응답 및 핵심 의제 우선순위 즉석 투표'],'VR 역사관'],
+    ['16:20~16:30','마무리 및 평가',['소감 나눔, 결과 환류 일정 안내','모바일 만족도 조사 제출'],'VR 역사관']
   ],
 
   howto:[
-    { icon:'1️⃣', t:'설문 참여', d:'기간 내 대상별 설문에 응답해 주세요.' },
-    { icon:'2️⃣', t:'의견 제안', d:'토론하고 싶은 주제를 담임·학교로 제안할 수 있어요.' },
-    { icon:'3️⃣', t:'토론회 참석', d:'학생 대표·학부모·교직원은 현장 또는 온라인으로 참여합니다.' }
+    { icon:'⚖️', t:'동등한 발언권', d:'학생·학부모·교직원이 동등하게 참여하는 수평적 토론입니다.' },
+    { icon:'🪑', t:'월드카페 원탁', d:'6~8인 모둠으로 앉고, 주제 테이블에는 교사 1명(테이블 호스트)이 진행과 기록을 도와요.' },
+    { icon:'📱', t:'디지털 + 아날로그', d:'웹 앱·패들렛과 전지·포스트잇을 함께 써서 누구나 편하게 참여해요.' }
   ],
 
-  faq:[
-    ['설문은 익명인가요?','네. 개인을 식별하는 정보는 수집하지 않으며 통계 형태로만 활용됩니다.'],
-    ['스마트폰으로도 응답할 수 있나요?','가능합니다. PC·태블릿·스마트폰 모두 지원됩니다.'],
-    ['학부모가 두 자녀 이상이면 어떻게 하나요?','학부모 설문은 가구당 1회 응답이 원칙입니다. (학교 기준에 맞게 수정하세요)'],
-    ['대토론회에 꼭 참석해야 하나요?','참석은 자유이며, 참석하지 못해도 설문 의견은 토론 자료로 반영됩니다.']
+  feedback:[
+    '토론 결과를 주제별로 분류해 보고서로 작성하고, 학교 누리집·e알리미·교직원 회의로 공유합니다.',
+    '핵심 의제는 2027학년도 교육과정 협의회, 학교운영위원회 심의, 예산 편성 과정에 안건으로 올립니다.',
+    '반영된 의견과 반영하지 못한 의견 및 그 사유를 교육공동체에 다시 안내합니다.',
+    '만족도 조사 결과는 다음 대토론회 운영 개선에 활용합니다.'
   ],
 
-  contact:{ dept:'교육과정부 (예시)', tel:'', email:'', hours:'평일 08:40 ~ 16:40' }
+  contact:{ dept:'교육연구부(학교평가) · 대토론회 기획 담당', tel:'', email:'', note:'문의는 가정통신문 또는 e알리미로 안내된 연락처를 이용해 주세요.' }
 };
 
-/* ---------------- 이하 로직 ---------------- */
+/* 학교평가 설문 문항 (붙임 2. 학생·학부모·교직원 공통 10문항 + 의견 2문항) */
+const EVAL_Q = [
+  ['교육과정 운영 노력','우리 학교는 학생 핵심 역량 함양을 위해 다양한 교육과정 운영을 위해 노력하고 있다.'],
+  ['기초 학력 보장','우리 학교는 학생들의 기초학력 향상을 위해 노력하고 있다.'],
+  ['인성친화적 학교문화 조성','우리 학교는 인성공모전, 친구사랑의 날 등을 통해 인성친화적 학교문화 조성에 힘쓰고 있다.'],
+  ['학교폭력예방 및 교육활동보호','우리 학교는 학교 구성원의 권리와 책임을 인식하고 인권친화적 학교문화 조성을 위해 교직원, 학생, 학부모 대상 학교폭력예방교육 및 교육활동침해 예방교육을 실시하고 있다.'],
+  ['학습의 확장','우리 학교는 지역 연계 교육과정과 디지털 활용 수업을 통해 시공간을 넘나드는 유연한 교육과정을 운영하여 맞춤형 학습을 지원한다.'],
+  ['진로교육','우리 학교는 발달단계별 맞춤형 진로교육을 통해 학생의 진로 설계를 지원한다.'],
+  ['디지털 기반 학생 맞춤형 교육','우리 학교는 다양한 디지털 교수학습 플랫폼을 활용하여 학생 맞춤형 교육을 실현하고 있다.'],
+  ['학습으로의 평가','우리 학교는 실생활 맥락 기반 평가, 맞춤형 피드백을 제공하는 평가, 학습을 확장하는 평가를 통해 수업의 질을 개선하고 학생 학습 성찰을 지원한다.'],
+  ['예술체육교육','우리 학교는 학생의 흥미, 소질, 다양성을 존중한 다양한 체험중심 문화예술 체육 교육과정을 운영하여 학생이 예술적 감성으로 공감하며 성장하는 행복한 학교문화를 조성하고 있다.'],
+  ['독서교육','우리 학교는 독서, 토론, 작가와의 만남 등 교육과정과 연계하여 다양한 독서인문교육을 내실화하고 있다.']
+];
+const EVAL_OPEN = [
+  '올해 진행한 교육활동 중 만족스러웠던 교육활동이 있으시다면 답변 부탁드립니다. (자유롭게 생각나는 대로 작성해주세요)',
+  '위에 제시된 체크리스트 이외에 더 추가되었으면 하는 교육활동이 있으시다면 답변 부탁드립니다.'
+];
+const SCALE = [[5,'매우<br>그렇다'],[4,'대체로<br>그렇다'],[3,'보통<br>이다'],[2,'별로<br>아니다'],[1,'전혀<br>아니다']];
+const ROLES = [['학생','🎒'],['학부모','👪'],['교직원','🧑‍🏫']];
+
+/* ---------------- 공통 유틸 ---------------- */
 const $ = s => document.querySelector(s);
 const today = (() => { const d = new Date(); d.setHours(0,0,0,0); return d; })();
 const D = s => { const [y,m,d] = s.split('-').map(Number); return new Date(y,m-1,d); };
 const fmt = s => { const d = D(s); return `${d.getMonth()+1}월 ${d.getDate()}일(${'일월화수목금토'[d.getDay()]})`; };
 const esc = t => String(t).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-function toast(m){ const t=$('#toast'); t.textContent=m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),1800); }
+function toast(m){ const t=$('#toast'); t.textContent=m; t.classList.add('show'); clearTimeout(toast.t); toast.t=setTimeout(()=>t.classList.remove('show'),2400); }
+const state = d => (today<D(d[0])) ? 'wait' : (today>D(d[1]) ? 'end' : 'open');
+const store = { get(k){ try{return localStorage.getItem(k)}catch(e){return null} }, set(k,v){ try{localStorage.setItem(k,v)}catch(e){} } };
+
+/* 응답 전송 */
+async function submit(payload){
+  if(!CONFIG.submitUrl){ return {saved:false}; }
+  await fetch(CONFIG.submitUrl,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)});
+  return {saved:true};
+}
+function downloadCsv(name, rows){
+  const csv='﻿'+rows.map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\r\n');
+  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'})); a.download=name; a.click();
+}
+function doneView(box, payload, saved, csvName, csvRows){
+  box.innerHTML = `<div class="done-msg"><div class="big">${saved?'🌳':'🧪'}</div>
+    <h3 style="margin:8px 0">${saved?'참여해 주셔서 감사합니다!':'테스트 모드입니다'}</h3>
+    <p class="lead">${saved?'소중한 의견이 전달되었습니다. 결과는 학교 누리집과 e알리미로 공유됩니다.':'응답 저장 주소(submitUrl)가 아직 설정되지 않아 <b>응답이 학교에 전달되지 않았습니다.</b>'}</p>
+    ${saved?'':'<button class="btn ghost" id="csvBtn">내 응답 CSV로 저장</button>'}</div>`;
+  if(!saved){ $('#csvBtn').onclick=()=>downloadCsv(csvName,csvRows); }
+}
 
 /* D-day */
 (function(){
-  const f = D(CONFIG.forum.date), n = Math.round((f - today)/864e5);
+  const n = Math.round((D(CONFIG.forum.date) - today)/864e5);
   $('#dday').textContent = n>0 ? `대토론회 D-${n}` : n===0 ? '🎉 오늘은 대토론회 날!' : '대토론회가 종료되었습니다';
 })();
 
-/* 설문 카드 */
-$('#surveyGrid').innerHTML = CONFIG.surveys.map(s=>{
-  const st=D(s.start), en=D(s.end);
-  let badge='<span class="badge open">진행 중</span>', can=!!s.url;
-  if(today<st){ badge='<span class="badge wait">시작 전</span>'; can=false; }
-  else if(today>en){ badge='<span class="badge end">마감</span>'; can=false; }
-  const btn = can ? `<a class="btn" href="${esc(s.url)}" target="_blank" rel="noopener">설문 참여하기</a>`
-                  : `<span class="btn off">${s.url ? '참여 불가' : '준비 중'}</span>`;
-  return `<div class="box"><div class="ico">${s.icon}</div><h3>${esc(s.who)} 설문 ${badge}</h3>
-    <p>${esc(s.desc)}<br>📌 ${fmt(s.start)} ~ ${fmt(s.end)} · ${esc(s.time)}</p>${btn}</div>`;
-}).join('');
+/* ---------------- 학교평가 설문 ---------------- */
+let role=null;
+const evalSt = state([CONFIG.evalStart, CONFIG.evalEnd]);
+$('#evalRoles').innerHTML = ROLES.map(r=>`<button type="button" data-r="${r[0]}">${r[1]}<br>${r[0]}</button>`).join('');
+$('#evalStatus').innerHTML = `<span class="badge ${evalSt}">${{wait:'시작 전',open:'진행 중',end:'마감'}[evalSt]}</span> ${fmt(CONFIG.evalStart)} ~ ${fmt(CONFIG.evalEnd)} · 약 5분 · 익명`;
+document.querySelectorAll('#evalRoles button').forEach(b=>b.onclick=()=>{
+  role=b.dataset.r;
+  document.querySelectorAll('#evalRoles button').forEach(x=>x.classList.toggle('on',x===b));
+  renderEval();
+});
+function renderEval(){
+  const f=$('#evalForm'); f.hidden=false;
+  if(evalSt!=='open'){ f.innerHTML=`<div class="note">${evalSt==='wait'?'아직 설문 기간이 아닙니다.':'설문이 마감되었습니다.'}</div>`; return; }
+  if(store.get('eval-done-'+role)) f.innerHTML=`<div class="note">이 기기에서 이미 ${role} 설문에 응답하셨습니다. 중복 응답을 막기 위해 다시 제출하려면 아래 버튼을 눌러 주세요.<br><button type="button" class="btn ghost" id="again" style="margin-top:8px">다시 응답하기</button></div>`,
+    $('#again').onclick=()=>{store.set('eval-done-'+role,'');renderEval()};
+  else f.innerHTML = `
+    <p class="lead" style="margin-top:12px">※ 5. 매우 그렇다 · 4. 대체로 그렇다 · 3. 보통이다 · 2. 별로 그렇지 않다 · 1. 전혀 그렇지 않다</p>
+    ${EVAL_Q.map((q,i)=>`<div class="q" data-i="${i}"><span class="tag">${esc(q[0])}</span><p>${i+1}. ${esc(q[1])}</p>
+      <div class="scale">${SCALE.map(s=>`<label><input type="radio" name="q${i}" value="${s[0]}"><span><b>${s[0]}</b>${s[1]}</span></label>`).join('')}</div></div>`).join('')}
+    <h3>의견 제시</h3>
+    ${EVAL_OPEN.map((q,i)=>`<div class="q"><p>${11+i}. ${esc(q)}</p><textarea name="o${i}" maxlength="1000" placeholder="자유롭게 작성해 주세요 (선택)"></textarea></div>`).join('')}
+    <button class="btn big" type="submit">제출하기</button>`;
+}
+$('#evalForm').addEventListener('submit', async e=>{
+  e.preventDefault(); const f=e.target; if(!f.querySelector('.scale')) return;
+  const ans=[]; let bad=null;
+  EVAL_Q.forEach((_,i)=>{ const c=f.querySelector(`input[name=q${i}]:checked`), box=f.querySelector(`.q[data-i="${i}"]`);
+    box.classList.toggle('err',!c); if(!c&&!bad) bad=box; ans.push(c?+c.value:''); });
+  if(bad){ bad.scrollIntoView({behavior:'smooth',block:'center'}); toast('응답하지 않은 문항이 있어요'); return; }
+  const open=[0,1].map(i=>f.querySelector(`[name=o${i}]`).value.trim());
+  const payload={type:'eval',role,answers:ans,opinion1:open[0],opinion2:open[1],ts:new Date().toISOString()};
+  f.querySelector('button[type=submit]').disabled=true;
+  try{ const r=await submit(payload); if(r.saved) store.set('eval-done-'+role,'1');
+    doneView(f,payload,r.saved,'학교평가_'+role+'.csv',[['구분','역할',...EVAL_Q.map((_,i)=>'문항'+(i+1)),'의견1','의견2'],['학교평가',role,...ans,...open]]);
+  }catch(err){ f.querySelector('button[type=submit]').disabled=false; toast('전송에 실패했어요. 잠시 후 다시 시도해 주세요'); }
+});
 
-/* 타임라인 */
+/* ---------------- 사전 의제 설문 ---------------- */
 (function(){
-  const list = CONFIG.schedule; let nowIdx = list.findIndex(x=>D(x.date)>=today);
-  $('#timeline').innerHTML = list.map((x,i)=>{
-    const cls = D(x.date)<today ? 'done' : (i===nowIdx ? 'now' : '');
-    return `<li class="${cls}"><b>${fmt(x.date)} · ${esc(x.title)}</b><span>${esc(x.desc)}</span></li>`;
+  const st=state([CONFIG.agendaStart,CONFIG.agendaEnd]); const box=$('#agendaBox');
+  const head=`<p class="lead"><span class="badge ${st}">${{wait:'시작 전',open:'진행 중',end:'마감'}[st]}</span> ${fmt(CONFIG.agendaStart)} ~ ${fmt(CONFIG.agendaEnd)} · 약 3분 · 익명</p>`;
+  if(st!=='open'){ box.innerHTML=head+`<div class="note">${st==='wait'?'사전 의제 설문은 '+fmt(CONFIG.agendaStart)+'부터 참여할 수 있습니다.':'사전 의제 설문이 마감되었습니다.'}</div>`; return; }
+  box.innerHTML=head+`<form id="agendaForm" novalidate>
+    <div class="q"><p><b>1. 참여 구분</b></p><div class="choice">${ROLES.map(r=>`<label><input type="radio" name="arole" value="${r[0]}">${r[1]} ${r[0]}</label>`).join('')}</div></div>
+    <div class="q"><p><b>2. 가장 이야기 나누고 싶은 주제를 골라 주세요. (최대 2개)</b></p><div class="choice">
+      ${CONFIG.topics.map((t,i)=>`<label><input type="checkbox" name="atopic" value="${esc(t.name)}"><span><b>${esc(t.name)}</b><br><small>${esc(t.q[0])}</small></span></label>`).join('')}</div></div>
+    <div class="q"><p><b>3. 내가 바라는 우리 학교의 모습은? (키워드 또는 한 문장)</b></p><textarea name="awish" maxlength="500" placeholder="예: 학생이 직접 기획하는 행사가 많은 학교"></textarea></div>
+    <div class="q"><p><b>4. 대토론회에서 꼭 다루었으면 하는 의제가 있다면 적어 주세요. (선택)</b></p><textarea name="aextra" maxlength="1000"></textarea></div>
+    <button class="btn big" type="submit">제출하기</button></form>`;
+  const f=$('#agendaForm');
+  f.addEventListener('change',e=>{ if(e.target.name==='atopic' && f.querySelectorAll('[name=atopic]:checked').length>2){ e.target.checked=false; toast('주제는 최대 2개까지 선택할 수 있어요'); } });
+  f.addEventListener('submit',async e=>{
+    e.preventDefault(); const r=f.querySelector('[name=arole]:checked');
+    if(!r){ toast('참여 구분을 선택해 주세요'); return; }
+    const topics=[...f.querySelectorAll('[name=atopic]:checked')].map(x=>x.value);
+    if(!topics.length){ toast('주제를 1개 이상 선택해 주세요'); return; }
+    const payload={type:'agenda',role:r.value,topics,wish:f.awish.value.trim(),extra:f.aextra.value.trim(),ts:new Date().toISOString()};
+    f.querySelector('button[type=submit]').disabled=true;
+    try{ const res=await submit(payload);
+      doneView(f,payload,res.saved,'사전의제설문.csv',[['구분','역할','선택주제','바라는 학교','추가 의제'],['사전의제',payload.role,topics.join(' / '),payload.wish,payload.extra]]);
+    }catch(err){ f.querySelector('button[type=submit]').disabled=false; toast('전송에 실패했어요. 잠시 후 다시 시도해 주세요'); }
+  });
+})();
+
+/* ---------------- 일정 / 대토론회 / 문의 ---------------- */
+(function(){
+  const list=CONFIG.schedule.slice().sort((a,b)=>D(a.date)-D(b.date));
+  const endOf=x=>D(x.end||x.date);
+  const nowIdx=list.findIndex(x=>endOf(x)>=today);
+  $('#timeline').innerHTML=list.map((x,i)=>{
+    const cls=endOf(x)<today?'done':(i===nowIdx?'now':'');
+    const when=x.end?`${fmt(x.date)} ~ ${fmt(x.end)}`:fmt(x.date);
+    return `<li class="${cls}"><b>${esc(x.title)}</b><span>${when}<br>${esc(x.desc)}</span></li>`;
   }).join('');
-})();
 
-/* 대토론회 */
-(function(){
   const f=CONFIG.forum;
-  const rows=[['일시',`${fmt(f.date)} ${f.start} ~ ${f.end}`],['장소',f.place],['대상',f.target],['안내',f.note]];
-  $('#forumInfo').innerHTML = rows.map(r=>`<dt>${r[0]}</dt><dd>${esc(r[1])}</dd>`).join('')
-    + (f.liveUrl?`<dt>온라인</dt><dd><a href="${esc(f.liveUrl)}" target="_blank" rel="noopener">참여 링크 열기</a></dd>`:'');
-  $('#topics').innerHTML = CONFIG.topics.map(t=>`<span class="chip">${esc(t)}</span>`).join('');
-  $('#program').innerHTML = CONFIG.program.map(p=>`<tr><th>${esc(p[0])}</th><td>${esc(p[1])}</td></tr>`).join('');
-  $('#howto').innerHTML = CONFIG.howto.map(h=>`<div class="box"><div class="ico">${h.icon}</div><h3>${esc(h.t)}</h3><p>${esc(h.d)}</p></div>`).join('');
-})();
+  $('#forumInfo').innerHTML=[['일시',`${fmt(f.date)} ${f.start} ~ ${f.end}`],['장소',f.place],['대상',f.target],['방식',f.method]]
+    .map(r=>`<dt>${r[0]}</dt><dd>${esc(r[1])}</dd>`).join('');
+  $('#purpose').innerHTML=CONFIG.purpose.map(p=>`<li>${esc(p)}</li>`).join('');
+  $('#topics').innerHTML=CONFIG.topics.map(t=>`<div class="topic"><h4>${esc(t.name)}</h4><div class="sub">${esc(t.way)}</div>
+    <ul>${t.q.map(q=>`<li>${esc(q)}</li>`).join('')}</ul>
+    <details style="margin-top:8px"><summary style="cursor:pointer;font-size:14px;color:var(--main)">들여다볼 영역</summary><p style="font-size:14px;color:var(--sub);margin:6px 0 0">${esc(t.area)}</p></details></div>`).join('');
+  $('#program').innerHTML=CONFIG.program.map(p=>`<tr><th>${p[0]}</th><td><b>${esc(p[1])}</b><ul>${p[2].map(x=>`<li>${esc(x)}</li>`).join('')}</ul><small style="color:var(--sub)">📍 ${esc(p[3])}</small></td></tr>`).join('');
+  $('#howto').innerHTML=CONFIG.howto.map(h=>`<div class="box"><div class="ico">${h.icon}</div><h3>${esc(h.t)}</h3><p>${esc(h.d)}</p></div>`).join('');
+  $('#feedback').innerHTML=CONFIG.feedback.map(x=>`<li>${esc(x)}</li>`).join('');
 
-/* FAQ / 문의 */
-$('#faqList').innerHTML = CONFIG.faq.map(q=>`<details><summary>${esc(q[0])}</summary><p>${esc(q[1])}</p></details>`).join('');
-(function(){
-  const c=CONFIG.contact, r=[['담당',c.dept],['운영',c.hours]];
-  if(c.tel) r.push(['전화',c.tel]); if(c.email) r.push(['이메일',c.email]);
-  $('#contactInfo').innerHTML = r.map(x=>`<dt>${x[0]}</dt><dd>${esc(x[1])}</dd>`).join('');
+  const c=CONFIG.contact, r=[['담당',c.dept]]; if(c.tel) r.push(['전화',c.tel]); if(c.email) r.push(['이메일',c.email]); r.push(['안내',c.note]);
+  $('#contactInfo').innerHTML=r.map(x=>`<dt>${x[0]}</dt><dd>${esc(x[1])}</dd>`).join('');
 })();
 
 /* 캘린더(.ics) */
-$('#icsBtn').onclick = ()=>{
+$('#icsBtn').onclick=()=>{
   const f=CONFIG.forum, d=f.date.replace(/-/g,''), t=s=>s.replace(':','')+'00';
-  const ics=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//samsung-eval//KO','BEGIN:VEVENT',
-    'UID:forum-'+d+'@samsung-eval',`DTSTAMP:${d}T000000`,`DTSTART;TZID=Asia/Seoul:${d}T${t(f.start)}`,`DTEND;TZID=Asia/Seoul:${d}T${t(f.end)}`,
-    `SUMMARY:${CONFIG.schoolName} 교육공동체 대토론회`,`LOCATION:${f.place}`,'END:VEVENT','END:VCALENDAR'].join('\r\n');
-  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([ics],{type:'text/calendar'}));
+  const ics=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//samsung-eval//KO','BEGIN:VEVENT','UID:forum-'+d+'@samsung-eval',
+    `DTSTAMP:${d}T000000`,`DTSTART;TZID=Asia/Seoul:${d}T${t(f.start)}`,`DTEND;TZID=Asia/Seoul:${d}T${t(f.end)}`,
+    '' ,'END:VEVENT','END:VCALENDAR'].filter(x=>x!=='');
+  ics.splice(ics.indexOf('END:VEVENT'),0,'SUMMARY:삼성중학교 교육공동체 대토론회','LOCATION:'+f.place);
+  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([ics.join('\r\n')],{type:'text/calendar'}));
   a.download='교육공동체대토론회.ics'; a.click(); toast('캘린더 파일을 저장했어요');
 };
 
 /* 공유 */
-$('#shareBtn').onclick = async ()=>{
-  const data={title:document.title,url:location.href};
-  try{ if(navigator.share){ await navigator.share(data); return; } await navigator.clipboard.writeText(location.href); toast('링크를 복사했어요'); }
+$('#shareBtn').onclick=async()=>{
+  try{ if(navigator.share){ await navigator.share({title:document.title,url:location.href}); return; }
+       await navigator.clipboard.writeText(location.href); toast('링크를 복사했어요'); }
   catch(e){ toast('공유를 취소했어요'); }
 };
 
