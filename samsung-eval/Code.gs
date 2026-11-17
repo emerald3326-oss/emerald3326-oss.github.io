@@ -10,14 +10,15 @@
  *    배포 후 나오는 '웹 앱 URL'을 복사한다.
  * 4) index.html 상단 CONFIG.submitUrl 에 그 URL을 붙여넣고 다시 배포한다.
  *
- * 응답은 '학교평가' / '사전의제' 시트에 한 줄씩 쌓이며, 개인 식별 정보는 수집하지 않는다(학년만 수집).
+ * 응답은 '학교평가' / '사전의제' 시트에 한 줄씩 쌓이며, 학교평가 설문은 익명(학년만 수집)이고,
+ * 사전 의제·참여 신청('사전의제' 탭)에서만 참가 확인용 이름을 받는다. 시트는 비공개로 두고 담당자만 열람한다.
  * ※ 기존에 만든 '학교평가'·'사전의제' 탭(테스트 데이터)이 있으면 삭제한 뒤 새로 배포해야 머리글이 맞는다.
  * 코드를 수정한 뒤에는 [배포 관리 → 새 버전]으로 다시 배포해야 반영된다.
  */
 
 const EVAL_HEADER = ['제출시각', '구분', '학년', '1.교육과정', '2.기초학력', '3.인성', '4.학교폭력·교육활동보호', '5.학습확장',
   '6.진로', '7.디지털', '8.학습으로의평가', '9.예술체육', '10.독서', '11.만족스러운 활동', '12.추가 희망 활동'];
-const AGENDA_HEADER = ['제출시각', '구분', '학년', '선택 주제', '바라는 학교', '추가 의제'];
+const AGENDA_HEADER = ['제출시각', '구분', '이름', '학년', '선택 주제', '바라는 학교', '추가 의제'];
 
 function doPost(e) {
   try {
@@ -30,7 +31,7 @@ function doPost(e) {
       sh.appendRow([now, d.role, gradeOf_(d.grade), ...a, clean_(d.opinion1), clean_(d.opinion2)]);
     } else if (d.type === 'agenda') {
       const sh = getSheet_(ss, '사전의제', AGENDA_HEADER);
-      sh.appendRow([now, d.role, gradeOf_(d.grade), (d.topics || []).join(' / '), clean_(d.wish), clean_(d.extra)]);
+      sh.appendRow([now, d.role, clean_(d.name).slice(0, 20), gradeOf_(d.grade), (d.topics || []).join(' / '), clean_(d.wish), clean_(d.extra)]);
     } else {
       return json_({ ok: false, error: 'unknown type' });
     }
