@@ -47,13 +47,6 @@ section .lead{margin:0 0 16px;color:var(--sub);font-size:15px}
 .badge.wait{background:#fef3c7;color:var(--warn)} .badge.end{background:#e2e8f0;color:#475569}
 dl.info{display:grid;grid-template-columns:84px 1fr;gap:10px 12px;margin:0}
 dl.info dt{font-weight:700;color:var(--main)} dl.info dd{margin:0}
-ol.timeline{list-style:none;margin:0;padding:0}
-ol.timeline li{position:relative;padding:0 0 18px 28px;border-left:3px solid var(--soft);margin-left:8px}
-ol.timeline li:last-child{border-color:transparent;padding-bottom:0}
-ol.timeline li::before{content:"";position:absolute;left:-9px;top:5px;width:15px;height:15px;border-radius:50%;background:var(--main2);border:3px solid #fff;box-shadow:0 0 0 2px var(--main2)}
-ol.timeline li.now::before{background:var(--accent);box-shadow:0 0 0 2px var(--accent)}
-ol.timeline li.done::before{background:#94a3b8;box-shadow:0 0 0 2px #94a3b8}
-ol.timeline b{display:block} ol.timeline span{color:var(--sub);font-size:15px}
 .table{width:100%;border-collapse:collapse;font-size:15px}
 .table th,.table td{border-bottom:1px solid var(--line);padding:9px 8px;text-align:left;vertical-align:top}
 .table th{color:var(--main);white-space:nowrap}
@@ -107,7 +100,6 @@ footer{text-align:center;color:var(--sub);font-size:13px;padding:18px 14px 28px}
 <nav class="tabs" id="tabs">
   <a href="#eval">학교평가 설문</a>
   <a href="#agenda">사전 의제 설문</a>
-  <a href="#schedule">일정</a>
   <a href="#forum">대토론회</a>
   <a href="#contact">문의</a>
 </nav>
@@ -130,19 +122,12 @@ footer{text-align:center;color:var(--sub);font-size:13px;padding:18px 14px 28px}
   <div id="agendaBox"></div>
 </section>
 
-<!-- 일정 -->
-<section id="schedule">
-  <h2>📅 추진 일정</h2>
-  <p class="lead">오늘 날짜를 기준으로 진행 상황이 자동 표시됩니다.</p>
-  <ol class="timeline" id="timeline"></ol>
-  <div class="actions"><button class="btn ghost" id="icsBtn">📆 대토론회 일정 캘린더에 저장</button></div>
-</section>
-
 <!-- 대토론회 -->
 <section id="forum">
   <h2>💬 교육공동체 대토론회</h2>
   <p class="lead">2027학년도 혁신자치학교 도약을 위한 월드카페 원탁 토론입니다. 학생·학부모·교직원이 동등한 발언권으로 참여합니다.</p>
   <dl class="info" id="forumInfo"></dl>
+  <div class="actions"><button class="btn ghost" id="icsBtn">📆 대토론회 일정 캘린더에 저장</button></div>
 
   <h3>이런 목적으로 열려요</h3>
   <ul id="purpose" style="margin:0;padding-left:20px"></ul>
@@ -206,16 +191,6 @@ const CONFIG = {
     '혁신자치학교의 철학과 비전을 학생·학부모·교직원이 함께 공유하고, 교육공동체가 주도하는 민주적 학교 문화를 안착시킵니다.',
     '2027학년도 교육과정, 학교 공간 활용, 전문적 학습공동체 운영에 관한 현장의 의견을 수렴해 학교 운영 계획에 실질적으로 반영합니다.',
     '학생·학부모·교직원 간 수평적 소통을 통해 상호 존중과 연대감을 형성합니다.'
-  ],
-
-  schedule:[
-    { date:'2026-11-23', end:'2026-11-27', title:'운영 계획 수립 및 결재', desc:'11월 4주 · 업무 분장 협의' },
-    { date:'2026-11-20', end:'2026-11-27', title:'학교평가 설문 · 사전 의제 설문', desc:'11. 20.~11. 27. · 웹 앱으로 실시 (가정통신문·e알리미 안내)' },
-    { date:'2026-12-09', title:'참가 신청서 취합 · 모둠 편성 마감', desc:'학생·학부모 참가 신청서 (~12. 9.)' },
-    { date:'2026-12-07', end:'2026-12-11', title:'퍼실리테이터(이끄미) 사전 연수', desc:'12월 2주 · 기기·장소 점검' },
-    { date:'2026-12-16', title:'교육공동체 대토론회', desc:'14:30 ~ 16:30 · 3S 디지털 창작소 및 삼성다락방' },
-    { date:'2026-12-21', end:'2026-12-31', title:'결과 정리 및 보고서 작성·공유', desc:'12월 4주 · 학교 누리집·e알리미·교직원 회의' },
-    { date:'2027-01-04', end:'2027-02-26', title:'2027학년도 교육과정·예산 편성에 결과 반영', desc:'2027. 1.~2.' }
   ],
 
   topics:[
@@ -372,17 +347,8 @@ $('#evalForm').addEventListener('submit', async e=>{
   });
 })();
 
-/* ---------------- 일정 / 대토론회 / 문의 ---------------- */
+/* ---------------- 대토론회 / 문의 ---------------- */
 (function(){
-  const list=CONFIG.schedule.slice().sort((a,b)=>D(a.date)-D(b.date));
-  const endOf=x=>D(x.end||x.date);
-  const nowIdx=list.findIndex(x=>endOf(x)>=today);
-  $('#timeline').innerHTML=list.map((x,i)=>{
-    const cls=endOf(x)<today?'done':(i===nowIdx?'now':'');
-    const when=x.end?`${fmt(x.date)} ~ ${fmt(x.end)}`:fmt(x.date);
-    return `<li class="${cls}"><b>${esc(x.title)}</b><span>${when}<br>${esc(x.desc)}</span></li>`;
-  }).join('');
-
   const f=CONFIG.forum;
   $('#forumInfo').innerHTML=[['일시',`${fmt(f.date)} ${f.start} ~ ${f.end}`],['장소',f.place],['대상',f.target],['방식',f.method]]
     .map(r=>`<dt>${r[0]}</dt><dd>${esc(r[1])}</dd>`).join('');
