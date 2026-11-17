@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [claude/culture-properties-webapp-hsj8zs]
+    branches: [claude/eager-sagan-b8qcfa]
   workflow_dispatch:
 
 permissions:
