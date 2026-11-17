@@ -77,6 +77,12 @@ textarea{width:100%;min-height:84px;border:1.5px solid var(--line);border-radius
 .choice label{display:flex;gap:10px;align-items:flex-start;border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;margin:6px 0;cursor:pointer;font-size:15px;background:#fff}
 .choice input{margin-top:4px;accent-color:var(--main)}
 .choice label:has(input:checked){border-color:var(--main);background:var(--soft)}
+.grades{display:flex;gap:8px}
+.grades label{flex:1;position:relative;cursor:pointer}
+.grades input{position:absolute;opacity:0;inset:0;cursor:pointer}
+.grades span{display:block;text-align:center;border:1.5px solid var(--line);border-radius:10px;padding:10px 4px;font-weight:700;background:#fff;color:var(--sub)}
+.grades input:checked+span{background:var(--main);border-color:var(--main);color:#fff}
+.grades input:focus-visible+span{outline:3px solid #86efac}
 .done-msg{text-align:center;padding:24px 8px}
 .done-msg .big{font-size:44px}
 footer{text-align:center;color:var(--sub);font-size:13px;padding:18px 14px 28px}
@@ -247,6 +253,8 @@ const EVAL_OPEN = [
   '위에 제시된 체크리스트 이외에 더 추가되었으면 하는 교육활동이 있으시다면 답변 부탁드립니다.'
 ];
 const SCALE = [[5,'매우<br>그렇다'],[4,'대체로<br>그렇다'],[3,'보통<br>이다'],[2,'별로<br>아니다'],[1,'전혀<br>아니다']];
+const NEEDS_GRADE = r => r==='학생' || r==='학부모';
+const gradeHtml = (label) => `<div class="q" data-grade><span class="tag">학년</span><p>${label}</p><div class="grades">${[1,2,3].map(g=>`<label><input type="radio" name="grade" value="${g}"><span>${g}학년</span></label>`).join('')}</div></div>`;
 const ROLES = [['학생','🎒'],['학부모','👪'],['교직원','🧑‍🏫']];
 
 /* ---------------- 공통 유틸 ---------------- */
@@ -299,6 +307,7 @@ function renderEval(){
   if(store.get('eval-done-'+role)) f.innerHTML=`<div class="note">이 기기에서 이미 ${role} 설문에 응답하셨습니다. 중복 응답을 막기 위해 다시 제출하려면 아래 버튼을 눌러 주세요.<br><button type="button" class="btn ghost" id="again" style="margin-top:8px">다시 응답하기</button></div>`,
     $('#again').onclick=()=>{store.set('eval-done-'+role,'');renderEval()};
   else f.innerHTML = `
+    ${NEEDS_GRADE(role)?gradeHtml(role==='학생'?'본인의 학년을 선택해 주세요.':'자녀의 학년을 선택해 주세요. (자녀가 여러 명이면 학년별로 각각 응답해 주세요)'):''}
     <p class="lead" style="margin-top:12px">※ 5. 매우 그렇다 · 4. 대체로 그렇다 · 3. 보통이다 · 2. 별로 그렇지 않다 · 1. 전혀 그렇지 않다</p>
     ${EVAL_Q.map((q,i)=>`<div class="q" data-i="${i}"><span class="tag">${esc(q[0])}</span><p>${i+1}. ${esc(q[1])}</p>
       <div class="scale">${SCALE.map(s=>`<label><input type="radio" name="q${i}" value="${s[0]}"><span><b>${s[0]}</b>${s[1]}</span></label>`).join('')}</div></div>`).join('')}
@@ -309,14 +318,16 @@ function renderEval(){
 $('#evalForm').addEventListener('submit', async e=>{
   e.preventDefault(); const f=e.target; if(!f.querySelector('.scale')) return;
   const ans=[]; let bad=null;
+  let grade=''; if(NEEDS_GRADE(role)){ const g=f.querySelector('input[name=grade]:checked'), gb=f.querySelector('[data-grade]');
+    gb.classList.toggle('err',!g); if(g) grade=g.value; else { gb.scrollIntoView({behavior:'smooth',block:'center'}); toast('학년을 선택해 주세요'); return; } }
   EVAL_Q.forEach((_,i)=>{ const c=f.querySelector(`input[name=q${i}]:checked`), box=f.querySelector(`.q[data-i="${i}"]`);
     box.classList.toggle('err',!c); if(!c&&!bad) bad=box; ans.push(c?+c.value:''); });
   if(bad){ bad.scrollIntoView({behavior:'smooth',block:'center'}); toast('응답하지 않은 문항이 있어요'); return; }
   const open=[0,1].map(i=>f.querySelector(`[name=o${i}]`).value.trim());
-  const payload={type:'eval',role,answers:ans,opinion1:open[0],opinion2:open[1],ts:new Date().toISOString()};
+  const payload={type:'eval',role,grade,answers:ans,opinion1:open[0],opinion2:open[1],ts:new Date().toISOString()};
   f.querySelector('button[type=submit]').disabled=true;
   try{ const r=await submit(payload); if(r.saved) store.set('eval-done-'+role,'1');
-    doneView(f,payload,r.saved,'학교평가_'+role+'.csv',[['구분','역할',...EVAL_Q.map((_,i)=>'문항'+(i+1)),'의견1','의견2'],['학교평가',role,...ans,...open]]);
+    doneView(f,payload,r.saved,'학교평가_'+role+'.csv',[['구분','역할','학년',...EVAL_Q.map((_,i)=>'문항'+(i+1)),'의견1','의견2'],['학교평가',role,grade,...ans,...open]]);
   }catch(err){ f.querySelector('button[type=submit]').disabled=false; toast('전송에 실패했어요. 잠시 후 다시 시도해 주세요'); }
 });
 
@@ -327,22 +338,25 @@ $('#evalForm').addEventListener('submit', async e=>{
   if(st!=='open'){ box.innerHTML=head+`<div class="note">${st==='wait'?'사전 의제 설문은 '+fmt(CONFIG.agendaStart)+'부터 참여할 수 있습니다.':'사전 의제 설문이 마감되었습니다.'}</div>`; return; }
   box.innerHTML=head+`<form id="agendaForm" novalidate>
     <div class="q"><p><b>1. 참여 구분</b></p><div class="choice">${ROLES.map(r=>`<label><input type="radio" name="arole" value="${r[0]}">${r[1]} ${r[0]}</label>`).join('')}</div></div>
+    <div id="agradeBox"></div>
     <div class="q"><p><b>2. 가장 이야기 나누고 싶은 주제를 골라 주세요. (최대 2개)</b></p><div class="choice">
       ${CONFIG.topics.map((t,i)=>`<label><input type="checkbox" name="atopic" value="${esc(t.name)}"><span><b>${esc(t.name)}</b><br><small>${esc(t.q[0])}</small></span></label>`).join('')}</div></div>
     <div class="q"><p><b>3. 내가 바라는 우리 학교의 모습은? (키워드 또는 한 문장)</b></p><textarea name="awish" maxlength="500" placeholder="예: 학생이 직접 기획하는 행사가 많은 학교"></textarea></div>
     <div class="q"><p><b>4. 대토론회에서 꼭 다루었으면 하는 의제가 있다면 적어 주세요. (선택)</b></p><textarea name="aextra" maxlength="1000"></textarea></div>
     <button class="btn big" type="submit">제출하기</button></form>`;
   const f=$('#agendaForm');
+  f.addEventListener('change',e=>{ if(e.target.name==='arole') $('#agradeBox').innerHTML = NEEDS_GRADE(e.target.value) ? gradeHtml(e.target.value==='학생'?'본인의 학년을 선택해 주세요.':'자녀의 학년을 선택해 주세요.') : ''; });
   f.addEventListener('change',e=>{ if(e.target.name==='atopic' && f.querySelectorAll('[name=atopic]:checked').length>2){ e.target.checked=false; toast('주제는 최대 2개까지 선택할 수 있어요'); } });
   f.addEventListener('submit',async e=>{
     e.preventDefault(); const r=f.querySelector('[name=arole]:checked');
     if(!r){ toast('참여 구분을 선택해 주세요'); return; }
+    let grade=''; if(NEEDS_GRADE(r.value)){ const g=f.querySelector('input[name=grade]:checked'); if(!g){ toast('학년을 선택해 주세요'); $('#agradeBox').scrollIntoView({behavior:'smooth',block:'center'}); return; } grade=g.value; }
     const topics=[...f.querySelectorAll('[name=atopic]:checked')].map(x=>x.value);
     if(!topics.length){ toast('주제를 1개 이상 선택해 주세요'); return; }
-    const payload={type:'agenda',role:r.value,topics,wish:f.awish.value.trim(),extra:f.aextra.value.trim(),ts:new Date().toISOString()};
+    const payload={type:'agenda',role:r.value,grade,topics,wish:f.awish.value.trim(),extra:f.aextra.value.trim(),ts:new Date().toISOString()};
     f.querySelector('button[type=submit]').disabled=true;
     try{ const res=await submit(payload);
-      doneView(f,payload,res.saved,'사전의제설문.csv',[['구분','역할','선택주제','바라는 학교','추가 의제'],['사전의제',payload.role,topics.join(' / '),payload.wish,payload.extra]]);
+      doneView(f,payload,res.saved,'사전의제설문.csv',[['구분','역할','학년','선택주제','바라는 학교','추가 의제'],['사전의제',payload.role,grade,topics.join(' / '),payload.wish,payload.extra]]);
     }catch(err){ f.querySelector('button[type=submit]').disabled=false; toast('전송에 실패했어요. 잠시 후 다시 시도해 주세요'); }
   });
 })();
